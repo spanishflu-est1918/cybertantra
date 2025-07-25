@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cybertantra Monorepo
+
+A monorepo containing AI-powered terminal applications.
+
+## Structure
+
+```
+cybertantra/
+├── apps/
+│   ├── cybertantra/  # AI terminal for exploring consciousness
+│   └── cyberyogin/   # Personal portfolio site
+├── packages/
+│   ├── ui/           # Shared terminal UI components
+│   ├── database/     # Database utilities (coming soon)
+│   └── ai/           # AI agents and tools (coming soon)
+└── pnpm-workspace.yaml
+```
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Run development servers:
+   ```bash
+   # Run both apps
+   pnpm dev
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   # Run specific app
+   pnpm dev:cybertantra
+   pnpm dev:cyberyogin
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Build all apps:
+   ```bash
+   pnpm build
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Apps
 
-## Learn More
+### Cybertantra (`apps/cybertantra`)
+AI-powered terminal for exploring consciousness through lecture content.
+- Runs on: http://localhost:3000
+- Features: AI chat, RAG search, lecture database
 
-To learn more about Next.js, take a look at the following resources:
+### Cyberyogin (`apps/cyberyogin`)
+Personal portfolio site with terminal interface.
+- Runs on: http://localhost:7770
+- Features: Work showcase, music player, themes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Shared Packages
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### @cybertantra/ui
+Shared terminal UI components including:
+- Terminal interface with CRT effects
+- Command execution system
+- Theme management
+- TypewriterText animations
+- Loading indicators
 
-## Deploy on Vercel
+## Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Each app can be developed independently while sharing common components through the `@cybertantra/ui` package. Changes to shared components are immediately reflected in all apps.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Environment Variables
+
+Copy `.env.example` to `.env` in the root directory and configure:
+- `OPENROUTER_API_KEY` - For AI chat
+- `OPENAI_API_KEY` - For embeddings
+- `POSTGRES_*` - Database connection
+- `ELEVENLABS_API_KEY` - Optional: for text-to-speech
