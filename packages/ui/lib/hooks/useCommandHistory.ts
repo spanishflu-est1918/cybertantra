@@ -1,42 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-export function useCommandHistory() {
-  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+export function useCommandHistory(
+  history: string[],
+  setInput: (value: string) => void
+) {
   const [historyIndex, setHistoryIndex] = useState(-1);
 
-  useEffect(() => {
-    const savedHistory = localStorage.getItem('commandHistory');
-    if (savedHistory) {
-      setCommandHistory(JSON.parse(savedHistory));
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (historyIndex < history.length - 1) {
+        const newIndex = historyIndex + 1;
+        setHistoryIndex(newIndex);
+        setInput(history[history.length - 1 - newIndex].replace(/^> /, ''));
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        const newIndex = historyIndex - 1;
+        setHistoryIndex(newIndex);
+        setInput(history[history.length - 1 - newIndex].replace(/^> /, ''));
+      } else if (historyIndex === 0) {
+        setHistoryIndex(-1);
+        setInput('');
+      }
     }
-  }, []);
+  }, [history, historyIndex, setInput]);
 
-  useEffect(() => {
-    if (commandHistory.length > 0) {
-      localStorage.setItem('commandHistory', JSON.stringify(commandHistory.slice(-50)));
-    }
-  }, [commandHistory]);
-
-  const addCommand = (command: string) => {
-    setCommandHistory(prev => [...prev, command]);
-    setHistoryIndex(-1);
-  };
-
-  const navigateHistory = (direction: 'up' | 'down'): string | null => {
-    if (direction === 'up' && historyIndex < commandHistory.length - 1) {
-      const newIndex = historyIndex + 1;
-      setHistoryIndex(newIndex);
-      return commandHistory[commandHistory.length - 1 - newIndex];
-    } else if (direction === 'down' && historyIndex > 0) {
-      const newIndex = historyIndex - 1;
-      setHistoryIndex(newIndex);
-      return commandHistory[commandHistory.length - 1 - newIndex];
-    } else if (direction === 'down' && historyIndex === 0) {
-      setHistoryIndex(-1);
-      return '';
-    }
-    return null;
-  };
-
-  return { commandHistory, addCommand, navigateHistory };
+  return { handleKeyDown };
 }

@@ -15,8 +15,8 @@ export function useBootSequence(
   const hasRun = useRef(false);
 
   useEffect(() => {
-    if (!enabled || hasRun.current) {
-      setBootComplete(true);
+    if (!enabled || hasRun.current || (customMessages === undefined)) {
+      if (!enabled) setBootComplete(true);
       return;
     }
 
@@ -61,7 +61,7 @@ export function useBootSequence(
     };
 
     bootSequence();
-  }, [enabled]); // Remove onAddEntries from dependencies
+  }, [enabled, customMessages]); // Add customMessages to dependencies
 
   return bootComplete;
 }

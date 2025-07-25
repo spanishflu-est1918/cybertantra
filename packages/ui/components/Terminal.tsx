@@ -12,6 +12,7 @@ import { useCommandHistory } from '../lib/hooks/useCommandHistory';
 import { useCommandExecutor } from '../lib/hooks/useCommandExecutor';
 import { useTerminalChat } from '../lib/hooks/useTerminalChat';
 import { useKeyboardShortcuts } from '../lib/hooks/useKeyboardShortcuts';
+import { useGeolocation } from '../lib/hooks/useGeolocation';
 
 export default function Terminal() {
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -34,12 +35,20 @@ export default function Terminal() {
   const useTheme = config.useTheme || useDefaultTheme;
   const { theme, setTheme } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Get user city for boot sequence
+  const userCity = useGeolocation();
 
   // Initialize boot sequence if enabled
   const bootComplete = useBootSequence(
     config.showBootSequence ?? true,
     (entries) => setHistory(prev => [...prev, ...entries]),
-    config.bootMessages
+    config.bootMessages || (userCity ? [
+      '> connection established',
+      '> you\'ve found the terminal',
+      `> another visitor from ${userCity}`,
+      '> speak'
+    ] : undefined)
   );
 
   // Command history navigation
@@ -56,6 +65,7 @@ export default function Terminal() {
         content,
         typewriter: isAI && theme.useTypewriter 
       }]);
+      setIsWaitingForResponse(false);
     },
     onLoading: setIsLoading,
   });
@@ -114,12 +124,19 @@ export default function Terminal() {
     }
   }, [bootComplete]);
 
+  // Keep focus on input when clicking in terminal
+  const handleTerminalClick = useCallback(() => {
+    if (bootComplete && inputRef.current && !vimModeActive) {
+      inputRef.current.focus();
+    }
+  }, [bootComplete, vimModeActive]);
+
   // Render active browser if any
   const activeBrowserConfig = config.browsers?.find(b => b.id === activeBrowser);
 
   return (
     <CRTEffect>
-      <div className="w-full h-full bg-black text-green-400 font-mono p-2 sm:p-4 overflow-hidden text-xs sm:text-sm">
+      <div className="w-full h-full bg-black text-green-400 font-mono p-2 sm:p-4 overflow-hidden text-xs sm:text-sm" onClick={handleTerminalClick}>
         <div 
           ref={terminalRef}
           className="h-[calc(100vh-1rem)] sm:h-[calc(100vh-2rem)] overflow-y-auto scrollbar-hide focus-blur"

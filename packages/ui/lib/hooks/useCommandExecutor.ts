@@ -1,5 +1,6 @@
 import { useTerminalContext } from '../contexts/TerminalContext';
 import { useCallback } from 'react';
+import { handleCommand } from '../commands';
 
 type HistoryEntry = {
   type: 'input' | 'output';
@@ -32,17 +33,39 @@ export function useCommandExecutor(
   }, [config.browsers, setBrowserState, setActiveBrowser]);
 
   const executeCommand = useCallback((command: string) => {
-    const trimmedCommand = command.trim().toLowerCase();
-    const parts = trimmedCommand.split(' ');
-    const cmd = parts[0];
-    const args = parts.slice(1);
-
-    // Handle clear command
-    if (cmd === 'clear' || cmd === 'cls') {
+    const trimmedCommand = command.trim();
+    
+    // First, try the command system
+    const commandResult = handleCommand(trimmedCommand);
+    
+    if (commandResult === 'CLEAR_TERMINAL') {
       clearHistory();
       return null;
     }
-
+    
+    if (commandResult && typeof commandResult === 'object' && 'content' in commandResult) {
+      // Handle special browser commands
+      if (commandResult.content === 'SHOW_HELP_BROWSER') {
+        const browser = config.browsers?.find(b => b.id === 'help');
+        if (browser) {
+          closeAllBrowsers();
+          setBrowserState(browser.id, { active: true, visible: true, selectedIndex: 0 });
+          setActiveBrowser(browser.id);
+          return browser.formatter ? browser.formatter(browser.component) : browser.component;
+        }
+      }
+      return commandResult;
+    }
+    
+    if (commandResult) {
+      return commandResult;
+    }
+    
+    // If no command found, check for browser commands
+    const parts = trimmedCommand.split(' ');
+    const cmd = parts[0].toLowerCase();
+    const args = parts.slice(1);
+    
     // Handle browser commands
     const browser = config.browsers?.find(b => b.id === cmd);
     if (browser) {
@@ -63,32 +86,10 @@ export function useCommandExecutor(
       return config.customCommands[cmd](args);
     }
 
-    // Handle AI chat
-    if (cmd.startsWith('/') && config.aiEnabled && sendMessage) {
-      sendMessage({ text: command });
-      return null;
-    }
-
     // Handle theme command
     if (cmd === 'theme' && config.enableThemes && setTheme) {
       // Theme browser logic would go here
       return 'Theme browser coming soon...';
-    }
-
-    // Handle help
-    if (cmd === 'help' || cmd === '/help') {
-      const commands = [
-        'Available commands:',
-        '',
-        ...(config.browsers?.map(b => `  ${b.id} - Open ${b.name}`) || []),
-        ...(config.enableVimMode ? ['  vim - Enter Vim mode'] : []),
-        ...(config.enableThemes ? ['  theme - Change terminal theme'] : []),
-        ...(config.customCommands ? Object.keys(config.customCommands).map(cmd => `  ${cmd} - Custom command`) : []),
-        '  clear - Clear terminal',
-        '  help - Show this help',
-        ...(config.aiEnabled ? ['', 'Start messages with / to chat with AI'] : []),
-      ];
-      return commands.join('\\n');
     }
 
     // Unknown command - fall back to AI chat if enabled

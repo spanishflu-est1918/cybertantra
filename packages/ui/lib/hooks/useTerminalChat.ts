@@ -38,6 +38,16 @@ export function useTerminalChat({ onMessage, onLoading }: UseTerminalChatProps) 
     }
   }, [error, onMessage]);
 
+  // Sync messages to terminal
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'assistant' && lastMessage.content) {
+        onMessage(lastMessage.content, true);
+      }
+    }
+  }, [messages, onMessage]);
+
 
   // Initialize with conversation history
   const initializeWithHistory = useCallback((history: Array<{ type: 'input' | 'output'; content: string }>) => {
