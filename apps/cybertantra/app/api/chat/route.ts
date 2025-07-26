@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     const lastUserMessage = messages[messages.length - 1];
     const query = lastUserMessage.content;
     
-    const chunks = await queryAgent.retrieve(query, 10);
+    const chunks = await queryAgent.retrieve(query, 20);
     const context = chunks
       .map((chunk, i) => `[${i + 1}] From "${chunk.source}":\n${chunk.text}`)
       .join('\n\n---\n\n');
