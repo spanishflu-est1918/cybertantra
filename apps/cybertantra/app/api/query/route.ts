@@ -10,13 +10,13 @@ export async function POST(req: Request) {
     }
 
     const agent = createAgent();
-    const response = await agent.generate({
-      messages: [{ role: 'user', content: question }],
-    });
+    const response = await agent.generate(
+      [{ role: 'user', content: question }]
+    );
 
     return NextResponse.json({ 
       answer: response.text,
-      sources: response.metadata?.sources || []
+      sources: []
     });
 
   } catch (error) {

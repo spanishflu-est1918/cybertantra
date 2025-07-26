@@ -1,10 +1,23 @@
 import { ReactNode } from 'react';
 import { UseThemeReturn } from '../hooks/useTheme';
 
+export interface HistoryEntry {
+  type: 'input' | 'output';
+  content: string;
+  typewriter?: boolean;
+}
+
+export interface BrowserComponentProps {
+  isActive: boolean;
+  selectedIndex: number;
+  onClose: () => void;
+  setHistory?: (update: (prev: HistoryEntry[]) => HistoryEntry[]) => void;
+}
+
 export interface BrowserConfig {
   id: string;
   name: string;
-  component: ReactNode;
+  component: React.ComponentType<BrowserComponentProps>;
   formatter?: (content: any) => ReactNode;
 }
 

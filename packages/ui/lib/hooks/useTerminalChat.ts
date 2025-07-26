@@ -23,7 +23,7 @@ export function useTerminalChat({ onMessage, onLoading }: UseTerminalChatProps) 
     }),
     onFinish: (result) => {
       const message = result.message || result;
-      const content = message.content || (message.parts && message.parts.map(p => p.text).join(''));
+      const content = (message as any).content || ((message as any).parts && (message as any).parts.map((p: any) => p.text).join(''));
       if (content) {
         onMessage(content, true);
       }

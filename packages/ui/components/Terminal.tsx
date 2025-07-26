@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useTerminalContext } from '../lib/contexts/TerminalContext';
 import { useTheme as useDefaultTheme } from '../lib/hooks/useTheme';
 import TerminalInput from './TerminalInput';
@@ -28,8 +28,11 @@ export default function Terminal() {
     isWaitingForResponse,
     setIsWaitingForResponse,
     vimModeActive,
+    setVimModeActive,
     browserStates,
+    setBrowserState,
     activeBrowser,
+    setActiveBrowser,
   } = useTerminalContext();
   
   const useTheme = config.useTheme || useDefaultTheme;
@@ -80,6 +83,12 @@ export default function Terminal() {
     config.aiEnabled ? sendMessage : undefined
   );
 
+  // Browser management
+  const closeBrowser = useCallback((browserId: string) => {
+    setBrowserState(browserId, { active: false, visible: false });
+    setActiveBrowser(null);
+  }, [setBrowserState, setActiveBrowser]);
+
   // Keyboard shortcuts
   useKeyboardShortcuts({
     enabled: !vimModeActive && bootComplete && hasInteracted,
@@ -100,10 +109,10 @@ export default function Terminal() {
     } else {
       // Regular commands
       const output = executeCommand(command);
-      if (output !== null) {
+      if (output !== null && typeof output === 'string') {
         setHistory(prev => [...prev, { 
           type: 'output', 
-          content: typeof output === 'string' ? output : output,
+          content: output,
           typewriter: false 
         }]);
       }
@@ -182,7 +191,7 @@ export default function Terminal() {
                 // After each user input, check if there's a corresponding AI response
                 if (aiMessageIndex < aiMessages.length) {
                   const aiMsg = aiMessages[aiMessageIndex];
-                  const content = aiMsg.content || (aiMsg.parts?.filter(p => p.type === 'text').map(p => p.text).join('') || '');
+                  const content = (aiMsg as any).content || ((aiMsg as any).parts?.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('') || '');
                   combinedMessages.push({
                     type: 'ai',
                     content: content,
@@ -219,9 +228,14 @@ export default function Terminal() {
 
 
           {/* Active browser */}
-          {activeBrowserConfig && browserStates[activeBrowser]?.visible && (
+          {activeBrowserConfig && activeBrowser && browserStates[activeBrowser]?.visible && (
             <div className="mt-4">
-              {activeBrowserConfig.component}
+              {React.createElement(activeBrowserConfig.component, {
+                isActive: browserStates[activeBrowser]?.active || false,
+                selectedIndex: browserStates[activeBrowser]?.selectedIndex || 0,
+                onClose: () => closeBrowser(activeBrowser),
+                setHistory
+              })}
             </div>
           )}
 
@@ -244,7 +258,12 @@ export default function Terminal() {
           )}
 
           {/* Vim mode indicator */}
-          {vimModeActive && config.enableVimMode && <VimMode />}
+          {vimModeActive && config.enableVimMode && (
+            <VimMode 
+              isActive={vimModeActive}
+              onClose={() => setVimModeActive(false)}
+            />
+          )}
         </div>
       </div>
     </CRTEffect>

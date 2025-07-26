@@ -29,7 +29,7 @@ interface TerminalContextType {
   
   // History
   history: HistoryEntry[];
-  setHistory: (history: HistoryEntry[]) => void;
+  setHistory: React.Dispatch<React.SetStateAction<HistoryEntry[]>>;
   addToHistory: (entry: HistoryEntry) => void;
   clearHistory: () => void;
   

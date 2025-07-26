@@ -1,5 +1,7 @@
 import { TerminalConfig } from '@cybertantra/ui/types';
-import { ThemeProvider, useTheme } from './contexts/ThemeContext';
+import { ThemeProvider, useTheme } from '@cybertantra/ui/lib/contexts';
+import SearchBrowser from './components/SearchBrowser';
+import QueryBrowser from './components/QueryBrowser';
 
 export const cybertantraConfig: TerminalConfig = {
   projectName: 'cybertantra',
@@ -9,12 +11,12 @@ export const cybertantraConfig: TerminalConfig = {
     {
       id: 'search',
       name: 'Search',
-      component: <div>Search lecture database (coming soon)</div>,
+      component: SearchBrowser,
     },
     {
       id: 'query',
       name: 'Query',
-      component: <div>Advanced AI query with context (coming soon)</div>,
+      component: QueryBrowser,
     },
   ],
   

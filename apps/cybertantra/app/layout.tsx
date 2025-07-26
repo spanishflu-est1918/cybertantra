@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from './contexts/ThemeContext';
+import { ThemeProvider } from '@cybertantra/ui/lib/contexts';
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",

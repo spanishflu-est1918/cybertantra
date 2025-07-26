@@ -1,8 +1,10 @@
 'use client';
 
 import { TerminalConfig } from '@cybertantra/ui/types';
-import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@cybertantra/ui/lib/contexts';
 import ConfigurableTerminal from './ConfigurableTerminal';
+import SearchBrowser from './SearchBrowser';
+import QueryBrowser from './QueryBrowser';
 
 export default function CybertantraTerminal() {
   const config: TerminalConfig = {
@@ -13,12 +15,12 @@ export default function CybertantraTerminal() {
       {
         id: 'search',
         name: 'Search',
-        component: <div>Search lecture database (coming soon)</div>,
+        component: SearchBrowser,
       },
       {
         id: 'query',
         name: 'Query',
-        component: <div>Advanced AI query with context (coming soon)</div>,
+        component: QueryBrowser,
       },
     ],
     

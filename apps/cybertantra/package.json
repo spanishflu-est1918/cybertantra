@@ -9,30 +9,31 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.4.4",
     "@ai-sdk/openai": "^1.0.13",
+    "@cybertantra/ui": "workspace:*",
+    "@elevenlabs/elevenlabs-js": "^2.7.0",
+    "@mastra/core": "^0.11.1",
+    "@mastra/rag": "^1.0.4",
     "@openrouter/ai-sdk-provider": "1.0.0-beta.3",
+    "@vercel/postgres": "^0.10.0",
     "ai": "5.0.0-beta.25",
     "clsx": "^2.1.1",
     "focus-trap-react": "^10.3.0",
-    "@vercel/postgres": "^0.10.0",
+    "next": "15.4.4",
     "pgvector": "^0.2.0",
-    "@mastra/core": "^0.11.1",
-    "@mastra/rag": "^1.0.4",
-    "@elevenlabs/elevenlabs-js": "^2.7.0",
-    "@cybertantra/ui": "workspace:*"
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "zod": "^4.0.10"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.4.4",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
