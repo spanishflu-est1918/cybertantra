@@ -119,6 +119,7 @@ export default function Terminal() {
     }
   }, []);
 
+
   // Auto-scroll to bottom
   useEffect(() => {
     if (terminalRef.current) {
@@ -157,29 +158,63 @@ export default function Terminal() {
             </div>
           )}
 
-          {/* History */}
-          {history.map((entry, index) => (
-            <div key={index} className="whitespace-pre-wrap mb-1 text-green-400">
-              {entry.typewriter ? (
-                <TypewriterText text={entry.content} onComplete={() => {}} />
-              ) : (
-                entry.content
-              )}
-            </div>
-          ))}
-
-          {/* AI Messages from SDK (real streaming) */}
-          {messages.map((message, index) => {
-            if (message.role === 'assistant') {
-              const content = message.content || (message.parts?.filter(p => p.type === 'text').map(p => p.text).join('') || '');
-              return (
-                <div key={message.id} className="whitespace-pre-wrap mb-1 text-green-400">
-                  {content || '[AI is thinking...]'}
-                </div>
-              );
+          {/* All messages in chronological order */}
+          {(() => {
+            const combinedMessages = [];
+            let historyIndex = 0;
+            let aiMessageIndex = 0;
+            
+            // Get all AI messages from the SDK
+            const aiMessages = messages.filter(m => m.role === 'assistant');
+            
+            // Merge history and AI messages based on order
+            while (historyIndex < history.length || aiMessageIndex < aiMessages.length) {
+              // Add all history entries until we hit where the next AI message should go
+              while (historyIndex < history.length && history[historyIndex].type === 'input') {
+                combinedMessages.push({
+                  type: 'history',
+                  content: history[historyIndex].content,
+                  isTypewriter: history[historyIndex].typewriter,
+                  key: `history-${historyIndex}`
+                });
+                historyIndex++;
+                
+                // After each user input, check if there's a corresponding AI response
+                if (aiMessageIndex < aiMessages.length) {
+                  const aiMsg = aiMessages[aiMessageIndex];
+                  const content = aiMsg.content || (aiMsg.parts?.filter(p => p.type === 'text').map(p => p.text).join('') || '');
+                  combinedMessages.push({
+                    type: 'ai',
+                    content: content,
+                    key: `ai-${aiMsg.id}`
+                  });
+                  aiMessageIndex++;
+                }
+              }
+              
+              // Add any remaining history entries (non-input commands)
+              if (historyIndex < history.length && history[historyIndex].type !== 'input') {
+                combinedMessages.push({
+                  type: 'history',
+                  content: history[historyIndex].content,
+                  isTypewriter: history[historyIndex].typewriter,
+                  key: `history-${historyIndex}`
+                });
+                historyIndex++;
+              }
             }
-            return null;
-          })}
+            
+            return combinedMessages.map(msg => (
+              <div key={msg.key} className="whitespace-pre-wrap mb-1 text-green-400">
+                {msg.isTypewriter ? (
+                  <TypewriterText text={msg.content} onComplete={() => {}} />
+                ) : (
+                  msg.content
+                )}
+              </div>
+            ));
+          })()}
+
 
 
 
