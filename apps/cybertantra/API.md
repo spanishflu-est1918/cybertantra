@@ -96,6 +96,32 @@ Generate chapter outline for a topic.
 }
 ```
 
+### POST /api/rag
+Pure RAG retrieval for external agents (e.g., VAPI).
+
+**Request:**
+```json
+{
+  "query": "What does Cybertantra say about consciousness?",
+  "limit": 10  // optional, default 10
+}
+```
+
+**Response:**
+```json
+{
+  "query": "What does Cybertantra say about consciousness?",
+  "chunks": [
+    {
+      "text": "Consciousness is the prime state...",
+      "source": "lecture1.md",
+      "similarity": 0.95
+    }
+  ],
+  "context": "All chunks concatenated with \\n\\n"
+}
+```
+
 ## Environment Variables
 
 Required in Vercel:
