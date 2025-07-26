@@ -1,5 +1,5 @@
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
-import { createOpenAI } from '@ai-sdk/openai';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { embedMany } from 'ai';
 import { sql } from '@cybertantra/database';
 import { EMBEDDING_MODEL, type AIConfig } from '../config';
@@ -16,8 +16,8 @@ export class QueryAgent {
   private config: AIConfig;
 
   constructor(config: AIConfig) {
-    if (!config.openAIApiKey) {
-      throw new Error('OpenAI API key required for embeddings');
+    if (!config.googleGenerativeAIApiKey) {
+      throw new Error('Google Generative AI API key required for embeddings');
     }
 
     this.config = config;
@@ -32,13 +32,13 @@ export class QueryAgent {
 
   async retrieve(query: string, topK: number = 5): Promise<QueryResult[]> {
     try {
-      const openai = createOpenAI({
-        apiKey: this.config.openAIApiKey,
+      const google = createGoogleGenerativeAI({
+        apiKey: this.config.googleGenerativeAIApiKey,
       });
 
       const { embeddings } = await embedMany({
         values: [query],
-        model: openai.textEmbeddingModel(EMBEDDING_MODEL),
+        model: google.textEmbeddingModel(EMBEDDING_MODEL),
       });
       
       const queryEmbedding = embeddings[0];

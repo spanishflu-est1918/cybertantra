@@ -18,6 +18,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@ai-sdk/google": "2.0.0-beta.15",
     "@ai-sdk/openai": "2.0.0-beta.12",
     "@ai-sdk/react": "2.0.0-beta.28",
     "@mastra/core": "0.0.0-ai-v5-20250718021026",

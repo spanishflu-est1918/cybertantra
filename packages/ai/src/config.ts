@@ -6,7 +6,7 @@ export interface AIConfig {
   assemblyAIApiKey?: string;
 }
 
-export const EMBEDDING_MODEL = 'text-embedding-3-large';
+export const EMBEDDING_MODEL = 'gemini-embedding-001';
 export const EMBEDDING_DIMENSION = 3072;
 export const CHUNK_SIZE = 1024;
 export const CHUNK_OVERLAP = 200;

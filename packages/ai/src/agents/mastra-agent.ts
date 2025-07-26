@@ -2,15 +2,14 @@ import { Agent } from '@mastra/core/agent';
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { QueryAgent } from './query-agent';
 import { type AIConfig } from '../config';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { CYBERTANTRA_SYSTEM_PROMPT } from '../prompts/cybertantra-agent';
 
 export function createMastraAgent(config: AIConfig) {
   if (!config.openRouterApiKey) {
     throw new Error('OpenRouter API key required');
   }
-  if (!config.openAIApiKey) {
-    throw new Error('OpenAI API key required for embeddings');
+  if (!config.googleGenerativeAIApiKey) {
+    throw new Error('Google Generative AI API key required for embeddings');
   }
 
   const openrouter = createOpenRouter({
@@ -19,15 +18,10 @@ export function createMastraAgent(config: AIConfig) {
 
   const queryAgent = new QueryAgent(config);
 
-  // Load the system prompt
-  const systemPrompt = readFileSync(
-    join(__dirname, '../prompts/cybertantra-agent.md'),
-    'utf-8'
-  );
 
   const agent = new Agent({
     name: 'CybertantraRAG',
-    instructions: systemPrompt,
+    instructions: CYBERTANTRA_SYSTEM_PROMPT,
     model: openrouter('moonshotai/kimi-k2'),
     
     tools: {

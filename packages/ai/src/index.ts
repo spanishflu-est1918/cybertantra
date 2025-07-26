@@ -6,3 +6,6 @@ export { createMastraAgent } from './agents/mastra-agent';
 // Config
 export { getAIConfig, EMBEDDING_MODEL, EMBEDDING_DIMENSION, CHUNK_SIZE, CHUNK_OVERLAP } from './config';
 export type { AIConfig } from './config';
+
+// Prompts
+export { CYBERTANTRA_SYSTEM_PROMPT } from './prompts/cybertantra-agent';
