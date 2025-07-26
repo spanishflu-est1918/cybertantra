@@ -9,7 +9,7 @@ const RATE_LIMIT_MAX_REQUESTS = 10; // 10 requests per minute
 
 export async function validateRequest(req: Request) {
   // Check API key
-  const headersList = headers();
+  const headersList = await headers();
   const apiKey = headersList.get('x-api-key');
   
   if (!apiKey || apiKey !== process.env.CYBERTANTRA_API_KEY) {

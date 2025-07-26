@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       chunks: chunks.map(chunk => ({
         text: chunk.text,
         source: chunk.source,
-        similarity: chunk.similarity
+        similarity: chunk.score
       })),
       context: chunks.map(chunk => chunk.text).join('\n\n')
     };
