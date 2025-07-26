@@ -172,7 +172,6 @@ export default function Terminal() {
           {messages.map((message, index) => {
             if (message.role === 'assistant') {
               const content = message.content || (message.parts?.filter(p => p.type === 'text').map(p => p.text).join('') || '');
-              console.log('Displaying AI message:', content || '[empty]', 'parts:', message.parts);
               return (
                 <div key={message.id} className="whitespace-pre-wrap mb-1 text-green-400">
                   {content || '[AI is thinking...]'}
