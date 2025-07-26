@@ -63,10 +63,6 @@ NAVIGATION:
     },
   ],
   
-  customCommands: {
-    search: (args) => `Searching for: ${args.join(' ')}...`,
-    query: (args) => `Querying knowledge base: ${args.join(' ')}...`,
-  },
   
   showBootSequence: true,
   aiEnabled: true,

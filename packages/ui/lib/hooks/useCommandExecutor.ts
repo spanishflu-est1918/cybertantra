@@ -98,7 +98,7 @@ export function useCommandExecutor(
       closeAllBrowsers();
       setBrowserState(browser.id, { active: true, visible: true, selectedIndex: 0 });
       setActiveBrowser(browser.id);
-      return browser.formatter ? browser.formatter(browser.component) : browser.component;
+      return browser.formatter ? browser.formatter(0) : `Opening ${browser.name}...`;
     }
 
     // Handle vim mode
@@ -107,10 +107,7 @@ export function useCommandExecutor(
       return 'Entering Vim mode. Press Escape to exit.';
     }
 
-    // Handle custom commands
-    if (config.customCommands?.[cmd]) {
-      return config.customCommands[cmd](args);
-    }
+    // Custom commands can be added here in future
 
     // Handle theme command
     if (cmd === 'theme' && config.enableThemes && setTheme) {
