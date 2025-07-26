@@ -36,7 +36,7 @@ export function useCommandExecutor(
     const trimmedCommand = command.trim();
     
     // First, try the command system
-    const commandResult = handleCommand(trimmedCommand);
+    const commandResult = handleCommand(trimmedCommand, config.availableCommands);
     
     if (commandResult === 'CLEAR_TERMINAL') {
       clearHistory();
@@ -44,20 +44,46 @@ export function useCommandExecutor(
     }
     
     if (commandResult && typeof commandResult === 'object' && 'content' in commandResult) {
-      // Handle special browser commands
-      if (commandResult.content === 'SHOW_HELP_BROWSER') {
-        const browser = config.browsers?.find(b => b.id === 'help');
-        if (browser) {
-          closeAllBrowsers();
-          setBrowserState(browser.id, { active: true, visible: true, selectedIndex: 0 });
-          setActiveBrowser(browser.id);
-          return browser.formatter ? browser.formatter(browser.component) : browser.component;
-        }
-      }
       return commandResult;
     }
     
     if (commandResult) {
+      // Handle browser commands
+      if (typeof commandResult === 'string') {
+        // Map browser command strings to browser IDs
+        const browserCommandMap: Record<string, string> = {
+          'SHOW_HELP_BROWSER': 'help',
+          'SHOW_WORK_BROWSER': 'work',
+          'SHOW_RESUME_BROWSER': 'resume',
+          'SHOW_THEME_BROWSER': 'themes',
+          'SHOW_MUSIC_PLAYER': 'music',
+          'PLAY_DATTATREYA': 'dattatreya',
+        };
+        
+        const browserId = browserCommandMap[commandResult];
+        if (browserId) {
+          const browser = config.browsers?.find(b => b.id === browserId);
+          if (browser) {
+            closeAllBrowsers();
+            const isVisibleByDefault = commandResult === 'PLAY_DATTATREYA';
+            setBrowserState(browser.id, { active: true, visible: isVisibleByDefault, selectedIndex: 0 });
+            setActiveBrowser(browser.id);
+            
+            // If browser has a formatter, display the formatted content
+            if (browser.formatter && !isVisibleByDefault) {
+              const formattedContent = browser.formatter(0);
+              setHistory(prev => [...prev, { type: 'output', content: formattedContent }]);
+            }
+            
+            // Return special marker to indicate browser was activated
+            return 'BROWSER_ACTIVATED';
+          }
+        } else if (commandResult.startsWith('CHANGE_THEME:') && setTheme) {
+          const themeName = commandResult.split(':')[1];
+          setTheme(themeName);
+          return `Theme changed to ${themeName}`;
+        }
+      }
       return commandResult;
     }
     

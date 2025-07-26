@@ -77,11 +77,21 @@ export default function Terminal() {
   });
 
   // Command executor
-  const { executeCommand, replaceLastHistory } = useCommandExecutor(
+  const { executeCommand: defaultExecuteCommand, replaceLastHistory, closeAllBrowsers } = useCommandExecutor(
     setHistory,
     config.enableThemes ? setTheme : undefined,
     config.aiEnabled ? sendMessage : undefined
   );
+  
+  // Use custom command executor if provided, otherwise use default
+  const executeCommand = config.customCommandExecutor ? 
+    (command: string) => config.customCommandExecutor!(command, {
+      setHistory,
+      executeDefaultCommand: defaultExecuteCommand,
+      closeAllBrowsers,
+      setBrowserState,
+      setActiveBrowser,
+    }) : defaultExecuteCommand;
 
   // Browser management
   const closeBrowser = useCallback((browserId: string) => {
@@ -94,6 +104,77 @@ export default function Terminal() {
     enabled: !vimModeActive && bootComplete && hasInteracted,
     onClear: () => setHistory([]),
   });
+  
+  // Simple browser navigation handler
+  const handleBrowserNavigation = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!activeBrowser || !browserStates[activeBrowser]?.active) return false;
+    
+    const state = browserStates[activeBrowser];
+    const browserConfig = config.browsers?.find(b => b.id === activeBrowser);
+    if (!browserConfig) return false;
+    
+    const maxItems = browserConfig.maxItems || 10;
+    let handled = false;
+    
+    if (e.key === 'ArrowUp' || e.key === 'k') {
+      e.preventDefault();
+      const newIndex = Math.max(0, (state.selectedIndex || 0) - 1);
+      setBrowserState(activeBrowser, { ...state, selectedIndex: newIndex });
+      
+      // Update display if formatter exists
+      if (browserConfig.formatter) {
+        const formattedContent = browserConfig.formatter(newIndex);
+        setHistory(prev => {
+          const newHistory = [...prev];
+          if (newHistory.length > 0) {
+            newHistory[newHistory.length - 1] = { type: 'output', content: formattedContent };
+          }
+          return newHistory;
+        });
+      }
+      handled = true;
+    } else if (e.key === 'ArrowDown' || e.key === 'j') {
+      e.preventDefault();
+      const newIndex = Math.min(maxItems - 1, (state.selectedIndex || 0) + 1);
+      setBrowserState(activeBrowser, { ...state, selectedIndex: newIndex });
+      
+      // Update display if formatter exists
+      if (browserConfig.formatter) {
+        const formattedContent = browserConfig.formatter(newIndex);
+        setHistory(prev => {
+          const newHistory = [...prev];
+          if (newHistory.length > 0) {
+            newHistory[newHistory.length - 1] = { type: 'output', content: formattedContent };
+          }
+          return newHistory;
+        });
+      }
+      handled = true;
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      setBrowserState(activeBrowser, { ...state, visible: true });
+      if (browserConfig.onSelect) {
+        browserConfig.onSelect(state.selectedIndex || 0);
+      }
+      handled = true;
+    } else if (e.key === 'q' || e.key === 'Escape') {
+      e.preventDefault();
+      closeBrowser(activeBrowser);
+      setHistory(prev => [...prev, { type: 'output', content: '> Closed.' }]);
+      handled = true;
+    } else if (e.key >= '1' && e.key <= '9') {
+      const index = parseInt(e.key) - 1;
+      if (index < maxItems) {
+        setBrowserState(activeBrowser, { ...state, selectedIndex: index, visible: true });
+        if (browserConfig.onSelect) {
+          browserConfig.onSelect(index);
+        }
+        handled = true;
+      }
+    }
+    
+    return handled;
+  }, [activeBrowser, browserStates, setBrowserState, closeBrowser, setHistory, config.browsers]);
 
   // Handle command submission
   const handleSubmit = (command: string) => {
@@ -103,19 +184,35 @@ export default function Terminal() {
     setHistory(prev => [...prev, { type: 'input', content: `> ${command}` }]);
 
     // AI chat commands
-    if (command.startsWith('/') && config.aiEnabled) {
-      setIsWaitingForResponse(true);
-      sendMessage({ text: command });
-    } else {
-      // Regular commands
-      const output = executeCommand(command);
-      if (output !== null && typeof output === 'string') {
+    // Try to execute the command first
+    const output = executeCommand(command);
+    
+    if (output !== null) {
+      // Command was handled
+      if (typeof output === 'string') {
         setHistory(prev => [...prev, { 
           type: 'output', 
           content: output,
           typewriter: false 
         }]);
+      } else if (typeof output === 'object' && 'content' in output) {
+        setHistory(prev => [...prev, { 
+          type: 'output', 
+          content: output.content,
+          typewriter: output.typewriter || false 
+        }]);
       }
+    } else if (config.aiEnabled) {
+      // No command found, send to AI if enabled
+      setIsWaitingForResponse(true);
+      sendMessage({ text: command });
+    } else {
+      // No AI, show error
+      setHistory(prev => [...prev, { 
+        type: 'output', 
+        content: `Command not found: ${command}`,
+        typewriter: false 
+      }]);
     }
 
     setInput('');
@@ -246,6 +343,20 @@ export default function Terminal() {
               value={input}
               onChange={setInput}
               onKeyDown={(e) => {
+                // Try custom navigation handler first
+                if (config.customNavigationHandler) {
+                  const handled = config.customNavigationHandler(e, {
+                    activeBrowser,
+                    browserStates,
+                    setHistory,
+                    executeCommand,
+                  });
+                  if (handled) return;
+                }
+                
+                // Try browser navigation
+                if (handleBrowserNavigation(e)) return;
+                
                 if (e.key === 'Enter') {
                   handleSubmit(input);
                 } else {

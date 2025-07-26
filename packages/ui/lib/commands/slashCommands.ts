@@ -100,6 +100,8 @@ CREATIVE:
     }
     return `CHANGE_THEME:${args[0]}`;
   },
+  
+  "/dattatreya": () => "PLAY_DATTATREYA",
 };
 
 export function slashCommands(
