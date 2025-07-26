@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const validationError = await validateRequest(req);
   if (validationError) return validationError;
 
-  const { query, limit = 10 } = await req.json();
+  const { query, limit = 20 } = await req.json();
   
   if (!query) {
     return new Response('No query provided', { status: 400 });

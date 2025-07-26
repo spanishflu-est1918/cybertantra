@@ -103,7 +103,7 @@ Pure RAG retrieval for external agents (e.g., VAPI).
 ```json
 {
   "query": "What does Cybertantra say about consciousness?",
-  "limit": 10  // optional, default 10
+  "limit": 20  // optional, default 20
 }
 ```
 
