@@ -1,5 +1,5 @@
-import Terminal from './components/Terminal';
+import CyberyoginTerminal from './components/CyberyoginTerminal';
 
 export default function Home() {
-  return <Terminal />;
+  return <CyberyoginTerminal />;
 }

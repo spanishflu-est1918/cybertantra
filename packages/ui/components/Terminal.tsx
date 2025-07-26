@@ -76,22 +76,20 @@ export default function Terminal() {
     onLoading: setIsLoading,
   });
 
-  // Command executor
-  const { executeCommand: defaultExecuteCommand, replaceLastHistory, closeAllBrowsers } = useCommandExecutor(
+  // Command executor - use custom hook if provided
+  const defaultCommandExecutor = useCommandExecutor(
     setHistory,
     config.enableThemes ? setTheme : undefined,
     config.aiEnabled ? sendMessage : undefined
   );
   
-  // Use custom command executor if provided, otherwise use default
-  const executeCommand = config.customCommandExecutor ? 
-    (command: string) => config.customCommandExecutor!(command, {
-      setHistory,
-      executeDefaultCommand: defaultExecuteCommand,
-      closeAllBrowsers,
-      setBrowserState,
-      setActiveBrowser,
-    }) : defaultExecuteCommand;
+  const customCommandExecutor = config.useCommandExecutor?.(
+    setHistory,
+    config.enableThemes ? setTheme : undefined,
+    config.aiEnabled ? sendMessage : undefined
+  );
+  
+  const { executeCommand, replaceLastHistory } = customCommandExecutor || defaultCommandExecutor;
 
   // Browser management
   const closeBrowser = useCallback((browserId: string) => {
@@ -105,7 +103,17 @@ export default function Terminal() {
     onClear: () => setHistory([]),
   });
   
-  // Simple browser navigation handler
+  // Terminal navigation - use custom hook if provided
+  const customNavigation = config.useTerminalNavigation?.(
+    setHistory,
+    executeCommand,
+    replaceLastHistory,
+    setTheme,
+    inputRef,
+    !bootComplete
+  );
+  
+  // Simple browser navigation handler (used if no custom navigation provided)
   const handleBrowserNavigation = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!activeBrowser || !browserStates[activeBrowser]?.active) return false;
     
@@ -189,7 +197,10 @@ export default function Terminal() {
     
     if (output !== null) {
       // Command was handled
-      if (typeof output === 'string') {
+      if (output === 'BROWSER_ACTIVATED') {
+        // Browser was activated, history already updated by executeCommand
+        // Don't add any additional output
+      } else if (typeof output === 'string') {
         setHistory(prev => [...prev, { 
           type: 'output', 
           content: output,
@@ -343,15 +354,9 @@ export default function Terminal() {
               value={input}
               onChange={setInput}
               onKeyDown={(e) => {
-                // Try custom navigation handler first
-                if (config.customNavigationHandler) {
-                  const handled = config.customNavigationHandler(e, {
-                    activeBrowser,
-                    browserStates,
-                    setHistory,
-                    executeCommand,
-                  });
-                  if (handled) return;
+                // Try custom navigation if provided
+                if (customNavigation?.handleNavigation(e)) {
+                  return;
                 }
                 
                 // Try browser navigation

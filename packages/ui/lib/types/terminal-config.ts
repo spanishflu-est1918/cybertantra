@@ -34,31 +34,26 @@ export interface TerminalConfig {
   // Available slash commands (if not specified, all are available)
   availableCommands?: string[];
   
-  // Custom commands
-  customCommands?: Record<string, (args: string[]) => ReactNode | string>;
+  // Custom hooks (provide your own implementations)
+  useCommandExecutor?: (
+    setHistory: (fn: (prev: HistoryEntry[]) => HistoryEntry[]) => void,
+    setTheme?: (theme: any) => void,
+    sendMessage?: (message: { text: string }) => void
+  ) => {
+    executeCommand: (command: string) => any;
+    replaceLastHistory: (content: string) => void;
+  };
   
-  // Custom command executor (overrides default command handling)
-  customCommandExecutor?: (
-    command: string,
-    context: {
-      setHistory: (fn: (prev: HistoryEntry[]) => HistoryEntry[]) => void;
-      executeDefaultCommand: (command: string) => any;
-      closeAllBrowsers: () => void;
-      setBrowserState: (id: string, state: any) => void;
-      setActiveBrowser: (id: string | null) => void;
-    }
-  ) => any;
-  
-  // Custom navigation handler for browser keyboard events
-  customNavigationHandler?: (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    context: {
-      activeBrowser: string | null;
-      browserStates: Record<string, any>;
-      setHistory: (fn: (prev: HistoryEntry[]) => HistoryEntry[]) => void;
-      executeCommand: (command: string) => void;
-    }
-  ) => boolean;
+  useTerminalNavigation?: (
+    setHistory: (fn: (prev: HistoryEntry[]) => HistoryEntry[]) => void,
+    executeCommand: (command: string) => void,
+    replaceLastHistory: (content: string) => void,
+    setTheme: (theme: any) => void,
+    inputRef?: React.RefObject<HTMLInputElement | null>,
+    isBooting?: boolean
+  ) => {
+    handleNavigation: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
+  };
   
   // Boot sequence
   showBootSequence?: boolean;
