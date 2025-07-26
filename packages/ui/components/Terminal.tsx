@@ -60,7 +60,7 @@ export default function Terminal() {
   // Terminal chat for AI
   const { messages, sendMessage, initializeWithHistory } = useTerminalChat({
     onMessage: (content, isAI) => {
-      // AI messages are displayed from messages array, not history
+      // Don't add AI messages to history - they're displayed from messages array
       if (!isAI) {
         setHistory(prev => [...prev, { 
           type: 'output', 
@@ -180,6 +180,7 @@ export default function Terminal() {
             }
             return null;
           })}
+
 
 
           {/* Active browser */}
