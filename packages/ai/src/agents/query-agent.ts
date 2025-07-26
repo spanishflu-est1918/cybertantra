@@ -38,7 +38,7 @@ export class QueryAgent {
 
       const { embeddings } = await embedMany({
         values: [query],
-        model: openai.embedding(EMBEDDING_MODEL),
+        model: openai.textEmbeddingModel(EMBEDDING_MODEL),
       });
       
       const queryEmbedding = embeddings[0];
