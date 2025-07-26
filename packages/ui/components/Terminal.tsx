@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useTerminalContext } from '../lib/contexts/TerminalContext';
 import { useTheme as useDefaultTheme } from '../lib/hooks/useTheme';
 import TerminalInput from './TerminalInput';
@@ -58,12 +58,12 @@ export default function Terminal() {
   );
 
   // Terminal chat for AI
-  const { sendMessage, initializeWithHistory } = useTerminalChat({
+  const { messages, sendMessage, initializeWithHistory } = useTerminalChat({
     onMessage: (content, isAI) => {
       setHistory(prev => [...prev, { 
         type: 'output', 
         content,
-        typewriter: isAI && theme.useTypewriter 
+        typewriter: isAI 
       }]);
       setIsWaitingForResponse(false);
     },
@@ -90,14 +90,20 @@ export default function Terminal() {
     setHasInteracted(true);
     setHistory(prev => [...prev, { type: 'input', content: `> ${command}` }]);
 
-    // Execute command (will fall back to AI chat if no command matches)
-    const output = executeCommand(command);
-    if (output !== null) {
-      setHistory(prev => [...prev, { 
-        type: 'output', 
-        content: typeof output === 'string' ? output : output,
-        typewriter: false 
-      }]);
+    // AI chat commands
+    if (command.startsWith('/') && config.aiEnabled) {
+      setIsWaitingForResponse(true);
+      sendMessage({ text: command });
+    } else {
+      // Regular commands
+      const output = executeCommand(command);
+      if (output !== null) {
+        setHistory(prev => [...prev, { 
+          type: 'output', 
+          content: typeof output === 'string' ? output : output,
+          typewriter: false 
+        }]);
+      }
     }
 
     setInput('');
