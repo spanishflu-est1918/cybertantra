@@ -1,0 +1,26 @@
+{
+  "name": "@cybertantra/cli",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "ingest": "bun run src/commands/ingest.ts",
+    "transcribe": "bun run src/commands/transcribe.ts",
+    "query": "bun run src/commands/query.ts",
+    "chat": "bun run src/commands/chat.ts",
+    "setup": "bun run src/commands/setup.ts"
+  },
+  "dependencies": {
+    "@cybertantra/database": "workspace:*",
+    "@cybertantra/ai": "workspace:*",
+    "@cybertantra/lecture-tools": "workspace:*",
+    "dotenv": "^16.3.1",
+    "inquirer": "^9.2.12",
+    "ora": "^7.0.1",
+    "chalk": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/inquirer": "^9.0.7",
+    "typescript": "^5.0.0"
+  }
+}

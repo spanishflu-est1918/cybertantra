@@ -8,7 +8,11 @@
     "dev:cyberyogin": "pnpm --filter @cybertantra/cyberyogin dev",
     "dev:gorka": "pnpm --filter @cybertantra/cyberyogin dev",
     "build": "pnpm run --recursive build",
-    "lint": "pnpm run --recursive lint"
+    "lint": "pnpm run --recursive lint",
+    "cli:setup": "cd packages/cli && bun run setup",
+    "cli:ingest": "cd packages/cli && bun run ingest",
+    "cli:query": "cd packages/cli && bun run src/commands/simple-query.ts",
+    "cli:chat": "cd packages/cli && bun run chat"
   },
   "devDependencies": {
     "typescript": "^5"
@@ -17,6 +21,7 @@
     "@ai-sdk/openai": "2.0.0-beta.12",
     "@ai-sdk/react": "2.0.0-beta.25",
     "@openrouter/ai-sdk-provider": "1.0.0-beta.5",
-    "ai": "5.0.0-beta.25"
+    "ai": "5.0.0-beta.25",
+    "dotenv": "^16.6.1"
   }
 }

@@ -1,0 +1,22 @@
+{
+  "name": "@cybertantra/lecture-tools",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cybertantra/database": "workspace:*",
+    "@cybertantra/ai": "workspace:*",
+    "@mastra/rag": "^1.0.4",
+    "@google/generative-ai": "^0.1.1",
+    "ora": "^7.0.1",
+    "inquirer": "^9.2.12"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "@types/inquirer": "^9.0.7"
+  }
+}

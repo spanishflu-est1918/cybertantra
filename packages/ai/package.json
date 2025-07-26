@@ -1,0 +1,30 @@
+{
+  "name": "@cybertantra/ai",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mastra/core": "^0.11.1",
+    "@mastra/rag": "^1.0.4",
+    "@google/generative-ai": "^0.1.1",
+    "@ai-sdk/openai": "2.0.0-beta.12",
+    "@openrouter/ai-sdk-provider": "1.0.0-beta.3",
+    "@cybertantra/database": "workspace:*",
+    "ai": "5.0.0-beta.25",
+    "elevenlabs": "^0.16.1",
+    "lru-cache": "^10.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
