@@ -1,4 +1,4 @@
-import { CoreMessage, streamText } from 'ai';
+import { streamText } from 'ai';
 import { getAIConfig } from '@cybertantra/ai';
 import { createMastraAgent } from '@cybertantra/ai/src/agents/mastra-agent';
 
@@ -13,25 +13,18 @@ export async function POST(req: Request) {
     const config = getAIConfig();
     const { agent } = createMastraAgent(config);
     
-    // Convert messages to CoreMessage format
-    const coreMessages: CoreMessage[] = messages.map((msg: any) => ({
-      role: msg.role,
-      content: msg.content,
-    }));
-    
-    // Generate response using Mastra agent with tools
-    const result = await agent.textStream({
-      messages: coreMessages,
-      streamOptions: {
-        onFinish: async (event) => {
-          console.log('Tool calls:', event.toolCalls);
-          console.log('Tool results:', event.toolResults);
-        },
+    // Generate response using streamText with the Mastra agent
+    const result = streamText({
+      model: agent,
+      messages,
+      onFinish: async (event) => {
+        console.log('Tool calls:', event.toolCalls);
+        console.log('Tool results:', event.toolResults);
       },
     });
 
-    // Return the stream
-    return result.textStreamResponse;
+    // Return the stream response
+    return result.toDataStreamResponse();
     
   } catch (error) {
     console.error('Chat error:', error);

@@ -1,5 +1,4 @@
-import { Mastra } from '@mastra/core';
-import { Agent } from '@mastra/core';
+import { Agent } from '@mastra/core/agent';
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { QueryAgent } from './query-agent';
 import { type AIConfig } from '../config';
@@ -26,22 +25,13 @@ export function createMastraAgent(config: AIConfig) {
     'utf-8'
   );
 
-  const mastra = new Mastra({
-    llm: {
-      provider: 'OPEN_ROUTER',
-      name: 'moonshotai/kimi-k2',
-    },
-  });
-
   const agent = new Agent({
     name: 'CybertantraRAG',
     instructions: systemPrompt,
-    
     model: openrouter('moonshotai/kimi-k2'),
     
-    tools: [
-      {
-        name: 'retrieve_lectures',
+    tools: {
+      retrieve_lectures: {
         description: 'Search the lecture corpus for relevant information. Use this to find content about any topic.',
         parameters: {
           type: 'object',
@@ -58,7 +48,7 @@ export function createMastraAgent(config: AIConfig) {
           },
           required: ['query'],
         },
-        execute: async ({ query, topK = 5 }) => {
+        execute: async ({ query, topK = 5 }: { query: string; topK?: number }) => {
           try {
             // Limit topK to reasonable range
             const k = Math.min(Math.max(1, topK), 20);
@@ -92,8 +82,8 @@ export function createMastraAgent(config: AIConfig) {
           }
         },
       },
-    ],
+    },
   });
 
-  return { agent, mastra };
+  return { agent };
 }

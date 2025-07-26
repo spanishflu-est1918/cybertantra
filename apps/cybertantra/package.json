@@ -9,24 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^1.0.13",
+    "@ai-sdk/openai": "2.0.0-beta.12",
     "@cybertantra/ai": "workspace:*",
     "@cybertantra/database": "workspace:*",
     "@cybertantra/ui": "workspace:*",
     "@elevenlabs/elevenlabs-js": "^2.7.0",
     "@mastra/core": "^0.11.1",
     "@mastra/rag": "^1.0.4",
-    "@openrouter/ai-sdk-provider": "1.0.0-beta.3",
+    "@openrouter/ai-sdk-provider": "1.0.0-beta.5",
     "@vercel/postgres": "^0.10.0",
-    "ai": "5.0.0-beta.25",
+    "ai": "5.0.0-beta.28",
     "clsx": "^2.1.1",
     "focus-trap-react": "^10.3.0",
     "next": "15.4.4",
     "pgvector": "^0.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-youtube": "^10.1.0",
-    "zod": "^4.0.10"
+    "react-youtube": "^10.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

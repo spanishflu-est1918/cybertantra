@@ -226,7 +226,7 @@ export class IngestionTracker {
     return {
       session,
       files: files.rows as FileStatus[],
-      summary: summary.rows[0],
+      summary: summary.rows[0] as { pending: number; processing: number; completed: number; failed: number; skipped: number; },
     };
   }
 
