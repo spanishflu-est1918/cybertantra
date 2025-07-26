@@ -60,11 +60,14 @@ export default function Terminal() {
   // Terminal chat for AI
   const { messages, sendMessage, initializeWithHistory } = useTerminalChat({
     onMessage: (content, isAI) => {
-      setHistory(prev => [...prev, { 
-        type: 'output', 
-        content,
-        typewriter: isAI 
-      }]);
+      // AI messages are displayed from messages array, not history
+      if (!isAI) {
+        setHistory(prev => [...prev, { 
+          type: 'output', 
+          content,
+          typewriter: false 
+        }]);
+      }
       setIsWaitingForResponse(false);
     },
     onLoading: setIsLoading,
@@ -164,6 +167,21 @@ export default function Terminal() {
               )}
             </div>
           ))}
+
+          {/* AI Messages from SDK (real streaming) */}
+          {messages.map((message, index) => {
+            if (message.role === 'assistant') {
+              const content = message.content || (message.parts?.filter(p => p.type === 'text').map(p => p.text).join('') || '');
+              console.log('Displaying AI message:', content || '[empty]', 'parts:', message.parts);
+              return (
+                <div key={message.id} className="whitespace-pre-wrap mb-1 text-green-400">
+                  {content || '[AI is thinking...]'}
+                </div>
+              );
+            }
+            return null;
+          })}
+
 
           {/* Active browser */}
           {activeBrowserConfig && browserStates[activeBrowser]?.visible && (

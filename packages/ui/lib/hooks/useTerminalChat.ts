@@ -21,14 +21,6 @@ export function useTerminalChat({ onMessage, onLoading }: UseTerminalChatProps) 
     transport: new DefaultChatTransport({
       api: '/api/chat',
     }),
-    onFinish: (result) => {
-      console.log('onFinish raw param:', result);
-      const message = result.message || result;
-      const content = message.content || (message.parts && message.parts.map(p => p.text).join(''));
-      if (content) {
-        onMessage(content, true);
-      }
-    },
   });
 
   // Track loading state
@@ -72,18 +64,6 @@ export function useTerminalChat({ onMessage, onLoading }: UseTerminalChatProps) 
   }, [setMessages]);
 
 
-  // Debug: Log messages changes
-  useEffect(() => {
-    console.log('Messages updated:', messages);
-    if (messages.length > 0) {
-      const lastMsg = messages[messages.length - 1];
-      console.log('Last message:', {
-        role: lastMsg.role,
-        content: lastMsg.content,
-        parts: lastMsg.parts
-      });
-    }
-  }, [messages]);
 
   return {
     messages,
