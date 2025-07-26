@@ -1,7 +1,16 @@
 import { NextResponse } from 'next/server';
 import { QueryAgent, getAIConfig } from '@cybertantra/ai';
+import { validateRequest, corsHeaders } from '../middleware';
+
+export async function OPTIONS(req: Request) {
+  return new Response(null, { status: 200, headers: await corsHeaders() });
+}
 
 export async function POST(req: Request) {
+  // Validate request (API key + rate limit)
+  const validationError = await validateRequest(req);
+  if (validationError) return validationError;
+
   try {
     const { question, topK = 5 } = await req.json();
 
@@ -21,6 +30,7 @@ export async function POST(req: Request) {
     // Also get the raw chunks for transparency
     const chunks = await agent.search(question, topK);
 
+    const headers = await corsHeaders();
     return NextResponse.json({ 
       answer,
       sources: chunks.map(chunk => ({
@@ -28,12 +38,13 @@ export async function POST(req: Request) {
         score: chunk.score,
         excerpt: chunk.text.substring(0, 200) + '...'
       }))
-    });
+    }, { headers });
 
   } catch (error) {
     console.error('Query error:', error);
+    const headers = await corsHeaders();
     return NextResponse.json({ 
       error: error instanceof Error ? error.message : 'Internal server error' 
-    }, { status: 500 });
+    }, { status: 500, headers });
   }
 }

@@ -1,8 +1,17 @@
 import { streamText } from 'ai';
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { getAIConfig, QueryAgent, CYBERTANTRA_SYSTEM_PROMPT } from '@cybertantra/ai';
+import { validateRequest, corsHeaders } from '../middleware';
+
+export async function OPTIONS(req: Request) {
+  return new Response(null, { status: 200, headers: await corsHeaders() });
+}
 
 export async function POST(req: Request) {
+  // Validate request (API key + rate limit)
+  const validationError = await validateRequest(req);
+  if (validationError) return validationError;
+
   const { messages } = await req.json();
   
   if (!messages || messages.length === 0) {
@@ -43,8 +52,13 @@ export async function POST(req: Request) {
       maxOutputTokens: 2000,
     });
 
-    // Return the stream response
-    return result.toTextStreamResponse();
+    // Return the stream response with CORS headers
+    const response = result.toTextStreamResponse();
+    const headers = await corsHeaders();
+    Object.entries(headers).forEach(([key, value]) => {
+      response.headers.set(key, value);
+    });
+    return response;
     
   } catch (error) {
     console.error('Chat error:', error);

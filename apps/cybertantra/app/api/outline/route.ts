@@ -1,7 +1,16 @@
 import { NextResponse } from 'next/server';
 import { QueryAgent, getAIConfig } from '@cybertantra/ai';
+import { validateRequest, corsHeaders } from '../middleware';
+
+export async function OPTIONS(req: Request) {
+  return new Response(null, { status: 200, headers: await corsHeaders() });
+}
 
 export async function POST(req: Request) {
+  // Validate request (API key + rate limit)
+  const validationError = await validateRequest(req);
+  if (validationError) return validationError;
+
   try {
     const { topic } = await req.json();
 
@@ -18,16 +27,18 @@ export async function POST(req: Request) {
       10 // Get more chunks for outline generation
     );
 
+    const headers = await corsHeaders();
     return NextResponse.json({ 
       outline,
       topic,
       timestamp: new Date().toISOString()
-    });
+    }, { headers });
 
   } catch (error) {
     console.error('Outline generation error:', error);
+    const headers = await corsHeaders();
     return NextResponse.json({ 
       error: error instanceof Error ? error.message : 'Internal server error' 
-    }, { status: 500 });
+    }, { status: 500, headers });
   }
 }
