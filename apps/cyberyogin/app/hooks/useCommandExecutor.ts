@@ -15,8 +15,8 @@ type HistoryEntry = {
 
 export function useCommandExecutor(
   setHistory: (fn: (prev: HistoryEntry[]) => HistoryEntry[]) => void,
-  setTheme: (theme: Theme) => void,
-  sendMessage: (message: { text: string }) => void
+  setTheme?: (theme: Theme) => void,
+  sendMessage?: (message: { text: string }) => void
 ) {
   const {
     setMusicPlayerActive,
@@ -30,7 +30,6 @@ export function useCommandExecutor(
     setVimModeActive,
     setThemeBrowserActive,
     setSelectedTheme,
-    setDattatreyaPlayerActive,
     setShowResetConfirmation,
     closeAllBrowsers
   } = useTerminalContext();
@@ -97,7 +96,7 @@ export function useCommandExecutor(
       setHistory(prev => [...prev, { type: 'output', content: themeDisplay }]);
     } else if (output && typeof output === 'string' && output.startsWith('CHANGE_THEME:')) {
       const themeName = output.split(':')[1] as Theme;
-      if (THEMES[themeName]) {
+      if (THEMES[themeName] && setTheme) {
         setTheme(themeName);
         setHistory(prev => [...prev, { 
           type: 'output', 
@@ -109,6 +108,11 @@ export function useCommandExecutor(
           content: `> Invalid theme: ${themeName}\n> Use /themes to see available themes` 
         }]);
       }
+    } else if (output === 'INIT_VAPI_ASSISTANT') {
+      closeAllBrowsers();
+      replaceLastHistory(`> ${command}`);
+      // Return a special string that the shared Terminal will handle
+      return 'SHOW_BROWSER:vapi';
     } else if (output === 'RESET_CONVERSATION') {
       setShowResetConfirmation(true);
       setHistory(prev => [...prev, { type: 'output', content: '> Are you sure you want to clear all conversation history? (y/n)' }]);
@@ -116,7 +120,7 @@ export function useCommandExecutor(
       setHistory(prev => [...prev, { type: 'output', content: output.content, typewriter: true }]);
     } else if (output) {
       setHistory(prev => [...prev, { type: 'output', content: output }]);
-    } else {
+    } else if (sendMessage) {
       sendMessage({ text: command });
     }
   };

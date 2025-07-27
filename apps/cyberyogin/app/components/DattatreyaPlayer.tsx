@@ -2,11 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import FocusTrap from 'focus-trap-react';
+import { BrowserComponentProps } from '@cybertantra/ui/types';
 
-interface DattatreyaPlayerProps {
-  isActive: boolean;
-  onClose: () => void;
-}
+type DattatreyaPlayerProps = BrowserComponentProps;
 
 export default function DattatreyaPlayer({ isActive, onClose }: DattatreyaPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);

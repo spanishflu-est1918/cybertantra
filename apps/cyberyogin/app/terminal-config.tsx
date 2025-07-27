@@ -10,6 +10,7 @@ import WorkBrowser from './components/WorkBrowser';
 import MusicPlayer from './components/MusicPlayer';
 import HelpBrowser from './components/HelpBrowser';
 import DattatreyaPlayer from './components/DattatreyaPlayer';
+import { VapiAssistant } from './components/VapiAssistant';
 
 // Formatters
 import { formatWorkBrowser, PROJECTS } from './components/WorkBrowser';
@@ -36,6 +37,7 @@ export const cyberyoginConfig: TerminalConfig = {
     '/themes',
     '/theme',
     '/dattatreya',
+    '/skyler',
   ],
   
   // Browser configurations with formatters
@@ -79,6 +81,11 @@ export const cyberyoginConfig: TerminalConfig = {
       id: 'dattatreya',
       name: 'Dattatreya',
       component: DattatreyaPlayer,
+    },
+    {
+      id: 'vapi',
+      name: 'VAPI Assistant',
+      component: VapiAssistant,
     },
   ],
   

@@ -102,6 +102,8 @@ CREATIVE:
   },
 
   "/dattatreya": () => "PLAY_DATTATREYA",
+  
+  "/skyler": () => "INIT_VAPI_ASSISTANT",
 };
 
 export function slashCommands(

@@ -2,15 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import { ALL_COMMANDS } from '../lib/commands/availableCommands';
+import { HistoryEntry } from '@cybertantra/ui/types';
 
 interface HelpBrowserProps {
   isActive: boolean;
+  selectedIndex: number;
   onClose: () => void;
-  onSelectCommand: (command: string) => void;
+  setHistory?: (update: (prev: HistoryEntry[]) => HistoryEntry[]) => void;
 }
 
-export default function HelpBrowser({ isActive, onClose, onSelectCommand }: HelpBrowserProps) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+export default function HelpBrowser({ isActive, selectedIndex: propSelectedIndex, onClose }: HelpBrowserProps) {
+  const [selectedIndex, setSelectedIndex] = useState(propSelectedIndex || 0);
+
+  useEffect(() => {
+    setSelectedIndex(propSelectedIndex);
+  }, [propSelectedIndex]);
 
   useEffect(() => {
     if (!isActive) {
@@ -27,14 +33,14 @@ export default function HelpBrowser({ isActive, onClose, onSelectCommand }: Help
       } else if (e.key === 'ArrowDown' || e.key === 'j') {
         setSelectedIndex(prev => Math.min(ALL_COMMANDS.length - 1, prev + 1));
       } else if (e.key === 'Enter') {
-        onSelectCommand(ALL_COMMANDS[selectedIndex]);
+        // Just close on Enter, no longer handling command selection here
         onClose();
       } else if (e.key === 'Escape' || e.key === 'q') {
         onClose();
       } else if (e.key >= '1' && e.key <= '9') {
         const index = parseInt(e.key) - 1;
         if (index < ALL_COMMANDS.length) {
-          onSelectCommand(ALL_COMMANDS[index]);
+          // Command selection handled elsewhere
           onClose();
         }
       }
@@ -42,7 +48,7 @@ export default function HelpBrowser({ isActive, onClose, onSelectCommand }: Help
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isActive, selectedIndex, onClose, onSelectCommand]);
+  }, [isActive, selectedIndex, onClose]);
 
   if (!isActive) return null;
   return null;
