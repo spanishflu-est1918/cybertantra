@@ -56,7 +56,7 @@ export async function POST(req: Request) {
         context,
       messages,
       temperature: 0.8,
-      maxOutputTokens: 2000,
+      maxOutputTokens: 500,
     });
 
     // Return the stream response with CORS headers

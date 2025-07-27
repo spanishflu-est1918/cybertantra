@@ -104,7 +104,7 @@ async function handleQuestion(ctx: Context, question: string) {
       system: systemPrompt,
       messages: [{ role: 'user', content: question }],
       temperature: 0.8,
-      maxOutputTokens: 2000,
+      maxOutputTokens: 500,
     });
 
     // Send initial message that we'll update
