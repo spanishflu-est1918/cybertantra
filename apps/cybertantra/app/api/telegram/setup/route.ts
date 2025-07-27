@@ -1,5 +1,4 @@
 export async function GET(req: Request) {
-  const url = new URL(req.url);
   const host = req.headers.get('host');
   const protocol = req.headers.get('x-forwarded-proto') || 'https';
   const baseUrl = `${protocol}://${host}`;
