@@ -95,19 +95,51 @@ async function handleQuestion(ctx: Context, question: string) {
       .map((chunk, i) => `[${i + 1}] From "${chunk.source}":\n${chunk.text}`)
       .join('\n\n---\n\n');
 
+    // Use the same system prompt as the chat endpoint
+    const systemPrompt = CYBERTANTRA_SYSTEM_PROMPT + '\n\nRetrieved lecture context:\n' + context;
+
     // Use streamText with OpenRouter directly
     const result = streamText({
       model: openrouter('moonshotai/kimi-k2'),
-      system: CYBERTANTRA_SYSTEM_PROMPT + '\n\nRetrieved lecture context:\n' + context,
+      system: systemPrompt,
       messages: [{ role: 'user', content: question }],
       temperature: 0.8,
       maxOutputTokens: 2000,
     });
 
-    // Collect the full response
+    // Send initial message that we'll update
+    const sentMessage = await ctx.reply('💫 ...');
+    
+    // Simulate streaming by updating the message
     let fullResponse = '💫 ';
+    let updateCounter = 0;
+    let buffer = '';
+    
     for await (const chunk of result.textStream) {
+      buffer += chunk;
       fullResponse += chunk;
+      
+      // Update every ~50 characters or when we hit a sentence end
+      if (buffer.length > 50 || buffer.match(/[.!?]\s*$/)) {
+        updateCounter++;
+        
+        // Telegram rate limits edits, so we throttle updates
+        if (updateCounter % 3 === 0) {
+          try {
+            await ctx.telegram.editMessageText(
+              ctx.chat!.id,
+              sentMessage.message_id,
+              undefined,
+              fullResponse + '...'
+            );
+          } catch (error) {
+            // If edit fails (rate limit), continue collecting
+            console.log('Edit rate limit hit, continuing...');
+          }
+        }
+        
+        buffer = '';
+      }
     }
 
     // Add sources
@@ -119,13 +151,16 @@ async function handleQuestion(ctx: Context, question: string) {
       });
     }
 
-    // Split long messages if needed
-    if (fullResponse.length > 4096) {
-      const messageParts = splitMessage(fullResponse, 4096);
-      for (const part of messageParts) {
-        await ctx.reply(part);
-      }
-    } else {
+    // Final update with complete message
+    try {
+      await ctx.telegram.editMessageText(
+        ctx.chat!.id,
+        sentMessage.message_id,
+        undefined,
+        fullResponse
+      );
+    } catch (error) {
+      // If final edit fails, send as new message
       await ctx.reply(fullResponse);
     }
     
@@ -162,10 +197,14 @@ function splitMessage(text: string, maxLength: number): string[] {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    console.log('Telegram webhook received:', JSON.stringify(body, null, 2));
+    
     await bot.handleUpdate(body);
+    
     return new Response('OK', { status: 200 });
   } catch (error) {
     console.error('Webhook error:', error);
+    console.error('Error details:', error instanceof Error ? error.stack : error);
     return new Response('Internal server error', { status: 500 });
   }
 }
