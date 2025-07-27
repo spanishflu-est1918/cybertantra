@@ -171,5 +171,9 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-  return new Response('Telegram webhook is ready', { status: 200 });
+  return new Response('OK', { status: 200 });
+}
+
+export async function HEAD() {
+  return new Response(null, { status: 200 });
 }
