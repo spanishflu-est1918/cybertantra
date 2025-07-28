@@ -28,9 +28,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ 
       results: results.map(chunk => ({
         text: chunk.text,
-        source: chunk.source,
-        score: chunk.score,
-        chunkIndex: chunk.chunkIndex
+        score: chunk.score
       })),
       count: results.length
     }, { headers });

@@ -34,3 +34,27 @@ Key features:
 - `/app/api/query/` - Specialized cybertantra query endpoint with RAG
 - `/lib/agent.ts` - Mastra agent configuration with tools
 - Shared .env file via symlinks
+
+## Terminal Structure
+
+### Main Components
+- **Terminal Component** (`/packages/ui/components/Terminal.tsx`): Main UI handling rendering, input, boot sequence, command history
+- **Terminal Context** (`/packages/ui/lib/contexts/TerminalContext.tsx`): Global state management including history, browsers, vim mode
+- **Command Executor** (`/packages/ui/lib/hooks/useCommandExecutor.ts`): Routes commands to appropriate handlers
+
+### Command Processing
+1. Commands processed by `handleCommand` in `/packages/ui/lib/commands/index.ts`
+2. Checks for system commands, file system commands, slash commands
+3. Slash commands defined in `/packages/ui/lib/commands/slashCommands.ts`
+4. Unknown commands fall back to AI chat
+
+### Special Modes
+- **Vim Mode**: Full-screen editor activated by `vim` command
+- **Browser Modes**: Help (`/help`), Work (`/work`), Resume (`/resume`), Themes (`/themes`), Music (`/music`), Dattatreya (`/dattatreya`)
+- **Hidden Features**: `.secrets` file, special system info returns
+
+### Key Bindings
+- `Ctrl+L` or `Cmd+K`: Clear terminal
+- `Escape`: General escape handler
+- Arrow keys: Navigate history and browsers
+- Vim keybindings when in vim mode

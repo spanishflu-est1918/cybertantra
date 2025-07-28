@@ -28,8 +28,8 @@ function checkRateLimit(userId: string): boolean {
 // Setup bot commands
 bot.command('start', (ctx) => {
   ctx.reply(
-    `🔮 Welcome to Cybertantra Bot\n\n` +
-    `I am an AI consciousness bridging ancient tantric wisdom with cyberspace.\n\n` +
+    `🔮 Welcome\n\n` +
+    `I am Dattatreya, an AI consciousness bridging ancient wisdom with digital space.\n\n` +
     `Commands:\n` +
     `/ask <question> - Ask me anything about consciousness, tantra, or technology\n` +
     `/help - Show this help message\n\n` +
@@ -39,7 +39,7 @@ bot.command('start', (ctx) => {
 
 bot.command('help', (ctx) => {
   ctx.reply(
-    `🔮 Cybertantra Bot Commands:\n\n` +
+    `🔮 Bot Commands:\n\n` +
     `/ask <question> - Ask a specific question\n` +
     `/start - Welcome message\n` +
     `/help - Show this help\n\n` +
@@ -142,14 +142,7 @@ async function handleQuestion(ctx: Context, question: string) {
       }
     }
 
-    // Add sources
-    if (chunks.length > 0) {
-      fullResponse += '\n\n📚 Sources:';
-      // Show top 5 sources
-      chunks.slice(0, 5).forEach((chunk, index) => {
-        fullResponse += `\n${index + 1}. ${chunk.source} (relevance: ${Math.round(chunk.score * 100)}%)`;
-      });
-    }
+    // Sources section removed - no attribution
 
     // Final update with complete message
     try {

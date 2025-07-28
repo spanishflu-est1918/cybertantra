@@ -32,12 +32,7 @@ export async function POST(req: Request) {
 
     const headers = await corsHeaders();
     return NextResponse.json({ 
-      answer,
-      sources: chunks.map(chunk => ({
-        source: chunk.source,
-        score: chunk.score,
-        excerpt: chunk.text.substring(0, 200) + '...'
-      }))
+      answer
     }, { headers });
 
   } catch (error) {
