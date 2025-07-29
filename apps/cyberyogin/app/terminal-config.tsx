@@ -37,7 +37,6 @@ export const cyberyoginConfig: TerminalConfig = {
     '/themes',
     '/theme',
     '/dattatreya',
-    '/skyler',
   ],
   
   // Browser configurations with formatters

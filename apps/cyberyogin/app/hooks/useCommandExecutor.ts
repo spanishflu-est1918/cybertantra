@@ -31,6 +31,7 @@ export function useCommandExecutor(
     setThemeBrowserActive,
     setSelectedTheme,
     setShowResetConfirmation,
+    setTempleModeActive,
     closeAllBrowsers
   } = useTerminalContext();
 
@@ -49,6 +50,9 @@ export function useCommandExecutor(
     
     if (output === 'CLEAR_TERMINAL') {
       setHistory(() => []);
+    } else if (output === 'ENTER_TEMPLE_MODE') {
+      setTempleModeActive(true);
+      replaceLastHistory(`> ${command}`);
     } else if (output === 'SHOW_MUSIC_PLAYER') {
       closeAllBrowsers();
       setMusicPlayerActive(true);

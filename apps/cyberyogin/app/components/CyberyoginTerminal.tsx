@@ -2,8 +2,20 @@
 
 import { Terminal, TerminalProvider } from '@cybertantra/ui';
 import { ThemeProvider } from '@cybertantra/ui/lib/contexts';
-import { TerminalProvider as LocalTerminalProvider } from '../contexts/TerminalContext';
+import { TerminalProvider as LocalTerminalProvider, useTerminalContext } from '../contexts/TerminalContext';
 import { cyberyoginConfig } from '../terminal-config';
+import { TempleMode } from '@/components/TempleMode';
+
+function TerminalWithTemple() {
+  const { templeModeActive } = useTerminalContext();
+  
+  return (
+    <>
+      {templeModeActive && <TempleMode />}
+      <Terminal />
+    </>
+  );
+}
 
 export default function CyberyoginTerminal() {
   return (
@@ -13,7 +25,7 @@ export default function CyberyoginTerminal() {
           ...cyberyoginConfig,
           contextWrapper: (children) => children, // Already wrapped above
         }}>
-          <Terminal />
+          <TerminalWithTemple />
         </TerminalProvider>
       </LocalTerminalProvider>
     </ThemeProvider>

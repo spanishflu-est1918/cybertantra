@@ -53,6 +53,10 @@ interface TerminalContextType {
   dattatreyaPlayerActive: boolean;
   setDattatreyaPlayerActive: (active: boolean) => void;
   
+  // Temple mode
+  templeModeActive: boolean;
+  setTempleModeActive: (active: boolean) => void;
+  
   // Dialog states
   showResetConfirmation: boolean;
   setShowResetConfirmation: (show: boolean) => void;
@@ -84,6 +88,7 @@ export function TerminalProvider({ children }: { children: ReactNode }) {
   const [themeBrowserActive, setThemeBrowserActive] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState(0);
   const [dattatreyaPlayerActive, setDattatreyaPlayerActive] = useState(false);
+  const [templeModeActive, setTempleModeActive] = useState(false);
   const [showResetConfirmation, setShowResetConfirmation] = useState(false);
   const [showHistoryPrompt, setShowHistoryPrompt] = useState(false);
   const [savedHistory, setSavedHistory] = useState<HistoryEntry[] | null>(null);
@@ -118,6 +123,7 @@ export function TerminalProvider({ children }: { children: ReactNode }) {
     themeBrowserActive, setThemeBrowserActive,
     selectedTheme, setSelectedTheme,
     dattatreyaPlayerActive, setDattatreyaPlayerActive,
+    templeModeActive, setTempleModeActive,
     showResetConfirmation, setShowResetConfirmation,
     showHistoryPrompt, setShowHistoryPrompt,
     savedHistory, setSavedHistory,

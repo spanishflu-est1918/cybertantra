@@ -5,10 +5,12 @@ import { loadPrompt } from '@/app/lib/ai/prompts/loader';
 
 export async function POST(req: Request) {
   try {
-    const { messages }: { messages: UIMessage[] } = await req.json();
+    const { messages, isTempleMode }: { messages: UIMessage[]; isTempleMode?: boolean } = await req.json();
     
     const openrouter = createAIProvider();
-    const systemPrompt = await loadPrompt('digital-twin');
+    const systemPrompt = isTempleMode 
+      ? await loadPrompt('dattatreya-guru')
+      : await loadPrompt('digital-twin');
     
     // Create fallback model that switches to regular Kimi on rate limit
     const model = AI_MODEL === KIMI_FREE_MODEL 

@@ -3,6 +3,7 @@
 import { useChat } from '@ai-sdk/react';
 import { useCallback, useEffect } from 'react';
 import { DefaultChatTransport } from 'ai';
+import { useTerminalContext } from '../contexts/TerminalContext';
 
 interface UseTerminalChatProps {
   onMessage: (content: string, isAI: boolean) => void;
@@ -10,6 +11,7 @@ interface UseTerminalChatProps {
 }
 
 export function useTerminalChat({ onMessage, onLoading }: UseTerminalChatProps) {
+  const { templeModeActive } = useTerminalContext();
 
   const {
     messages,
@@ -21,6 +23,9 @@ export function useTerminalChat({ onMessage, onLoading }: UseTerminalChatProps) 
     transport: new DefaultChatTransport({
       api: '/api/chat',
     }),
+    body: {
+      isTempleMode: templeModeActive,
+    },
   });
 
   // Track loading state

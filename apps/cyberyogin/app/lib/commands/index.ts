@@ -1,10 +1,16 @@
 import { slashCommands } from './slashCommands';
 import { fileSystemCommands } from './fileSystemCommands';
 import { systemCommands } from './systemCommands';
+import { DATTATREYA_MANTRA } from '@/lib/constants/mantras';
 
 export function handleCommand(input: string): string | { content: string; typewriter: boolean } | null {
   const trimmedInput = input.trim();
   const [command, ...args] = trimmedInput.split(' ');
+  
+  // Check for Dattatreya mantra
+  if (trimmedInput.toLowerCase() === DATTATREYA_MANTRA) {
+    return 'ENTER_TEMPLE_MODE';
+  }
   
   if (command === 'clear' || command === 'cls') {
     return 'CLEAR_TERMINAL';
