@@ -1,6 +1,6 @@
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { embedMany } from 'ai';
+import { embedMany, generateText } from 'ai';
 import { sql } from '@cybertantra/database';
 import { EMBEDDING_MODEL, type AIConfig } from '../config';
 
@@ -85,8 +85,8 @@ export class QueryAgent {
       .join('\n\n---\n\n');
 
     // Step 3: Generate response using OpenRouter
-    const response = await this.openrouter.chat.completions.create({
-      model: 'moonshotai/kimi-k2',
+    const { text } = await generateText({
+      model: this.openrouter('moonshotai/kimi-k2'),
       messages: [
         {
           role: 'system',
@@ -104,10 +104,10 @@ ${context}`
         }
       ],
       temperature: 0.7,
-      max_tokens: 2000,
+      maxOutputTokens: 2000,
     });
 
-    return response.choices[0]?.message?.content || 'No response generated';
+    return text;
   }
 
   async search(query: string, limit: number = 10): Promise<QueryResult[]> {

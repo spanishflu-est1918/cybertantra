@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@cybertantra/rag', '@cybertantra/ui'],
+  devIndicators: {
+    position: 'top-right',
+  },
 };
 
 export default nextConfig;

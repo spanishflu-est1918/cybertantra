@@ -4,10 +4,10 @@ A conversational AI agent focused on spiritual wisdom, powered by the Cybertantr
 
 ## Features
 
-- Clean, simple conversational interface
+- Clean, minimalist black & white conversational interface
 - Browser-based text-to-speech using Web Speech API
 - RAG-powered responses from the Cybertantra lecture database
-- Minimal, distraction-free design
+- Mystical, occult-inspired design aesthetic
 
 ## Running the app
 
@@ -27,8 +27,8 @@ Uses the same environment variables as the main Cybertantra app for:
 
 ## Tech Stack
 
-- Next.js 15
+- Next.js 15 with Turbopack
 - React 19
-- TailwindCSS
+- TailwindCSS v4
 - Web Speech API for TTS
 - @cybertantra/ai for RAG functionality
