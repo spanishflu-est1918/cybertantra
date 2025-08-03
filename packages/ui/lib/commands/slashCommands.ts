@@ -102,6 +102,10 @@ CREATIVE:
   },
   
   "/dattatreya": () => "PLAY_DATTATREYA",
+  
+  "/audio": () => "SHOW_AUDIO_MODE",
+  "/voice": () => "SHOW_AUDIO_MODE",
+  "/speak": () => "SHOW_AUDIO_MODE",
 };
 
 export function slashCommands(

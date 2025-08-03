@@ -1,6 +1,7 @@
 'use client';
 
 import { forwardRef, KeyboardEvent, useState, useEffect, useRef } from 'react';
+import VoiceInputButton from './VoiceInputButton';
 
 interface TerminalInputProps {
   value: string;
@@ -8,6 +9,7 @@ interface TerminalInputProps {
   onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
   showPlaceholder?: boolean;
   disabled?: boolean;
+  onVoiceInput?: (text: string) => void;
 }
 
 const CudaSpinner = () => {
@@ -30,9 +32,12 @@ const CudaSpinner = () => {
 };
 
 const TerminalInput = forwardRef<HTMLInputElement, TerminalInputProps>(
-  ({ value, onChange, onKeyDown, showPlaceholder = false, disabled = false }, ref) => {
+  ({ value, onChange, onKeyDown, showPlaceholder = false, disabled = false, onVoiceInput }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [cursorVisible, setCursorVisible] = useState(true);
+    
+    // Debug logging
+    console.log('TerminalInput rendered with onVoiceInput:', !!onVoiceInput);
     
     useEffect(() => {
       if (containerRef.current && ref && 'current' in ref && ref.current) {
@@ -81,6 +86,13 @@ const TerminalInput = forwardRef<HTMLInputElement, TerminalInputProps>(
             </span>
           )}
         </div>
+        {/* Voice input button */}
+        {onVoiceInput && (
+          <VoiceInputButton 
+            onTranscript={onVoiceInput}
+            className="ml-2"
+          />
+        )}
       </div>
     );
   }

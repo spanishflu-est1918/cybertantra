@@ -62,8 +62,9 @@ export class QueryAgent {
         chunkIndex: row.chunkIndex,
       }));
     } catch (error) {
-      console.error('Error retrieving from database:', error);
-      throw error;
+      // Return empty results when database is unavailable
+      console.log('Database unavailable - returning empty context');
+      return [];
     }
   }
 

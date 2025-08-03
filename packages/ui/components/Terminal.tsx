@@ -7,6 +7,8 @@ import TerminalInput from './TerminalInput';
 import CRTEffect from './CRTEffect';
 import TypewriterText from './TypewriterText';
 import VimMode from './VimMode';
+import AudioMode from './AudioMode';
+import Modeselektor from './Modeselektor';
 import { useBootSequence } from '../lib/hooks/useBootSequence';
 import { useCommandHistory } from '../lib/hooks/useCommandHistory';
 import { useCommandExecutor } from '../lib/hooks/useCommandExecutor';
@@ -38,6 +40,15 @@ export default function Terminal() {
   const useTheme = config.useTheme || useDefaultTheme;
   const { theme, setTheme } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Detect if mobile and set initial mode
+  const getInitialMode = () => {
+    if (typeof window === 'undefined') return 'text';
+    const isMobile = window.innerWidth < 768;
+    return isMobile ? 'audio' : 'text';
+  };
+  
+  const [mode, setMode] = useState<'text' | 'audio'>(getInitialMode());
   
   // Get user city for boot sequence
   const userCity = useGeolocation();
@@ -263,11 +274,22 @@ export default function Terminal() {
 
   return (
     <CRTEffect>
-      <div className="w-full h-full bg-black text-green-400 font-mono p-2 sm:p-4 overflow-hidden text-xs sm:text-sm" onClick={handleTerminalClick}>
-        <div 
-          ref={terminalRef}
-          className="h-[calc(100vh-1rem)] sm:h-[calc(100vh-2rem)] overflow-y-auto scrollbar-hide focus-blur"
-        >
+      {/* Modeselektor */}
+      <Modeselektor mode={mode} onModeChange={setMode} />
+      
+      {/* Render based on mode */}
+      {mode === 'audio' ? (
+        <AudioMode 
+          onSendMessage={(text) => sendMessage({ text })} 
+          messages={messages}
+          isLoading={isLoading || isWaitingForResponse}
+        />
+      ) : (
+        <div className="w-full h-full bg-black text-green-400 font-mono p-2 sm:p-4 overflow-hidden text-xs sm:text-sm" onClick={handleTerminalClick}>
+          <div 
+            ref={terminalRef}
+            className="h-[calc(100vh-1rem)] sm:h-[calc(100vh-2rem)] overflow-y-auto scrollbar-hide focus-blur"
+          >
           {/* Welcome message */}
           {bootComplete && !hasInteracted && (
             <div className="whitespace-pre-wrap mb-1 text-green-400">
@@ -370,6 +392,10 @@ export default function Terminal() {
               }}
               disabled={isLoading || isWaitingForResponse || vimModeActive}
               showPlaceholder={!hasInteracted}
+              onVoiceInput={(text) => {
+                setInput(text);
+                handleSubmit(text);
+              }}
             />
           )}
 
@@ -382,6 +408,7 @@ export default function Terminal() {
           )}
         </div>
       </div>
+      )}
     </CRTEffect>
   );
 }

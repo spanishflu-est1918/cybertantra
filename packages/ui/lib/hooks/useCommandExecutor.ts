@@ -58,6 +58,7 @@ export function useCommandExecutor(
           'SHOW_THEME_BROWSER': 'themes',
           'SHOW_MUSIC_PLAYER': 'music',
           'PLAY_DATTATREYA': 'dattatreya',
+          'SHOW_AUDIO_MODE': 'audio',
         };
         
         const browserId = browserCommandMap[commandResult];

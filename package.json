@@ -8,6 +8,7 @@
     "dev:cyberyogin": "pnpm --filter @cybertantra/cyberyogin dev",
     "dev:gorka": "pnpm --filter @cybertantra/cyberyogin dev",
     "dev:dattatreya": "pnpm --filter @cybertantra/dattatreya dev",
+    "dev:dattatreya:https": "pnpm --filter @cybertantra/dattatreya dev:https",
     "build": "pnpm run --recursive build",
     "lint": "pnpm run --recursive lint",
     "cli:setup": "cd packages/cli && bun run setup",
