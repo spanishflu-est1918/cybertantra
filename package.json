@@ -16,7 +16,8 @@
     "cli:query": "cd packages/cli && bun run src/commands/simple-query.ts",
     "cli:chat": "cd packages/cli && bun run chat",
     "cli:transcribe": "cd packages/cli && bun run transcribe",
-    "transcribe": "bun packages/lecture-tools/src/transcription/transcribe.ts"
+    "transcribe": "bun packages/lecture-tools/src/transcription/transcribe.ts",
+    "download-youtube": "bun download-youtube.ts"
   },
   "devDependencies": {
     "typescript": "^5"
@@ -35,6 +36,7 @@
     "dotenv": "^16.6.1",
     "inquirer": "^9.2.12",
     "ora": "^7.0.1",
+    "yt-dlp-wrap": "^2.3.12",
     "zod": "3.25.76"
   }
 }

@@ -47,7 +47,7 @@ export class TranscriptionService {
     const files = await fs.readdir(audioDir);
     const audioFiles = files.filter((file) => {
       const ext = path.extname(file).toLowerCase();
-      return ['.mp3', '.wav', '.m4a', '.ogg', '.flac', '.aac'].includes(ext);
+      return ['.mp3', '.wav', '.m4a', '.ogg', '.flac', '.aac', '.opus'].includes(ext);
     });
     
     const results = [];

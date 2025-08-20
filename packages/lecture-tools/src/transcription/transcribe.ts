@@ -66,6 +66,7 @@ program
   .option('-d, --dir <directory>', 'Audio files directory', './audio')
   .option('-m, --model <tier>', 'Model tier: best or nano', 'best')
   .option('-b, --batch <size>', 'Batch size for parallel processing', '1')
+  .option('--keep-audio', 'Keep audio files after transcription (default: delete them)')
   .option('--dry-run', 'Show what would be transcribed without doing it')
   .action(async (options) => {
     if (!process.env.ASSEMBLYAI_API_KEY) {
@@ -150,12 +151,16 @@ program
           totalDuration += result.duration || 0;
           await service.updateJobProgress(processed, failed, result.duration || 0, result.cost || 0);
           
-          // Delete the audio file after successful transcription
-          try {
-            await fs.unlink(filePath);
-            console.log(`   🗑️  Deleted audio file: ${file.filename}`);
-          } catch (error) {
-            console.error(`   ⚠️  Failed to delete audio file: ${error}`);
+          // Delete the audio file after successful transcription (unless --keep-audio is specified)
+          if (!options.keepAudio) {
+            try {
+              await fs.unlink(filePath);
+              console.log(`   🗑️  Deleted audio file: ${file.filename}`);
+            } catch (error) {
+              console.error(`   ⚠️  Failed to delete audio file: ${error}`);
+            }
+          } else {
+            console.log(`   💾 Kept audio file: ${file.filename}`);
           }
         } else {
           failed++;

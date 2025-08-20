@@ -7,16 +7,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@cybertantra/database": "workspace:*",
     "@cybertantra/ai": "workspace:*",
+    "@cybertantra/database": "workspace:*",
+    "@google/generative-ai": "^0.24.1",
     "@mastra/rag": "^1.0.4",
-    "@google/generative-ai": "^0.1.1",
-    "ora": "^7.0.1",
-    "inquirer": "^9.2.12"
+    "inquirer": "^9.2.12",
+    "ora": "^7.0.1"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
+    "@types/inquirer": "^9.0.7",
     "@types/node": "^20.0.0",
-    "@types/inquirer": "^9.0.7"
+    "typescript": "^5.0.0"
   }
 }
