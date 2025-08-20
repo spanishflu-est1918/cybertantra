@@ -1,17 +1,14 @@
 #!/usr/bin/env bun
 
-import { Command } from 'commander';
+import { program } from 'commander';
 import ora from 'ora';
 import inquirer from 'inquirer';
-import { TranscriptionService, TranscriptionConfig } from './service';
-import { sql } from '@vercel/postgres';
+import { TranscriptionService, TranscriptionConfig } from '@cybertantra/lecture-tools/src/transcription/service';
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs/promises';
 
 dotenv.config();
-
-const program = new Command();
 
 program
   .name('transcribe')
@@ -130,7 +127,6 @@ program
         modelTier: options.model as 'best' | 'nano',
         speakerLabels: true,
         languageCode: 'en',
-        outputFormat: 'both',
       };
       
       let processed = 0;
@@ -178,78 +174,13 @@ program
       
       if (processed > 0) {
         console.log('✅ Transcripts saved to ./lectures/');
-        console.log('   Run `bun run ingest` to add them to the RAG system');
+        console.log('   Run `bun run cli:ingest` to add them to the RAG system');
       }
       
     } catch (error) {
       spinner.fail('Transcription failed');
       console.error(error);
       process.exit(1);
-    }
-  });
-
-program
-  .command('status')
-  .description('Show transcription statistics')
-  .action(async () => {
-    const service = new TranscriptionService();
-    
-    try {
-      const stats = await service.getTranscriptionStats();
-      
-      console.log('\n📊 Transcription Statistics:');
-      console.log('===========================');
-      console.log(`Total files tracked: ${stats.totalFiles}`);
-      console.log(`✅ Completed: ${stats.completed}`);
-      console.log(`❌ Failed: ${stats.failed}`);
-      console.log(`⏳ Pending: ${stats.pending}`);
-      console.log(`\nTotal duration: ${(stats.totalDuration / 3600).toFixed(1)} hours`);
-      console.log(`Total cost: $${stats.totalCost.toFixed(2)}`);
-      
-      // Show recent jobs
-      const jobs = await sql`
-        SELECT * FROM transcription_jobs 
-        ORDER BY started_at DESC 
-        LIMIT 5
-      `;
-      
-      if (jobs.rows.length > 0) {
-        console.log('\n📋 Recent Jobs:');
-        jobs.rows.forEach(job => {
-          const duration = job.completed_at 
-            ? `${((new Date(job.completed_at) - new Date(job.started_at)) / 1000 / 60).toFixed(1)} min`
-            : 'Running...';
-          console.log(`   ${job.job_id}: ${job.processed_files}/${job.total_files} files | $${job.total_cost.toFixed(2)} | ${duration}`);
-        });
-      }
-      
-    } catch (error) {
-      console.error('Failed to get statistics:', error);
-    }
-  });
-
-program
-  .command('cost-estimate <hours>')
-  .description('Estimate transcription cost for given hours')
-  .option('-m, --model <tier>', 'Model tier: best or nano', 'best')
-  .action((hours, options) => {
-    const hoursNum = parseFloat(hours);
-    const costPerHour = options.model === 'nano' ? 0.20 : 0.28;
-    const totalCost = hoursNum * costPerHour;
-    
-    console.log('\n💰 Transcription Cost Estimate:');
-    console.log('==============================');
-    console.log(`Model tier: ${options.model}`);
-    console.log(`Duration: ${hoursNum} hours`);
-    console.log(`Rate: $${costPerHour}/hour`);
-    console.log(`Total cost: $${totalCost.toFixed(2)}`);
-    
-    // With free credits
-    const afterCredits = Math.max(0, totalCost - 50);
-    if (totalCost > 50) {
-      console.log(`\nWith $50 free credits: $${afterCredits.toFixed(2)}`);
-    } else {
-      console.log('\n✅ Covered by $50 free credits!');
     }
   });
 

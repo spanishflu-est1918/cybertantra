@@ -14,7 +14,9 @@
     "cli:setup": "cd packages/cli && bun run setup",
     "cli:ingest": "cd packages/cli && bun run ingest",
     "cli:query": "cd packages/cli && bun run src/commands/simple-query.ts",
-    "cli:chat": "cd packages/cli && bun run chat"
+    "cli:chat": "cd packages/cli && bun run chat",
+    "cli:transcribe": "cd packages/cli && bun run transcribe",
+    "transcribe": "bun packages/lecture-tools/src/transcription/transcribe.ts"
   },
   "devDependencies": {
     "typescript": "^5"
@@ -26,8 +28,13 @@
     "@mastra/core": "0.0.0-ai-v5-20250718021026",
     "@mastra/rag": "0.0.0-ai-v5-20250718021026",
     "@openrouter/ai-sdk-provider": "1.0.0-beta.5",
+    "@vercel/postgres": "^0.10.0",
     "ai": "5.0.0-beta.28",
+    "assemblyai": "^4.15.0",
+    "commander": "^12.1.0",
     "dotenv": "^16.6.1",
+    "inquirer": "^9.2.12",
+    "ora": "^7.0.1",
     "zod": "3.25.76"
   }
 }
