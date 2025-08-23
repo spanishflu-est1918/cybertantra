@@ -1,7 +1,6 @@
 'use server';
 
-import { assemblyai } from '@ai-sdk/assemblyai';
-import { experimental_transcribe as transcribe } from 'ai';
+import { AssemblyAI } from 'assemblyai';
 
 export async function POST(request: Request) {
   try {
@@ -18,30 +17,57 @@ export async function POST(request: Request) {
       size: audio.size
     });
 
-    const audioArrayBuffer = await audio.arrayBuffer();
-    console.log('Audio ArrayBuffer size:', audioArrayBuffer.byteLength);
+    // Check for API key
+    if (!process.env.ASSEMBLYAI_API_KEY) {
+      console.error('ASSEMBLYAI_API_KEY not configured');
+      return new Response('Transcription service not configured', { status: 500 });
+    }
 
-    // Save audio file for debugging - use the actual file extension from the File name
+    // Save audio to temp file since AssemblyAI needs a file path or URL
     const fs = await import('fs/promises');
     const path = await import('path');
-    const actualExtension = audio.name.split('.').pop() || 'webm';
-    const debugPath = path.join(process.cwd(), 'public', `debug-audio-${Date.now()}.${actualExtension}`);
-    await fs.writeFile(debugPath, Buffer.from(audioArrayBuffer));
-    console.log('Audio saved to:', debugPath, 'original filename:', audio.name, 'type:', audio.type);
+    const os = await import('os');
+    
+    const tempDir = os.tmpdir();
+    const tempFilePath = path.join(tempDir, `audio-${Date.now()}.webm`);
+    const audioBuffer = Buffer.from(await audio.arrayBuffer());
+    await fs.writeFile(tempFilePath, audioBuffer);
+    
+    console.log('Temp audio file:', tempFilePath);
 
-    const result = await transcribe({
-      model: assemblyai.transcription('best'),
-      audio: audioArrayBuffer,
+    // Use AssemblyAI directly
+    const client = new AssemblyAI({
+      apiKey: process.env.ASSEMBLYAI_API_KEY,
     });
 
-    console.log('Transcription result:', result);
+    try {
+      const transcript = await client.transcripts.transcribe({
+        audio: tempFilePath,
+        language_code: 'en',
+      });
 
-    return Response.json({ text: result.text || '' });
+      console.log('Transcription status:', transcript.status);
+      
+      // Clean up temp file
+      await fs.unlink(tempFilePath).catch(() => {});
+      
+      if (transcript.status === 'error') {
+        console.error('AssemblyAI error:', transcript.error);
+        return Response.json({ text: '' });
+      }
+
+      const text = transcript.text || '';
+      console.log('Transcript result:', text ? `"${text}"` : 'empty');
+      
+      return Response.json({ text });
+    } catch (transcribeError) {
+      // Clean up temp file on error
+      await fs.unlink(tempFilePath).catch(() => {});
+      throw transcribeError;
+    }
+    
   } catch (error) {
     console.error('Transcription error:', error);
-    if (error.name === 'AI_NoTranscriptGeneratedError') {
-      return Response.json({ text: '' }); // Return empty text for silent audio
-    }
     return new Response('Transcription failed', { status: 500 });
   }
 }
