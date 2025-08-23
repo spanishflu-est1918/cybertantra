@@ -7,7 +7,7 @@ export async function OPTIONS() {
 
 export async function POST(req: Request) {
   // Validate request (API key + rate limit)
-  const validationError = await validateRequest(req);
+  const validationError = await validateRequest();
   if (validationError) return validationError;
 
   const { query, limit = 20 } = await req.json();
