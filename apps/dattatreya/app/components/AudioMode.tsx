@@ -6,7 +6,7 @@ import { useTextToSpeech } from "../hooks/useTextToSpeech";
 import { createStreamTextProcessor } from "../utils/streamTextProcessor";
 
 const AudioMode = memo(function AudioMode() {
-  const { speak, isSpeaking } = useTextToSpeech();
+  const { speak, isSpeaking, initializeIOSSafari } = useTextToSpeech();
   const [isUsingTool, setIsUsingTool] = useState(false);
 
   const processorRef = useRef(createStreamTextProcessor(speak));
@@ -218,6 +218,9 @@ const AudioMode = memo(function AudioMode() {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // Initialize iOS Safari TTS on first user interaction
+    initializeIOSSafari();
 
     if (isSpeaking || isProcessing) {
       console.log("Cannot record while speaking or processing");
