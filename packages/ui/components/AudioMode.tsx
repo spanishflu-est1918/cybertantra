@@ -17,10 +17,9 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
   const [useWebSpeechAPI, setUseWebSpeechAPI] = useState(true);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const { theme } = useTerminalContext();
-  
+
   // Web Speech API hook
-  const { 
+  const {
     startListening: startWebSpeech,
     stopListening: stopWebSpeech,
     speak: webSpeak,
@@ -47,7 +46,7 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
   const startRecording = async () => {
     setIsRecording(true);
     setIsListening(true);
-    
+
     // Try Web Speech API first (free)
     if (useWebSpeechAPI && isSTTSupported) {
       startWebSpeech();
@@ -80,7 +79,7 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
 
   const stopRecording = () => {
     setIsRecording(false);
-    
+
     if (useWebSpeechAPI && isSTTSupported) {
       stopWebSpeech();
     } else if (mediaRecorderRef.current) {
@@ -94,7 +93,7 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
       const formData = new FormData();
       formData.append('audio', audioBlob, 'recording.webm');
       formData.append('model', 'whisper-1');
-      
+
       const response = await fetch('/api/speech', {
         method: 'POST',
         body: formData,
@@ -107,7 +106,7 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
       const { text } = await response.json();
       setCurrentTranscript(text);
       onSendMessage(text);
-      
+
       setTimeout(() => {
         setCurrentTranscript('');
         setIsListening(false);
@@ -120,7 +119,7 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
 
   // Get the latest AI message
   const latestAIMessage = messages.filter(m => m.role === 'assistant').pop();
-  
+
   // Play TTS for new AI messages
   useEffect(() => {
     if (latestAIMessage && !isLoading) {
@@ -163,7 +162,7 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
       <div className="absolute top-4 left-4 text-xs text-green-400/40">
         {isSTTSupported && isTTSSupported ? 'Web Speech API' : 'OpenAI API'}
       </div>
-      
+
       {/* Response area */}
       <div className="flex-1 w-full max-w-2xl mb-8 overflow-y-auto">
         <div className="text-center text-green-400 opacity-60 mb-4">
@@ -191,8 +190,8 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
           onTouchEnd={stopRecording}
           className={`
             w-32 h-32 rounded-full border-4 transition-all duration-300
-            ${isRecording 
-              ? 'border-red-500 bg-red-900/20 scale-110 animate-pulse' 
+            ${isRecording
+              ? 'border-red-500 bg-red-900/20 scale-110 animate-pulse'
               : 'border-green-400 bg-green-900/10 hover:bg-green-900/20'
             }
             flex items-center justify-center relative overflow-hidden
@@ -210,17 +209,17 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
             `} />
             <div className="w-8 h-8 bg-green-400/50 rounded-full" />
           </div>
-          
+
           {/* Microphone icon */}
-          <svg 
-            className="w-8 h-8 text-green-400 relative z-10" 
-            fill="currentColor" 
+          <svg
+            className="w-8 h-8 text-green-400 relative z-10"
+            fill="currentColor"
             viewBox="0 0 20 20"
           >
             <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
           </svg>
         </button>
-        
+
         {/* Instructions */}
         <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-green-400/60 whitespace-nowrap">
           {isRecording ? 'Release to send' : 'Hold to speak'}
