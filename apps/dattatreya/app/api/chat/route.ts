@@ -1,10 +1,6 @@
-import {
-  streamText,
-  convertToModelMessages,
-  tool as aiTool,
-} from "ai";
+import { streamText, convertToModelMessages, tool as aiTool } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { z as zodbert } from "zod";
+import { z as zodbert } from "zod/v4";
 import {
   QueryAgent,
   getAIConfig,
