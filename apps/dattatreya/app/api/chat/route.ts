@@ -5,8 +5,8 @@ export async function POST(req: Request) {
     // Forward to cybertantra API with authentication
     const endpoint =
       process.env.NODE_ENV === "development"
-        ? "http://localhost:9999/api/process-voice"
-        : "https://cybertantra-omega.vercel.app/api/process-voice";
+        ? "http://localhost:9999/api/dattatreya"
+        : "https://cybertantra-omega.vercel.app/api/dattatreya";
 
     const response = await fetch(endpoint, {
       method: "POST",
