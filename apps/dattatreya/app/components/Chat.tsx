@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import dynamic from "next/dynamic";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import Header from "./Header";
@@ -72,18 +71,8 @@ export default function Chat() {
   }, [isLoading, sendMessage]);
 
   const {
-    isRecording,
-    isTranscribing,
-    startRecording,
-    stopRecording,
-    toggleRecording,
     isSupported: audioRecorderSupported
   } = useAudioRecorder();
-
-
-  const handleToggleRecording = useCallback(() => {
-    toggleRecording(handleSubmitVoice);
-  }, [toggleRecording, handleSubmitVoice]);
 
   useEffect(() => {
     setMounted(true);
@@ -115,15 +104,6 @@ export default function Chat() {
     scrollToBottom();
   }, [messages]);
 
-  const handleButtonInteraction = useCallback(async (e?: React.MouseEvent | React.TouchEvent) => {
-    console.log('Button clicked, requesting permissions...');
-    e?.preventDefault();
-    e?.stopPropagation();
-    
-    if (isFirstInteraction || !permissionsGranted) {
-      await requestPermissions();
-    }
-  }, [isFirstInteraction, permissionsGranted, requestPermissions]);
 
   if (!mounted || isChecking) {
     return (

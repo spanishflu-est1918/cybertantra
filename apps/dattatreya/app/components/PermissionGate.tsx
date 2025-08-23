@@ -127,7 +127,7 @@ export default function PermissionGate({
 
         {/* Footer guidance */}
         <div className="space-y-3 text-xs text-white/40 font-light">
-          <p>When prompted by your browser, select "Allow" to continue</p>
+          <p>When prompted by your browser, select &ldquo;Allow&rdquo; to continue</p>
           <p>• This permission can be revoked anytime in browser settings</p>
           <p>• No audio is stored or transmitted outside this session</p>
         </div>

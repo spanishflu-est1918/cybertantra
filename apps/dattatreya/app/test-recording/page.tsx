@@ -143,9 +143,9 @@ export default function TestRecording() {
       
       <div style={{ marginTop: '20px' }}>
         <h3>Instructions:</h3>
-        <p>1. Click "Start Recording"</p>
+        <p>1. Click &ldquo;Start Recording&rdquo;</p>
         <p>2. Speak clearly for 3-5 seconds</p>
-        <p>3. Click "Stop Recording"</p>
+        <p>3. Click &ldquo;Stop Recording&rdquo;</p>
         <p>4. Check console for logs</p>
         <p>5. Download links will appear below</p>
       </div>

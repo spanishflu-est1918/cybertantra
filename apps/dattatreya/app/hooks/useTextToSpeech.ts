@@ -47,12 +47,10 @@ export function useTextToSpeech({
     }
 
     utterance.onstart = () => {
-      console.log('[TTS] Speech started');
       setIsSpeaking(true);
     };
 
     utterance.onend = () => {
-      console.log('[TTS] Speech ended');
       setIsSpeaking(false);
       currentUtteranceRef.current = null;
     };

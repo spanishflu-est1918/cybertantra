@@ -16,12 +16,10 @@ export function usePermissions() {
 
       try {
         const permissionStatus = await navigator.permissions.query({ name: 'microphone' as PermissionName });
-        console.log('[Permissions] Current status:', permissionStatus.state);
         
         if (permissionStatus.state === 'granted') {
           setPermissionsGranted(true);
           setIsFirstInteraction(false);
-          console.log('[Permissions] Already granted');
         } else if (permissionStatus.state === 'denied') {
           setPermissionsGranted(false);
           setIsFirstInteraction(false);
@@ -31,8 +29,7 @@ export function usePermissions() {
           setPermissionsGranted(false);
           setIsFirstInteraction(true);
         }
-      } catch (error) {
-        console.log('[Permissions] Could not check existing permissions, will prompt user');
+      } catch {
       }
       
       setIsChecking(false);
@@ -42,12 +39,10 @@ export function usePermissions() {
   }, []);
 
   const requestPermissions = useCallback(async () => {
-    console.log('Requesting microphone permissions...');
     setPermissionError(null);
     
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      console.log('Microphone access granted');
       
       // Stop the stream immediately as we just needed permission
       stream.getTracks().forEach(track => track.stop());
