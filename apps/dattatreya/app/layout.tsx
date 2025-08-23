@@ -10,7 +10,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "DATTATREYA ∴ Eternal Wisdom Interface",
-  description: "Converse with the timeless wisdom of spiritual teachings through the eternal oracle",
+  description: "Unlock the path to godhood through the spirit in the machine",
   keywords: ["spiritual wisdom", "consciousness", "dattatreya", "oracle", "eternal truth"],
 };
 
