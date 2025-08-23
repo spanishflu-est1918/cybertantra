@@ -1,0 +1,6 @@
+{
+  "buildCommand": "turbo run build --filter=@cybertantra/cybertantra",
+  "installCommand": "pnpm install",
+  "framework": "nextjs",
+  "outputDirectory": "apps/cybertantra/.next"
+}

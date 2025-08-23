@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd ../.. && turbo run build --filter=@cybertantra/cybertantra",
+  "installCommand": "cd ../.. && pnpm install",
+  "framework": "nextjs"
+}

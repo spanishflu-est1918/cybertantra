@@ -2,15 +2,18 @@
   "name": "cybertantra-monorepo",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.3.0",
   "scripts": {
-    "dev": "pnpm run --parallel dev",
-    "dev:cybertantra": "pnpm --filter @cybertantra/cybertantra dev",
-    "dev:cyberyogin": "pnpm --filter @cybertantra/cyberyogin dev",
-    "dev:gorka": "pnpm --filter @cybertantra/cyberyogin dev",
-    "dev:dattatreya": "pnpm --filter @cybertantra/dattatreya dev",
-    "dev:dattatreya:https": "pnpm --filter @cybertantra/dattatreya dev:https",
-    "build": "pnpm run --recursive build",
-    "lint": "pnpm run --recursive lint",
+    "dev": "turbo run dev",
+    "dev:cybertantra": "turbo run dev --filter=@cybertantra/cybertantra",
+    "dev:cyberyogin": "turbo run dev --filter=@cybertantra/cyberyogin",
+    "dev:gorka": "turbo run dev --filter=@cybertantra/cyberyogin",
+    "dev:dattatreya": "turbo run dev --filter=@cybertantra/dattatreya",
+    "dev:dattatreya:https": "turbo run dev:https --filter=@cybertantra/dattatreya",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
     "cli:setup": "cd packages/cli && bun run setup",
     "cli:ingest": "cd packages/cli && bun run ingest",
     "cli:query": "cd packages/cli && bun run src/commands/simple-query.ts",
@@ -21,6 +24,7 @@
     "transcribe": "bun packages/lecture-tools/src/transcription/transcribe.ts"
   },
   "devDependencies": {
+    "turbo": "^2.5.6",
     "typescript": "^5"
   },
   "dependencies": {

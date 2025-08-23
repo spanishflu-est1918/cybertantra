@@ -1,0 +1,58 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env*"],
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "@cybertantra/cybertantra#build": {
+      "dependsOn": ["^build"],
+      "env": [
+        "OPENROUTER_API_KEY",
+        "OPENAI_API_KEY", 
+        "POSTGRES_URL",
+        "POSTGRES_URL_NON_POOLING",
+        "ASSEMBLYAI_API_KEY",
+        "GOOGLE_GENERATIVE_AI_API_KEY"
+      ],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "@cybertantra/dattatreya#build": {
+      "dependsOn": ["^build"],
+      "env": [
+        "OPENROUTER_API_KEY",
+        "OPENAI_API_KEY",
+        "POSTGRES_URL", 
+        "POSTGRES_URL_NON_POOLING",
+        "NEXT_PUBLIC_VAPI_ASSISTANT_ID",
+        "NEXT_PUBLIC_VAPI_PUBLIC_KEY"
+      ],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "@cybertantra/cyberyogin#build": {
+      "dependsOn": ["^build"],
+      "env": [
+        "OPENROUTER_API_KEY",
+        "OPENAI_API_KEY"
+      ],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}
