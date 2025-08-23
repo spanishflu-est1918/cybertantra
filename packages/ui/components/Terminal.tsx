@@ -281,7 +281,11 @@ export default function Terminal() {
       {mode === 'audio' ? (
         <AudioMode 
           onSendMessage={(text) => sendMessage({ text })} 
-          messages={messages}
+          messages={messages.map(msg => ({
+            role: msg.role,
+            content: (msg.parts && msg.parts.map((p: any) => p.text).join('')) || (msg as any).content || '',
+            id: msg.id
+          }))}
           isLoading={isLoading || isWaitingForResponse}
         />
       ) : (
