@@ -158,7 +158,7 @@ const AudioMode = memo(function AudioMode() {
 
   const { isRecording, isTranscribing, startRecording, stopRecording } =
     useAudioRecorder({
-      skipDownload: false,
+      skipDownload: true,
       skipTranscription: false,
       onTranscript: handleTranscript,
     });
