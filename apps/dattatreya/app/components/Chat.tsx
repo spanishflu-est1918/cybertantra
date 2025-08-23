@@ -1,26 +1,25 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import Header from "./Header";
 import Message from "./Message";
 import TextMode from "./TextMode";
+
 import AudioMode from "./AudioMode";
+import PermissionGate from "./PermissionGate";
+import { useTextToSpeech } from "../hooks/useTextToSpeech";
+import { usePermissions } from "../hooks/usePermissions";
+import { useAudioRecorder } from "../hooks/useAudioRecorder";
 
 export default function Chat() {
-  const [isTTSEnabled, setIsTTSEnabled] = useState(true);
   const [input, setInput] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
   const [mode, setMode] = useState<'text' | 'audio'>('audio');
-  const [permissionsGranted, setPermissionsGranted] = useState(false);
-  const [isFirstInteraction, setIsFirstInteraction] = useState(true);
   const [mounted, setMounted] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const recognitionRef = useRef<any>(null);
-  const accumulatedTranscriptRef = useRef<string>('');
-  const isRecordingRef = useRef<boolean>(false);
 
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
@@ -28,161 +27,73 @@ export default function Chat() {
     }),
     onFinish: (result) => {
       const message = result.message || result;
-      const content = (message as any).content || ((message as any).parts && (message as any).parts.map((p: any) => p.text).join(''));
-      if (isTTSEnabled && content) {
+      if (message && message.content) {
+        const content = Array.isArray(message.content) 
+          ? message.content.map(part => part.text || '').join(' ')
+          : message.content;
         speak(content);
       }
     },
   });
 
-  const isLoading = status === 'streaming' || status === 'submitted';
-  
+  const isLoading = status === "in_progress";
+
+  // Custom hooks
+  const {
+    permissionsGranted,
+    isFirstInteraction,
+    permissionError,
+    isChecking,
+    requestPermissions,
+    isSupported: permissionsSupported
+  } = usePermissions();
+
+  const {
+    isEnabled: isTTSEnabled,
+    speak,
+    stop: stopSpeech,
+    toggle: toggleTTS,
+    loadVoices,
+    isSupported: ttsSupported
+  } = useTextToSpeech({
+    enabled: true,
+    rate: 0.9,
+    pitch: 1
+  });
+
+  const handleSubmitVoice = useCallback(async (text: string) => {
+    if (!text.trim() || isLoading) return;
+    
+    setInput("");
+    await sendMessage({
+      role: "user",
+      parts: [{ type: "text", text: text }],
+    });
+  }, [isLoading, sendMessage]);
+
+  const {
+    isRecording,
+    isTranscribing,
+    startRecording,
+    stopRecording,
+    toggleRecording,
+    isSupported: audioRecorderSupported
+  } = useAudioRecorder();
+
+
+  const handleToggleRecording = useCallback(() => {
+    toggleRecording(handleSubmitVoice);
+  }, [toggleRecording, handleSubmitVoice]);
+
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = (window as any).webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = 'en-US';
-
-      recognitionRef.current.onresult = (event: any) => {
-        console.log('[Speech] onresult event', event.results.length);
-        let interimTranscript = '';
-        let finalTranscript = '';
-        
-        for (let i = 0; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript;
-          if (event.results[i].isFinal) {
-            finalTranscript = transcript;
-          } else {
-            interimTranscript = transcript;
-          }
-        }
-        
-        if (finalTranscript) {
-          console.log('[Speech] Final transcript:', finalTranscript);
-          accumulatedTranscriptRef.current += finalTranscript + ' ';
-          setInput(accumulatedTranscriptRef.current);
-        } else {
-          setInput(accumulatedTranscriptRef.current + interimTranscript);
-        }
-      };
-
-      recognitionRef.current.onerror = (event: any) => {
-        console.log('[Speech] onerror:', event.error);
-        if (event.error !== 'aborted') {
-          console.error('Speech recognition error:', event.error);
-        }
-        
-        if (event.error !== 'aborted' && event.error !== 'no-speech') {
-          console.log('[Speech] Stopping recording due to error');
-          setIsRecording(false);
-          isRecordingRef.current = false;
-        }
-      };
-
-      recognitionRef.current.onend = () => {
-        console.log('[Speech] onend event, isRecordingRef:', isRecordingRef.current);
-        if (!isRecordingRef.current) {
-          setIsRecording(false);
-        }
-      };
+    if (ttsSupported) {
+      loadVoices();
+      // Load voices again after a delay (some browsers need this)
+      setTimeout(loadVoices, 100);
     }
-  }, []);
+  }, [ttsSupported, loadVoices]);
 
-  const requestPermissions = async () => {
-    console.log('Requesting permissions...');
-    try {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        console.error('getUserMedia not supported');
-        alert('Microphone access is not supported in this browser. Please use Chrome, Edge, or Firefox.');
-        return;
-      }
-      
-      console.log('Getting user media...');
-      let stream;
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        console.log('Got stream:', stream);
-      } catch (mediaError: any) {
-        console.error('getUserMedia error:', mediaError);
-        if (mediaError.name === 'NotAllowedError') {
-          alert('Microphone access was denied. Please check your browser settings.');
-        } else if (mediaError.name === 'NotFoundError') {
-          alert('No microphone found. Please connect a microphone.');
-        } else if (mediaError.name === 'NotReadableError') {
-          alert('Microphone is already in use by another application.');
-        } else if (mediaError.name === 'OverconstrainedError') {
-          alert('Microphone constraints could not be satisfied.');
-        } else if (mediaError.name === 'SecurityError') {
-          alert('Microphone access requires HTTPS. Please use the HTTPS tunnel URL.');
-        }
-        throw mediaError;
-      }
-      
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-      
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.getVoices();
-      }
-      
-      console.log('Setting permissions granted...');
-      setPermissionsGranted(true);
-      setIsFirstInteraction(false);
-    } catch (error) {
-      console.error('Permission denied:', error);
-      alert('Microphone permission denied. Please allow microphone access to use voice input.');
-    }
-  };
-
-  const startRecording = useCallback(() => {
-    console.log('[Speech] startRecording called, isRecording:', isRecordingRef.current, 'permissionsGranted:', permissionsGranted);
-    if (recognitionRef.current && !isRecordingRef.current && permissionsGranted) {
-      setInput('');
-      accumulatedTranscriptRef.current = '';
-      setIsRecording(true);
-      isRecordingRef.current = true;
-      try {
-        console.log('[Speech] Starting recognition');
-        recognitionRef.current.start();
-      } catch (error) {
-        console.log('[Speech] Recognition already started:', error);
-      }
-    }
-  }, [permissionsGranted]);
-
-  const stopRecording = useCallback(() => {
-    console.log('[Speech] stopRecording called, isRecording:', isRecordingRef.current);
-    if (recognitionRef.current && isRecordingRef.current) {
-      isRecordingRef.current = false;
-      console.log('[Speech] Stopping recognition');
-      recognitionRef.current.stop();
-      setIsRecording(false);
-      const currentInput = accumulatedTranscriptRef.current.trim();
-      if (currentInput) {
-        console.log('[Speech] Submitting transcript:', currentInput);
-        setTimeout(() => {
-          handleSubmitVoice(currentInput);
-        }, 1500);
-      }
-    }
-  }, [handleSubmitVoice]);
-
-  const handleButtonInteraction = async (e?: React.MouseEvent | React.TouchEvent) => {
-    console.log('Button clicked, requesting permissions...');
-    e?.preventDefault();
-    e?.stopPropagation();
-    
-    if (isFirstInteraction || !permissionsGranted) {
-      await requestPermissions();
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -196,16 +107,6 @@ export default function Chat() {
     });
   };
 
-  const handleSubmitVoice = useCallback(async (text: string) => {
-    if (!text.trim() || isLoading) return;
-    
-    setInput("");
-    await sendMessage({
-      role: "user",
-      parts: [{ type: "text", text: text }],
-    });
-  }, [isLoading, sendMessage]);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -214,112 +115,77 @@ export default function Chat() {
     scrollToBottom();
   }, [messages]);
 
-  const speak = (text: string) => {
-    if (!isTTSEnabled || !window.speechSynthesis) return;
-
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.9;
-    utterance.pitch = 1;
-    utterance.volume = 0.9;
-
-    const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(voice => 
-      voice.name.includes("Google") || 
-      voice.name.includes("Microsoft") ||
-      voice.name.includes("Premium")
-    );
+  const handleButtonInteraction = useCallback(async (e?: React.MouseEvent | React.TouchEvent) => {
+    console.log('Button clicked, requesting permissions...');
+    e?.preventDefault();
+    e?.stopPropagation();
     
-    if (preferredVoice) {
-      utterance.voice = preferredVoice;
+    if (isFirstInteraction || !permissionsGranted) {
+      await requestPermissions();
     }
+  }, [isFirstInteraction, permissionsGranted, requestPermissions]);
 
-    window.speechSynthesis.speak(utterance);
-  };
+  if (!mounted || isChecking) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-black">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
+
+  // Show permission gate if permissions are needed and not granted
+  if (mode === 'audio' && !permissionsGranted && permissionsSupported && audioRecorderSupported) {
+    return (
+      <PermissionGate
+        permissionsGranted={permissionsGranted}
+        isFirstInteraction={isFirstInteraction}
+        permissionError={permissionError}
+        onRequestPermissions={requestPermissions}
+      >
+        <div /> {/* This won't be rendered until permissions are granted */}
+      </PermissionGate>
+    );
+  }
 
   return (
-    <div className="relative flex flex-col h-screen bg-black text-white select-none">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 border border-white/5 rounded-full animate-very-slow-spin" />
-        <div className="absolute bottom-1/3 right-1/3 w-64 h-64 border border-white/5 rounded-full animate-very-slow-spin" style={{ animationDirection: 'reverse' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-white/[0.02] rounded-full animate-slow-pulse" />
-      </div>
-
+    <div className="flex flex-col h-screen bg-black text-white font-mono">
       <Header 
         mode={mode}
         setMode={setMode}
         isTTSEnabled={isTTSEnabled}
-        setIsTTSEnabled={setIsTTSEnabled}
+        toggleTTS={toggleTTS}
+        stopSpeech={stopSpeech}
       />
-
-      <div className="flex-1 overflow-y-auto scrollbar-mystical p-6 space-y-6 relative z-10">
-        {messages.length === 0 && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center space-y-6 max-w-md animate-fade-in">
-              <div className="mx-auto w-24 h-24 border border-white/20 border-mystical rounded-full flex items-center justify-center animate-slow-pulse">
-                <span className="text-4xl glow-white">⦿</span>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm text-white/40 tracking-[0.3em] uppercase">Welcome, Seeker</p>
-                <div className="w-32 h-px bg-white/10 mx-auto" />
-                <p className="text-xs text-white/30 tracking-wider leading-relaxed">
-                  Ask about consciousness, reality, or the eternal truths
-                </p>
-              </div>
+      
+      <main className="flex-1 overflow-hidden flex flex-col">
+        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+          {messages.map((message, index) => (
+            <Message key={index} message={message} />
+          ))}
+          {isLoading && (
+            <div className="flex items-center space-x-2 text-gray-400">
+              <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-white rounded-full animate-pulse delay-75"></div>
+              <div className="w-2 h-2 bg-white rounded-full animate-pulse delay-150"></div>
             </div>
-          </div>
-        )}
-        
-        {messages.map((message: any) => (
-          <Message key={message.id} message={message} />
-        ))}
-        
-        {isLoading && (
-          <div className="mr-auto max-w-2xl">
-            <div className="flex items-center space-x-2 mb-2 opacity-40">
-              <span className="text-[10px] tracking-[0.3em] uppercase">Oracle</span>
-              <span className="text-xs animate-pulse">◉</span>
-            </div>
-            <div className="border border-white/10 border-mystical p-6">
-              <div className="flex space-x-3">
-                <div className="w-1 h-1 bg-white/40 rounded-full animate-pulse" />
-                <div className="w-1 h-1 bg-white/40 rounded-full animate-pulse" style={{ animationDelay: '150ms' }} />
-                <div className="w-1 h-1 bg-white/40 rounded-full animate-pulse" style={{ animationDelay: '300ms' }} />
-              </div>
-            </div>
-          </div>
-        )}
-        
-        <div ref={messagesEndRef} />
-      </div>
-
-      {mode === 'text' ? (
-        <TextMode 
-          input={input}
-          setInput={setInput}
-          isLoading={isLoading}
-          isRecording={isRecording}
-          startRecording={startRecording}
-          stopRecording={stopRecording}
-          handleSubmit={handleSubmit}
-        />
-      ) : mounted ? (
-        <AudioMode
-          input={input}
-          isRecording={isRecording}
-          permissionsGranted={permissionsGranted}
-          isFirstInteraction={isFirstInteraction}
-          startRecording={startRecording}
-          stopRecording={stopRecording}
-          handleButtonInteraction={handleButtonInteraction}
-          setMode={setMode}
-        />
-      ) : (
-        <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
-          <div className="animate-pulse text-white/40">Loading...</div>
+          )}
+          <div ref={messagesEndRef} />
         </div>
-      )}
+        
+        {mode === 'text' ? (
+          <TextMode
+            input={input}
+            setInput={setInput}
+            onSubmit={handleSubmit}
+            isLoading={isLoading}
+          />
+        ) : (
+          <AudioMode
+            onTranscript={handleSubmitVoice}
+            setMode={setMode}
+          />
+        )}
+      </main>
     </div>
   );
 }
