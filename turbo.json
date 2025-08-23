@@ -14,8 +14,13 @@
         "OPENAI_API_KEY", 
         "POSTGRES_URL",
         "POSTGRES_URL_NON_POOLING",
+        "POSTGRES_PRISMA_URL",
         "ASSEMBLYAI_API_KEY",
-        "GOOGLE_GENERATIVE_AI_API_KEY"
+        "GOOGLE_GENERATIVE_AI_API_KEY",
+        "ELEVENLABS_API_KEY",
+        "CYBERTANTRA_API_KEY",
+        "TELEGRAM_BOT_TOKEN",
+        "GROQ_API_KEY"
       ],
       "outputs": [".next/**", "!.next/cache/**"]
     },
