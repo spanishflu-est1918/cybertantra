@@ -100,7 +100,6 @@ const AudioMode = memo(function AudioMode() {
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
-    // We could add onToolCall here if we had client-side tools
   });
 
   useEffect(() => {
