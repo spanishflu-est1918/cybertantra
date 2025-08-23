@@ -12,8 +12,9 @@ const AudioMode = memo(function AudioMode() {
   const processorRef = useRef(createStreamTextProcessor(speak));
 
   const getButtonClasses = () => {
-    const base = "w-32 h-32 rounded-full border-2 transition-all duration-300 select-none flex items-center justify-center relative overflow-hidden";
-    
+    const base =
+      "w-32 h-32 rounded-full border-2 transition-all duration-300 select-none flex items-center justify-center relative overflow-hidden";
+
     if (isUsingTool || status === "streaming" || status === "submitted") {
       return `${base} border-green-400/80 bg-gradient-to-br from-green-500/10 to-white/10 scale-110 animate-pulse`;
     }
@@ -31,7 +32,7 @@ const AudioMode = memo(function AudioMode() {
 
   const getOuterRingClasses = () => {
     const base = "w-24 h-24 border rounded-full absolute";
-    
+
     if (isUsingTool || status === "streaming" || status === "submitted") {
       return `${base} border-2 border-green-400/30 animate-ping`;
     }
@@ -46,7 +47,7 @@ const AudioMode = memo(function AudioMode() {
 
   const getInnerRingClasses = () => {
     const base = "w-16 h-16 border absolute";
-    
+
     if (isUsingTool || status === "streaming" || status === "submitted") {
       return `${base} border-green-500/20 animate-spin`;
     }
@@ -73,16 +74,18 @@ const AudioMode = memo(function AudioMode() {
   };
 
   const getStatusText = () => {
-    if (isUsingTool || status === "streaming" || status === "submitted") return "CHANNELING...";
+    if (isUsingTool || status === "streaming" || status === "submitted")
+      return "CHANNELING...";
     if (isSpeaking) return "CHANNELING...";
     if (isTranscribing) return "DECODING...";
     if (isRecording) return "TAP TO STOP";
-    return "TAP TO RECORD";
+    return "TAP TO SPEAK";
   };
 
   const getStatusTextClasses = () => {
-    const base = "absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-xs whitespace-nowrap tracking-wider select-none pointer-events-none";
-    
+    const base =
+      "absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-xs whitespace-nowrap tracking-wider select-none pointer-events-none";
+
     if (isUsingTool || status === "streaming" || status === "submitted") {
       return `${base} text-green-400/70 animate-pulse`;
     }
@@ -106,18 +109,23 @@ const AudioMode = memo(function AudioMode() {
     const lastMessage = messages[messages.length - 1];
     if (lastMessage?.role === "assistant") {
       // Check for active tool calls
-      const toolParts = lastMessage.parts.filter(part => part.type?.startsWith("tool-"));
-      const isToolActive = toolParts.some(part => 
-        'state' in part && (part.state === 'input-streaming' || part.state === 'input-available')
+      const toolParts = lastMessage.parts.filter((part) =>
+        part.type?.startsWith("tool-"),
+      );
+      const isToolActive = toolParts.some(
+        (part) =>
+          "state" in part &&
+          (part.state === "input-streaming" ||
+            part.state === "input-available"),
       );
       setIsUsingTool(isToolActive);
-      
+
       // Get regular text (ignore tool outputs - only speak the assistant's response)
       const text = lastMessage.parts
-        .filter(part => part.type === "text")
-        .map(part => part.text)
+        .filter((part) => part.type === "text")
+        .map((part) => part.text)
         .join("");
-      
+
       // Only speak the assistant's integrated response, not tool outputs
       const contentToSpeak = text;
       processorRef.current.processText(contentToSpeak, status === "ready");
@@ -131,7 +139,10 @@ const AudioMode = memo(function AudioMode() {
   }, [error]);
 
   const handleTranscript = async (audioDataUrl: string) => {
-    console.log("AudioMode received audio data URL:", audioDataUrl.substring(0, 50) + "...");
+    console.log(
+      "AudioMode received audio data URL:",
+      audioDataUrl.substring(0, 50) + "...",
+    );
 
     await sendMessage({
       parts: [
@@ -139,9 +150,9 @@ const AudioMode = memo(function AudioMode() {
           type: "file",
           data: audioDataUrl,
           mediaType: "audio/webm",
-          filename: "recording.webm"
-        }
-      ]
+          filename: "recording.webm",
+        },
+      ],
     });
   };
 
@@ -152,7 +163,11 @@ const AudioMode = memo(function AudioMode() {
       onTranscript: handleTranscript,
     });
 
-  const isProcessing = status === "submitted" || status === "streaming" || isTranscribing || isUsingTool;
+  const isProcessing =
+    status === "submitted" ||
+    status === "streaming" ||
+    isTranscribing ||
+    isUsingTool;
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -185,7 +200,11 @@ const AudioMode = memo(function AudioMode() {
               className={getInnerRingClasses()}
               style={{
                 transform: "rotate(45deg)",
-                animationDuration: isUsingTool ? "1.5s" : isTranscribing ? "1.5s" : "3s",
+                animationDuration: isUsingTool
+                  ? "1.5s"
+                  : isTranscribing
+                    ? "1.5s"
+                    : "3s",
               }}
             />
             <span
@@ -202,9 +221,7 @@ const AudioMode = memo(function AudioMode() {
           </div>
         </button>
 
-        <div className={getStatusTextClasses()}>
-          {getStatusText()}
-        </div>
+        <div className={getStatusTextClasses()}>{getStatusText()}</div>
       </div>
     </div>
   );
