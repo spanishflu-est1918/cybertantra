@@ -1,13 +1,9 @@
-import { Volume2, VolumeX } from "lucide-react";
-
 interface HeaderProps {
   mode: 'text' | 'audio';
   setMode: (mode: 'text' | 'audio') => void;
-  isTTSEnabled: boolean;
-  setIsTTSEnabled: (enabled: boolean) => void;
 }
 
-export default function Header({ mode, setMode, isTTSEnabled, setIsTTSEnabled }: HeaderProps) {
+export default function Header({ mode, setMode }: HeaderProps) {
   return (
     <div className="relative z-10 border-b border-white/10 backdrop-blur-sm select-none">
       <div className="flex items-center justify-between p-6">
@@ -43,17 +39,6 @@ export default function Header({ mode, setMode, isTTSEnabled, setIsTTSEnabled }:
               Audio
             </button>
           </div>
-          <button
-            onClick={() => setIsTTSEnabled(!isTTSEnabled)}
-            className="w-10 h-10 border border-white/20 flex items-center justify-center hover:border-white/40 transition-all duration-300 group"
-            title={isTTSEnabled ? "Disable voice" : "Enable voice"}
-          >
-            {isTTSEnabled ? (
-              <Volume2 className="w-4 h-4 group-hover:glow-white" />
-            ) : (
-              <VolumeX className="w-4 h-4 opacity-40 group-hover:opacity-100" />
-            )}
-          </button>
         </div>
       </div>
     </div>

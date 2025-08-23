@@ -1,105 +1,55 @@
-import { useState, useCallback, useRef } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
 
-export interface UseTextToSpeechOptions {
-  enabled?: boolean;
-  rate?: number;
-  pitch?: number;
-  voice?: string;
-}
-
-export function useTextToSpeech({
-  enabled = true,
-  rate = 0.9,
-  pitch = 1,
-  voice
-}: UseTextToSpeechOptions = {}) {
-  const [isEnabled, setIsEnabled] = useState(enabled);
+export function useTextToSpeech() {
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
-  const currentUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
-
-  const loadVoices = useCallback(() => {
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      const voices = window.speechSynthesis.getVoices();
-      setAvailableVoices(voices);
+  
+  const speak = useCallback((text: string, options?: {
+    rate?: number;
+    pitch?: number;
+    volume?: number;
+  }) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) {
+      console.warn('Speech synthesis not available');
+      return;
     }
-  }, []);
-
-  const speak = useCallback((text: string) => {
-    if (!isEnabled || !text.trim()) return;
-    if (typeof window === 'undefined' || !window.speechSynthesis) return;
-
+    
     // Cancel any ongoing speech
     window.speechSynthesis.cancel();
-
+    
+    // Create and speak new utterance
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = rate;
-    utterance.pitch = pitch;
-
-    // Set voice if specified
-    if (voice && availableVoices.length > 0) {
-      const selectedVoice = availableVoices.find(v => 
-        v.name === voice || v.voiceURI === voice
-      );
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-      }
-    }
-
-    utterance.onstart = () => {
-      setIsSpeaking(true);
-    };
-
-    utterance.onend = () => {
-      setIsSpeaking(false);
-      currentUtteranceRef.current = null;
-    };
-
-    utterance.onerror = (event) => {
-      console.error('[TTS] Speech error:', event.error);
-      setIsSpeaking(false);
-      currentUtteranceRef.current = null;
-    };
-
-    currentUtteranceRef.current = utterance;
+    utterance.rate = options?.rate ?? 0.9;
+    utterance.pitch = options?.pitch ?? 1.0;
+    utterance.volume = options?.volume ?? 1.0;
+    
+    // Track speaking state
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    
+    utteranceRef.current = utterance;
     window.speechSynthesis.speak(utterance);
-  }, [isEnabled, rate, pitch, voice, availableVoices]);
-
-  const stop = useCallback(() => {
+  }, []);
+  
+  const cancel = useCallback(() => {
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
-      currentUtteranceRef.current = null;
     }
   }, []);
-
-  const toggle = useCallback(() => {
-    setIsEnabled(prev => !prev);
-  }, []);
-
-  const pause = useCallback(() => {
-    if (typeof window !== 'undefined' && window.speechSynthesis && isSpeaking) {
-      window.speechSynthesis.pause();
-    }
-  }, [isSpeaking]);
-
-  const resume = useCallback(() => {
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.resume();
-    }
-  }, []);
-
+  
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cancel();
+    };
+  }, [cancel]);
+  
   return {
-    isEnabled,
-    isSpeaking,
-    availableVoices,
     speak,
-    stop,
-    pause,
-    resume,
-    toggle,
-    setIsEnabled,
-    loadVoices,
-    isSupported: typeof window !== 'undefined' && 'speechSynthesis' in window
+    cancel,
+    isSpeaking,
+    isSupported: typeof window !== 'undefined' && !!window.speechSynthesis
   };
 }

@@ -9,3 +9,4 @@ export type { AIConfig } from './config';
 
 // Prompts
 export { CYBERTANTRA_SYSTEM_PROMPT } from './prompts/cybertantra-agent';
+export { DATTATREYA_SYSTEM_PROMPT } from './prompts/dattatreya';

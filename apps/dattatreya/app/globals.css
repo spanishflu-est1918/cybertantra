@@ -62,6 +62,11 @@ body {
   100% { opacity: 1; }
 }
 
+@keyframes slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
 .animate-slow-pulse {
   animation: slow-pulse 4s ease-in-out infinite;
 }
@@ -76,6 +81,18 @@ body {
 
 .animate-fade-in {
   animation: fade-in 0.5s ease-out;
+}
+
+.animate-slide {
+  animation: slide 1.5s ease-in-out infinite;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
 }
 
 /* Custom scrollbar */
