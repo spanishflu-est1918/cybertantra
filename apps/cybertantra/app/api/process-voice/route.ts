@@ -1,6 +1,6 @@
-import { streamText, tool } from "ai";
+import { streamText, convertToModelMessages, tool as aiTool } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { z } from "zod";
+import { z as zodbert } from "zod";
 import {
   QueryAgent,
   getAIConfig,
@@ -17,14 +17,14 @@ export async function POST(req: Request) {
   const validationError = await validateRequest(req);
   if (validationError) return validationError;
 
-  const { transcript } = await req.json();
+  const { messages } = await req.json();
 
-  if (!transcript) {
-    return new Response("No transcript provided", { status: 400 });
+  if (!messages || messages.length === 0) {
+    return new Response("No messages provided", { status: 400 });
   }
 
-  console.log('=== Process Voice Request ===');
-  console.log('Transcript received:', transcript);
+  console.log("=== Process Voice Request ===");
+  console.log("Messages received:", messages.length);
 
   try {
     const config = getAIConfig();
@@ -44,67 +44,49 @@ export async function POST(req: Request) {
 
     // Generate response with RAG as a tool
     const result = streamText({
-      model: openrouter("anthropic/claude-sonnet-4"),
+      model: openrouter("anthropic/claude-3.5-sonnet"),
       system: DATTATREYA_SYSTEM_PROMPT,
-      messages: [{ role: "user", content: transcript }],
-      temperature: 0.8,
-      maxOutputTokens: 500,
+      messages: convertToModelMessages(messages),
+      temperature: 0.7,
+      maxOutputTokens: 2000,
+      // Tool call streaming is enabled by default in v5
       tools: {
-        searchLectures: tool({
+        searchLectures: aiTool({
           description:
-            "Search the lecture database for relevant content about tantra, consciousness, cyberspace, or related topics",
-          inputSchema: z.object({
-            query: z
+            "Search the lecture database for relevant content about tantra, consciousness, cyberspace, or related topics. Use this tool when the user asks specific questions that would benefit from the lecture corpus.",
+          inputSchema: zodbert.object({
+            query: zodbert
               .string()
-              .describe("The search query to find relevant lecture content"),
-            limit: z
+              .describe("The search query string"),
+            limit: zodbert
               .number()
               .optional()
-              .default(10)
+              .default(15)
               .describe("Number of results to retrieve"),
           }),
-          execute: async ({ query, limit }) => {
-            console.log('searchLectures tool called with query:', query, 'limit:', limit);
-            const chunks = await queryAgent.retrieve(query, limit);
-            console.log('Retrieved', chunks.length, 'chunks from database');
-            const result = chunks
-              .map(
-                (chunk, i) =>
-                  `[${i + 1}] From "${chunk.source}":\n${chunk.text}`,
-              )
-              .join("\n\n---\n\n");
-            console.log('Returning context of length:', result.length);
-            return result;
+          execute: async ({ query, limit = 15 }) => {
+            console.log(
+              "searchLectures tool called with query:",
+              query,
+              "limit:",
+              limit,
+            );
+            
+            // Use the full query method which includes synthesis
+            const response = await queryAgent.query(query, limit);
+            console.log("Generated synthesized response of length:", response.length);
+            
+            return response;
           },
         }),
       },
     });
 
-    // Collect the full response
-    let fullResponse = "";
-    console.log('Starting to collect AI response...');
-    for await (const chunk of result.textStream) {
-      fullResponse += chunk;
-    }
-    
-    console.log('Full AI Response:', fullResponse);
-    console.log('Response length:', fullResponse.length);
-
-    // Return JSON response with CORS headers
+    // Use AI SDK's built-in streaming response with CORS headers
     const headers = await corsHeaders();
-    return new Response(
-      JSON.stringify({
-        transcript,
-        response: fullResponse,
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          ...headers,
-        },
-      },
-    );
+    return result.toUIMessageStreamResponse({
+      headers,
+    });
   } catch (error) {
     console.error("Process voice error:", error);
     const headers = await corsHeaders();
