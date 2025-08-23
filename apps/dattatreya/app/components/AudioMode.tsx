@@ -99,11 +99,57 @@ const AudioMode = memo(function AudioMode() {
     processorRef.current.updateSpeakFunction(speak);
   }, [speak]);
 
-  const { messages, sendMessage, status, error } = useChat({
+  const { messages, sendMessage, status, error, setMessages } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
+    onData: ({ data, type }) => {
+      // Handle message replacement when audio was transcribed
+      if (type === "data-message-replacement") {
+        const replacementData = data as {
+          messageIndex: number;
+          newContent: string;
+        };
+        console.log(
+          "[AUDIO MODE] Replacing audio message with transcribed text:",
+          replacementData,
+        );
+        setMessages((prevMessages) => {
+          const newMessages = [...prevMessages];
+          if (
+            replacementData.messageIndex >= 0 &&
+            replacementData.messageIndex < newMessages.length
+          ) {
+            // Replace the audio message with transcribed text
+            newMessages[replacementData.messageIndex] = {
+              ...newMessages[replacementData.messageIndex],
+              parts: [{ type: "text", text: replacementData.newContent }],
+            };
+          }
+          return newMessages;
+        });
+      }
+    },
   });
+
+  // Log messages to see if audio parts are being replaced with text
+  useEffect(() => {
+    console.log(
+      "[AUDIO MODE] Messages updated:",
+      messages.map((m) => ({
+        role: m.role,
+        parts: m.parts.map((p) => ({
+          type: p.type,
+          text: p.type === "text" ? p.text : undefined,
+          mediaType: p.type === "file" ? (p as any).mediaType : undefined,
+          url:
+            p.type === "file"
+              ? (p as any).url?.substring(0, 50) + "..."
+              : undefined,
+        })),
+      })),
+    );
+  }, [messages]);
 
   useEffect(() => {
     const lastMessage = messages[messages.length - 1];

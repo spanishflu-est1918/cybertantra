@@ -3,6 +3,8 @@ import {
   convertToModelMessages,
   tool as aiTool,
   stepCountIs,
+  createUIMessageStream,
+  createUIMessageStreamResponse,
 } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { z as zodbert } from "zod/v4";
@@ -25,10 +27,20 @@ export async function POST(req: Request) {
   bench.end("parse-json");
 
   bench.start("convert-ui-messages");
-  const messages = await convertUIMessagesToModelMessages(body.messages);
+  const convertedMessages = await convertUIMessagesToModelMessages(
+    body.messages,
+  );
   bench.end("convert-ui-messages");
 
-  if (!messages || messages.length === 0) {
+  // Check if we transcribed any audio (last message would be from user with audio)
+  const lastUserMessage = convertedMessages[convertedMessages.length - 1];
+  const hadAudioTranscription = body.messages[
+    body.messages.length - 1
+  ]?.parts?.some(
+    (p: any) => p.type === "file" && p.mediaType?.startsWith("audio/"),
+  );
+
+  if (!convertedMessages || convertedMessages.length === 0) {
     return new Response("No messages provided", { status: 400 });
   }
 
@@ -55,7 +67,7 @@ export async function POST(req: Request) {
     const result = streamText({
       model: openrouter("anthropic/claude-sonnet-4"),
       system: DATTATREYA_SYSTEM_PROMPT,
-      messages: convertToModelMessages(messages),
+      messages: convertToModelMessages(convertedMessages),
       temperature: 0.7,
       maxOutputTokens: 2000, // default, will be dynamically adjusted
       onStepFinish: ({ toolCalls }) => {
@@ -132,12 +144,43 @@ export async function POST(req: Request) {
         }),
       },
       toolChoice: "auto",
-      stopWhen: stepCountIs(5),
+      stopWhen: stepCountIs(25),
     });
     bench.end("ai-stream-generation");
     bench.summary();
 
-    return result.toUIMessageStreamResponse();
+    // If we had audio transcription, create a custom stream to handle message replacement
+    if (hadAudioTranscription) {
+      const stream = createUIMessageStream({
+        originalMessages: convertedMessages,
+        execute: ({ writer }) => {
+          // Send a custom data part to signal message replacement
+          writer.write({
+            type: "data-message-replacement",
+            data: {
+              messageIndex: convertedMessages.length - 1,
+              newContent:
+                convertedMessages[convertedMessages.length - 1].content ||
+                convertedMessages[convertedMessages.length - 1].parts
+                  ?.filter((p: any) => p.type === "text")
+                  .map((p: any) => p.text)
+                  .join(" "),
+            },
+            transient: true,
+          });
+
+          // Merge the AI response stream
+          writer.merge(result.toUIMessageStream());
+        },
+      });
+
+      return createUIMessageStreamResponse({ stream });
+    }
+
+    // Normal response without audio transcription
+    return result.toUIMessageStreamResponse({
+      originalMessages: convertedMessages,
+    });
   } catch (error) {
     console.error("Dattatreya chat error:", error);
     return new Response(
