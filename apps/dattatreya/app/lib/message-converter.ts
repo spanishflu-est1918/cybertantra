@@ -1,20 +1,8 @@
 import { transcribeAudio } from "./transcribe-server";
 import { UIMessage } from "ai";
 
-// Define custom data parts that completely replace the default ones
-export type CustomDataPart = 
-  | { type: "text"; text: string }
-  | { type: "file"; data: string; mediaType?: string; filename?: string };
-
-// Create custom message type
-export type DattatreyaMessage = {
-  id?: string;
-  role: "user" | "assistant" | "system";
-  parts: CustomDataPart[];
-};
-
 export async function convertUIMessagesToModelMessages(
-  uiMessages: DattatreyaMessage[],
+  uiMessages: UIMessage[],
 ): Promise<any[]> {
   const convertedMessages = [];
 
@@ -33,7 +21,7 @@ export async function convertUIMessagesToModelMessages(
           console.log("[CONVERTER] Processing audio file part");
           const convertStart = performance.now();
 
-          const response = await fetch(part.data!);
+          const response = await fetch(part.url!);  // Changed from part.data to part.url
           const blob = await response.blob();
           const file = new File([blob], part.filename || "audio.webm", {
             type: part.mediaType,

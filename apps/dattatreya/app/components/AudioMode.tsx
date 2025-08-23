@@ -4,7 +4,6 @@ import { DefaultChatTransport } from "ai";
 import { useAudioRecorder } from "../hooks/useAudioRecorder";
 import { useTextToSpeech } from "../hooks/useTextToSpeech";
 import { createStreamTextProcessor } from "../utils/streamTextProcessor";
-import type { DattatreyaMessage } from "../lib/message-converter";
 
 const AudioMode = memo(function AudioMode() {
   const { speak, isSpeaking } = useTextToSpeech();
@@ -100,7 +99,7 @@ const AudioMode = memo(function AudioMode() {
     processorRef.current.updateSpeakFunction(speak);
   }, [speak]);
 
-  const { messages, sendMessage, status, error } = useChat<DattatreyaMessage>({
+  const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
@@ -149,7 +148,7 @@ const AudioMode = memo(function AudioMode() {
       parts: [
         {
           type: "file",
-          data: audioDataUrl,
+          url: audioDataUrl, // Changed from 'data' to 'url' to match FileUIPart
           mediaType: "audio/webm",
           filename: "recording.webm",
         },
