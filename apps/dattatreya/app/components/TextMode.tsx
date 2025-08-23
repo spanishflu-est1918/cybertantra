@@ -14,7 +14,7 @@ export default function TextMode({
   isLoading,
   onSubmit
 }: TextModeProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     const focusInterval = setInterval(() => {
@@ -27,35 +27,40 @@ export default function TextMode({
   }, [isLoading]);
 
   return (
-    <div className="relative z-10 border-t border-white/10 backdrop-blur-sm">
-      <form onSubmit={onSubmit} className="p-6">
-        <div className="flex items-center space-x-4">
-          <div className="flex-1 relative group">
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Speak your truth..."
-              className="w-full px-6 py-3 bg-white/[0.02] border border-white/10 focus:border-white/30 outline-none transition-all duration-300 font-light tracking-wide placeholder:text-white/20 placeholder:tracking-[0.2em] group-hover:border-white/20"
-              disabled={isLoading}
-            />
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-white/10 pointer-events-none">
-              ⛧
-            </div>
+    <div className="flex justify-center p-4">
+      <form onSubmit={onSubmit} className="w-full max-w-3xl">
+        <div className="relative">
+          <textarea
+            ref={inputRef}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Send a message..."
+            rows={2}
+            className="w-full border border-white/20 px-3 py-2 pb-10 text-base bg-white/[0.02] placeholder:text-white/40 focus-visible:outline-none focus-visible:ring-0 focus-visible:border-white/40 disabled:cursor-not-allowed disabled:opacity-50 min-h-[56px] max-h-[200px] overflow-hidden resize-none rounded-2xl text-white/90 transition-all duration-200"
+            disabled={isLoading}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                onSubmit(e);
+              }
+            }}
+          />
+          
+          <div className="absolute bottom-0 right-0 p-2">
+            <button
+              type="submit"
+              disabled={isLoading || !input?.trim()}
+              className="flex items-center justify-center bg-white text-black hover:bg-white/90 rounded-full p-1.5 h-fit border border-white/20 transition-colors disabled:opacity-50 disabled:pointer-events-none"
+            >
+              {isLoading ? (
+                <div className="w-3 h-3 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+              ) : (
+                <Send className="w-3 h-3" />
+              )}
+            </button>
           </div>
-          <button
-            type="submit"
-            disabled={isLoading || !input?.trim()}
-            className="w-14 h-14 border border-white/20 flex items-center justify-center hover:border-white/40 disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-300 group relative overflow-hidden"
-          >
-            <Send className="w-4 h-4 relative z-10 group-hover:glow-white transition-all" />
-            <div className="absolute inset-0 bg-white/5 scale-0 group-hover:scale-100 transition-transform duration-300" />
-          </button>
         </div>
       </form>
-      
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
     </div>
   );
 }

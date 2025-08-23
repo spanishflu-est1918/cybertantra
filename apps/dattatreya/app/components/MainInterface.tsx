@@ -18,7 +18,7 @@ export default function MainInterface() {
       {mode === 'text' ? (
         <Chat />
       ) : (
-        <AudioMode setMode={setMode} />
+        <AudioMode />
       )}
     </div>
   );
