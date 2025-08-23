@@ -33,7 +33,6 @@ export async function POST(req: Request) {
   bench.end("convert-ui-messages");
 
   // Check if we transcribed any audio (last message would be from user with audio)
-  const lastUserMessage = convertedMessages[convertedMessages.length - 1];
   const hadAudioTranscription = body.messages[
     body.messages.length - 1
   ]?.parts?.some(
