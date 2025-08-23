@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { useTerminalContext } from '../lib/contexts/TerminalContext';
-import { useWebSpeech } from '../lib/hooks/useWebSpeech';
+import React, { useState, useRef, useEffect } from "react";
+import { useTerminalContext } from "../lib/contexts/TerminalContext";
+import { useWebSpeech } from "../lib/hooks/useWebSpeech";
 
 interface AudioModeProps {
   onSendMessage: (text: string) => void;
@@ -10,10 +10,14 @@ interface AudioModeProps {
   isLoading: boolean;
 }
 
-export default function AudioMode({ onSendMessage, messages, isLoading }: AudioModeProps) {
+export default function AudioMode({
+  onSendMessage,
+  messages,
+  isLoading,
+}: AudioModeProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [currentTranscript, setCurrentTranscript] = useState('');
+  const [currentTranscript, setCurrentTranscript] = useState("");
   const [useWebSpeechAPI, setUseWebSpeechAPI] = useState(true);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -30,16 +34,16 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
       setCurrentTranscript(text);
       onSendMessage(text);
       setTimeout(() => {
-        setCurrentTranscript('');
+        setCurrentTranscript("");
         setIsListening(false);
       }, 2000);
     },
     onError: (error) => {
-      console.error('Web Speech error:', error);
+      console.error("Web Speech error:", error);
       setIsListening(false);
       // Fallback to API-based speech
       setUseWebSpeechAPI(false);
-    }
+    },
   });
 
   // Handle recording
@@ -53,7 +57,9 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
     } else {
       // Fallback to API-based recording
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         const mediaRecorder = new MediaRecorder(stream);
         mediaRecorderRef.current = mediaRecorder;
         audioChunksRef.current = [];
@@ -63,14 +69,16 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
         };
 
         mediaRecorder.onstop = async () => {
-          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+          const audioBlob = new Blob(audioChunksRef.current, {
+            type: "audio/webm",
+          });
           await transcribeAudio(audioBlob);
-          stream.getTracks().forEach(track => track.stop());
+          stream.getTracks().forEach((track) => track.stop());
         };
 
         mediaRecorder.start();
       } catch (error) {
-        console.error('Error accessing microphone:', error);
+        console.error("Error accessing microphone:", error);
         setIsRecording(false);
         setIsListening(false);
       }
@@ -91,16 +99,16 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
     setIsListening(true);
     try {
       const formData = new FormData();
-      formData.append('audio', audioBlob, 'recording.webm');
-      formData.append('model', 'whisper-1');
+      formData.append("audio", audioBlob, "recording.webm");
+      formData.append("model", "whisper-1");
 
-      const response = await fetch('/api/speech', {
-        method: 'POST',
+      const response = await fetch("/api/speech", {
+        method: "POST",
         body: formData,
       });
 
       if (!response.ok) {
-        throw new Error('Failed to transcribe audio');
+        throw new Error("Failed to transcribe audio");
       }
 
       const { text } = await response.json();
@@ -108,17 +116,17 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
       onSendMessage(text);
 
       setTimeout(() => {
-        setCurrentTranscript('');
+        setCurrentTranscript("");
         setIsListening(false);
       }, 2000);
     } catch (error) {
-      console.error('Error transcribing audio:', error);
+      console.error("Error transcribing audio:", error);
       setIsListening(false);
     }
   };
 
   // Get the latest AI message
-  const latestAIMessage = messages.filter(m => m.role === 'assistant').pop();
+  const latestAIMessage = messages.filter((m) => m.role === "assistant").pop();
 
   // Play TTS for new AI messages
   useEffect(() => {
@@ -134,16 +142,16 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
     } else {
       // Fallback to API-based TTS
       try {
-        const response = await fetch('/api/tts', {
-          method: 'POST',
+        const response = await fetch("/api/tts", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ text }),
         });
 
         if (!response.ok) {
-          throw new Error('Failed to generate speech');
+          throw new Error("Failed to generate speech");
         }
 
         const audioBlob = await response.blob();
@@ -151,7 +159,7 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
         const audio = new Audio(audioUrl);
         audio.play();
       } catch (error) {
-        console.error('Error playing text-to-speech:', error);
+        console.error("Error playing text-to-speech:", error);
       }
     }
   };
@@ -160,7 +168,7 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center p-8">
       {/* API indicator */}
       <div className="absolute top-4 left-4 text-xs text-green-400/40">
-        {isSTTSupported && isTTSSupported ? 'Web Speech API' : 'OpenAI API'}
+        {isSTTSupported && isTTSSupported ? "Web Speech API" : "OpenAI API"}
       </div>
 
       {/* Response area */}
@@ -176,7 +184,7 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
         </div>
         {currentTranscript && (
           <div className="text-center text-green-300 mb-4">
-            > {currentTranscript}
+            {currentTranscript}
           </div>
         )}
       </div>
@@ -190,23 +198,28 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
           onTouchEnd={stopRecording}
           className={`
             w-32 h-32 rounded-full border-4 transition-all duration-300
-            ${isRecording
-              ? 'border-red-500 bg-red-900/20 scale-110 animate-pulse'
-              : 'border-green-400 bg-green-900/10 hover:bg-green-900/20'
+            ${
+              isRecording
+                ? "border-red-500 bg-red-900/20 scale-110 animate-pulse"
+                : "border-green-400 bg-green-900/10 hover:bg-green-900/20"
             }
             flex items-center justify-center relative overflow-hidden
           `}
         >
           {/* Sacred geometry pattern */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className={`
+            <div
+              className={`
               w-24 h-24 border-2 border-green-400/30 rounded-full absolute
-              ${isRecording ? 'animate-ping' : 'animate-pulse'}
-            `} />
-            <div className={`
+              ${isRecording ? "animate-ping" : "animate-pulse"}
+            `}
+            />
+            <div
+              className={`
               w-16 h-16 border border-green-400/20 rotate-45 absolute
-              ${isRecording ? 'animate-spin' : ''}
-            `} />
+              ${isRecording ? "animate-spin" : ""}
+            `}
+            />
             <div className="w-8 h-8 bg-green-400/50 rounded-full" />
           </div>
 
@@ -216,13 +229,17 @@ export default function AudioMode({ onSendMessage, messages, isLoading }: AudioM
             fill="currentColor"
             viewBox="0 0 20 20"
           >
-            <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
+            <path
+              fillRule="evenodd"
+              d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
+              clipRule="evenodd"
+            />
           </svg>
         </button>
 
         {/* Instructions */}
         <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-green-400/60 whitespace-nowrap">
-          {isRecording ? 'Release to send' : 'Hold to speak'}
+          {isRecording ? "Release to send" : "Hold to speak"}
         </div>
       </div>
     </div>
