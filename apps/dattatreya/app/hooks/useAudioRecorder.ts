@@ -6,7 +6,8 @@ interface RecordingOptions {
   skipDownload?: boolean;
 }
 
-export function useAudioRecorder() {
+export function useAudioRecorder(options: RecordingOptions = {}) {
+  console.log('🎨 useAudioRecorder initialized with options:', options);
   const [isRecording, setIsRecording] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
@@ -14,7 +15,7 @@ export function useAudioRecorder() {
   const audioChunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
 
-  const startRecording = useCallback(async (options: RecordingOptions = {}) => {
+  const startRecording = useCallback(async () => {
     console.log('🎤 Starting recording with options:', options);
     setIsRecording(true);
     audioChunksRef.current = [];
@@ -70,28 +71,46 @@ export function useAudioRecorder() {
         }
         
         // Transcribe if not skipped and callback provided
+        console.log('📝 Transcription check:', { 
+          skipTranscription: options.skipTranscription, 
+          hasCallback: !!options.onTranscript,
+          fullOptions: options
+        });
+        
         if (!options.skipTranscription && options.onTranscript) {
           try {
+            console.log('🎯 Starting transcription...');
             setIsTranscribing(true);
             const formData = new FormData();
             formData.append('audio', audioBlob, 'recording.webm');
             
+            console.log('📤 Sending to /api/transcribe...');
             const response = await fetch('/api/transcribe', {
               method: 'POST',
               body: formData,
             });
 
+            console.log('📥 Response status:', response.status);
             if (response.ok) {
               const { text } = await response.json();
+              console.log('📝 Transcript received:', text);
               if (text?.trim()) {
                 options.onTranscript(text.trim());
+              } else {
+                console.warn('⚠️ Empty transcript received');
               }
+            } else {
+              const error = await response.text();
+              console.error('❌ Transcription failed:', error);
             }
           } catch (error) {
-            console.error('Transcription error:', error);
+            console.error('❌ Transcription error:', error);
           } finally {
             setIsTranscribing(false);
+            console.log('✅ Transcription complete');
           }
+        } else {
+          console.log('⏭️ Skipping transcription');
         }
         
         // Clean up stream
@@ -108,7 +127,7 @@ export function useAudioRecorder() {
       console.error('❌ Error accessing microphone:', error);
       setIsRecording(false);
     }
-  }, []);
+  }, [options]);
 
   const stopRecording = useCallback(() => {
     console.log('🔴 Stop recording called');
@@ -122,11 +141,11 @@ export function useAudioRecorder() {
     }
   }, []);
 
-  const toggleRecording = useCallback((options: RecordingOptions = {}) => {
+  const toggleRecording = useCallback(() => {
     if (isRecording) {
       stopRecording();
     } else {
-      startRecording(options);
+      startRecording();
     }
   }, [isRecording, startRecording, stopRecording]);
 

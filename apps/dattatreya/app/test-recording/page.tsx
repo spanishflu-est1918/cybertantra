@@ -10,18 +10,14 @@ export default function TestRecording() {
     startRecording, 
     stopRecording, 
     isSupported 
-  } = useAudioRecorder();
+  } = useAudioRecorder({
+    skipTranscription: true,
+    skipDownload: false
+  });
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const handleStartRecording = () => {
-    startRecording({
-      skipTranscription: true,
-      skipDownload: false
-    });
-  };
 
   // Avoid hydration mismatch by only rendering after mount
   if (!mounted) {
@@ -48,7 +44,7 @@ export default function TestRecording() {
       
       {/* Recording Button */}
       <button 
-        onClick={isRecording ? stopRecording : handleStartRecording}
+        onClick={isRecording ? stopRecording : startRecording}
         className={`px-10 py-5 text-lg font-bold text-white rounded-lg cursor-pointer transition-all ${
           isRecording ? 'bg-red-600 hover:bg-red-700' : 'bg-green-500 hover:bg-green-600'
         }`}

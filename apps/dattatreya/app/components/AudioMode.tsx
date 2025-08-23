@@ -15,7 +15,11 @@ const AudioMode = memo(function AudioMode({
     isTranscribing,
     startRecording,
     stopRecording
-  } = useAudioRecorder();
+  } = useAudioRecorder({
+    skipDownload: true,
+    skipTranscription: false,
+    onTranscript
+  });
   
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ const AudioMode = memo(function AudioMode({
     if (isRecording) {
       stopRecording();
     } else {
-      startRecording(onTranscript);
+      startRecording();
     }
   };
 
