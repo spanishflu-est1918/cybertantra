@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "youtube": "bun run src/commands/download-youtube.ts",
+    "absorb": "bun run src/commands/absorb.ts",
     "ingest": "bun run src/commands/ingest.ts",
     "transcribe": "bun run src/commands/transcribe.ts",
     "query": "bun run src/commands/query.ts",

@@ -16,6 +16,23 @@ async function main() {
     const config = getAIConfig();
     const agent = new QueryAgent(config);
     
+    // Check if a question was passed as a command-line argument
+    const args = process.argv.slice(2);
+    if (args.length > 0) {
+      const question = args.join(' ');
+      console.log(chalk.gray('\nSearching lecture corpus...'));
+      
+      try {
+        const answer = await agent.query(question);
+        console.log(chalk.green('\nAnswer:'));
+        console.log(answer);
+      } catch (error) {
+        console.error(chalk.red('Error:'), error);
+      }
+      return;
+    }
+    
+    // Interactive mode
     console.log(chalk.cyan('\n🧘 Cybertantra Query Interface\n'));
     
     while (true) {

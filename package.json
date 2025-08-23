@@ -17,6 +17,7 @@
     "cli:chat": "cd packages/cli && bun run chat",
     "cli:transcribe": "cd packages/cli && bun run transcribe",
     "cli:youtube": "cd packages/cli && bun run youtube",
+    "cli:absorb": "cd packages/cli && bun run absorb",
     "transcribe": "bun packages/lecture-tools/src/transcription/transcribe.ts"
   },
   "devDependencies": {

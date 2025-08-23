@@ -64,6 +64,7 @@ program
   .option('-m, --model <tier>', 'Model tier: best or nano', 'best')
   .option('-b, --batch <size>', 'Batch size for parallel processing', '1')
   .option('--dry-run', 'Show what would be transcribed without doing it')
+  .option('-y, --yes', 'Skip confirmation prompt')
   .action(async (options) => {
     if (!process.env.ASSEMBLYAI_API_KEY) {
       console.error('❌ ASSEMBLYAI_API_KEY not found in .env file');
@@ -104,19 +105,21 @@ program
         return;
       }
       
-      // Confirm
-      const { proceed } = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'proceed',
-          message: `Proceed with transcription? (Est. $${estimatedCost.toFixed(2)})`,
-          default: true,
-        },
-      ]);
-      
-      if (!proceed) {
-        console.log('Transcription cancelled');
-        return;
+      // Confirm (skip if -y flag is set)
+      if (!options.yes) {
+        const { proceed } = await inquirer.prompt([
+          {
+            type: 'confirm',
+            name: 'proceed',
+            message: `Proceed with transcription? (Est. $${estimatedCost.toFixed(2)})`,
+            default: true,
+          },
+        ]);
+        
+        if (!proceed) {
+          console.log('Transcription cancelled');
+          return;
+        }
       }
       
       // Create job

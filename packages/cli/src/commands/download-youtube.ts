@@ -48,8 +48,7 @@ program
           '-f', 'bestaudio/best', // Better format selection
           '-o', outputPath,
           '--no-playlist', // Don't download entire playlist
-          '--ignore-errors', // Continue on errors
-          '--extract-flat', false, // Don't extract flat playlist
+          '--ignore-errors' // Continue on errors
         ]);
         
         console.log(`   ✅ Downloaded: ${filename}`);
