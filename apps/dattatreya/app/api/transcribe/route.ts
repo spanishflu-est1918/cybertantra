@@ -44,6 +44,52 @@ export async function POST(request: Request) {
       const transcript = await client.transcripts.transcribe({
         audio: tempFilePath,
         language_code: 'en',
+        content_safety: false,
+        word_boost: [
+          // Project names
+          'Dattatreya',
+          'cybertantra',
+          
+          // Core deities
+          'Shiva',
+          'Shakti',
+          'Kali',
+          'Ganapati',
+          'Ganesha',
+          'Ucchishta',
+          
+          // Sanskrit terms
+          'tantra',
+          'tantras',
+          'agama',
+          'nigama',
+          'kula',
+          'vajra',
+          'mantra',
+          'mantras',
+          'kala',
+          'devata',
+          'devatas',
+          'murti',
+          'Vamachara',
+          
+          // Chakras & energy centers
+          'Ajna',
+          'Vishuddha',
+          'Muladhara',
+          'chakra',
+          'chakras',
+          'Kundalini',
+          
+          // Spiritual concepts
+          'Mahavidyas',
+          'Aghora',
+          'prana',
+          'siddhis',
+          'communion',
+          'self-deification'
+        ],
+        boost_param: 'high'
       });
 
       console.log('Transcription status:', transcript.status);

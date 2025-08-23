@@ -1,10 +1,4 @@
-import { 
-  streamText, 
-  convertToModelMessages, 
-  tool as aiTool,
-  createUIMessageStream,
-  createUIMessageStreamResponse,
-} from "ai";
+import { streamText, convertToModelMessages, tool as aiTool } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { z as zodbert } from "zod";
 import {
@@ -48,82 +42,58 @@ export async function POST(req: Request) {
 
     const queryAgent = new QueryAgent(config);
 
-    // Create a custom UI message stream for tool status updates
-    const stream = createUIMessageStream({
-      execute: ({ writer }) => {
-        const result = streamText({
-          model: openrouter("anthropic/claude-3.5-sonnet"),
-          system: DATTATREYA_SYSTEM_PROMPT,
-          messages: convertToModelMessages(messages),
-          temperature: 0.7,
-          maxOutputTokens: 2000,
-          // Tool call streaming is enabled by default in v5
-          tools: {
-            searchLectures: aiTool({
-              description:
-                "Search the lecture database for relevant content about tantra, consciousness, cyberspace, or related topics. Use this tool when the user asks specific questions that would benefit from the lecture corpus.",
-              inputSchema: zodbert.object({
-                query: zodbert
-                  .string()
-                  .describe("The search query string"),
-                limit: zodbert
-                  .number()
-                  .optional()
-                  .default(15)
-                  .describe("Number of results to retrieve"),
-              }),
-              execute: async ({ query, limit = 15 }, { toolCallId }) => {
-                console.log(
-                  "searchLectures tool called with query:",
-                  query,
-                  "limit:",
-                  limit,
-                );
-                
-                // Send custom status update when tool starts
-                writer.write({
-                  type: 'data-tool-status',
-                  id: toolCallId,
-                  data: {
-                    name: 'searchLectures',
-                    status: 'searching',
-                    query: query,
-                  },
-                });
-                
-                // Use the full query method which includes synthesis
-                const response = await queryAgent.query(query, limit);
-                console.log("Generated synthesized response of length:", response.length);
-                
-                // Send custom status update when tool completes
-                writer.write({
-                  type: 'data-tool-status',
-                  id: toolCallId,
-                  data: {
-                    name: 'searchLectures',
-                    status: 'complete',
-                  },
-                });
-                
-                return response;
-              },
-            }),
+    // Generate response with RAG as a tool
+    const result = streamText({
+      model: openrouter("anthropic/claude-sonnet-4"),
+      system: DATTATREYA_SYSTEM_PROMPT,
+      messages: convertToModelMessages(messages),
+      temperature: 0.7,
+      maxOutputTokens: 2000,
+      tools: {
+        searchLectures: aiTool({
+          description:
+            "Search the lecture database for relevant content about tantra, consciousness, cyberspace, or related topics. Use this tool when the user asks specific questions that would benefit from the lecture corpus and relay the content to the user",
+          inputSchema: zodbert.object({
+            query: zodbert.string().describe("The search query string"),
+            limit: zodbert
+              .number()
+              .optional()
+              .default(15)
+              .describe("Number of results to retrieve"),
+          }),
+          execute: async ({ query, limit = 15 }) => {
+            console.log(
+              "searchLectures tool called with query:",
+              query,
+              "limit:",
+              limit,
+            );
+
+            // Use the full query method which includes synthesis
+            const response = await queryAgent.query(query, limit);
+            console.log(
+              "Generated synthesized response of length:",
+              response.length,
+            );
+            console.log("Tool returning response to main agent");
+
+            return response;
           },
-        });
-        
-        // Merge the streamText result into our custom stream
-        writer.merge(result.toUIMessageStream());
+        }),
       },
     });
 
-    // Return the custom stream with CORS headers
+    // Use AI SDK's built-in streaming response with CORS headers
     const headers = await corsHeaders();
-    return createUIMessageStreamResponse({
-      stream,
+    return result.toUIMessageStreamResponse({
       headers,
     });
   } catch (error) {
     console.error("Process voice error:", error);
+    console.error(
+      "Error stack:",
+      error instanceof Error ? error.stack : "No stack",
+    );
     const headers = await corsHeaders();
     return new Response(
       JSON.stringify({
