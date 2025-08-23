@@ -1,19 +1,16 @@
 import { transcribeAudio } from "./transcribe-server";
+import { UIMessage } from "ai";
 
-interface UIMessage {
-  id?: string;
-  role: "user" | "assistant" | "system";
-  parts?: Array<{
-    type: "text" | "file";
-    text?: string;
-    data?: string;
-    mediaType?: string;
-    filename?: string;
-  }>;
-}
+// Define custom data parts that include file type
+export type CustomDataPart = 
+  | { type: "text"; text: string }
+  | { type: "file"; data: string; mediaType?: string; filename?: string };
+
+// Extend the base UIMessage with our custom data parts
+export type DattatreyaMessage = UIMessage<any, CustomDataPart, any>;
 
 export async function convertUIMessagesToModelMessages(
-  uiMessages: UIMessage[],
+  uiMessages: DattatreyaMessage[],
 ): Promise<any[]> {
   const convertedMessages = [];
 

@@ -4,6 +4,7 @@ import { DefaultChatTransport } from "ai";
 import { useAudioRecorder } from "../hooks/useAudioRecorder";
 import { useTextToSpeech } from "../hooks/useTextToSpeech";
 import { createStreamTextProcessor } from "../utils/streamTextProcessor";
+import type { DattatreyaMessage } from "../lib/message-converter";
 
 const AudioMode = memo(function AudioMode() {
   const { speak, isSpeaking } = useTextToSpeech();
@@ -99,7 +100,7 @@ const AudioMode = memo(function AudioMode() {
     processorRef.current.updateSpeakFunction(speak);
   }, [speak]);
 
-  const { messages, sendMessage, status, error } = useChat({
+  const { messages, sendMessage, status, error } = useChat<DattatreyaMessage>({
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
