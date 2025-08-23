@@ -28,7 +28,9 @@ export function useAudioRecorder(options: RecordingOptions = {}) {
         throw err;
       });
       streamRef.current = stream;
-      const mediaRecorder = new MediaRecorder(stream);
+      const mediaRecorder = new MediaRecorder(stream, { 
+        mimeType: 'audio/webm;codecs=opus' 
+      });
       mediaRecorderRef.current = mediaRecorder;
 
       mediaRecorder.ondataavailable = (event) => {
@@ -38,7 +40,7 @@ export function useAudioRecorder(options: RecordingOptions = {}) {
       };
 
       mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm;codecs=opus' });
         
         // Download audio file if not skipped
         if (!options.skipDownload) {

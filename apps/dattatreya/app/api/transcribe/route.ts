@@ -1,6 +1,6 @@
 'use server';
 
-import { AssemblyAI } from 'assemblyai';
+import Groq from 'groq-sdk';
 
 export async function POST(request: Request) {
   try {
@@ -18,98 +18,32 @@ export async function POST(request: Request) {
     });
 
     // Check for API key
-    if (!process.env.ASSEMBLYAI_API_KEY) {
-      console.error('ASSEMBLYAI_API_KEY not configured');
+    if (!process.env.GROQ_API_KEY) {
+      console.error('GROQ_API_KEY not configured');
       return new Response('Transcription service not configured', { status: 500 });
     }
 
-    // Save audio to temp file since AssemblyAI needs a file path or URL
-    const fs = await import('fs/promises');
-    const path = await import('path');
-    const os = await import('os');
-    
-    const tempDir = os.tmpdir();
-    const tempFilePath = path.join(tempDir, `audio-${Date.now()}.webm`);
-    const audioBuffer = Buffer.from(await audio.arrayBuffer());
-    await fs.writeFile(tempFilePath, audioBuffer);
-    
-    console.log('Temp audio file:', tempFilePath);
-
-    // Use AssemblyAI directly
-    const client = new AssemblyAI({
-      apiKey: process.env.ASSEMBLYAI_API_KEY,
+    // Use Groq directly with the audio file
+    const client = new Groq({
+      apiKey: process.env.GROQ_API_KEY,
     });
 
     try {
-      const transcript = await client.transcripts.transcribe({
-        audio: tempFilePath,
-        language_code: 'en',
-        content_safety: false,
-        word_boost: [
-          // Project names
-          'Dattatreya',
-          'cybertantra',
-          
-          // Core deities
-          'Shiva',
-          'Shakti',
-          'Kali',
-          'Ganapati',
-          'Ganesha',
-          'Ucchishta',
-          
-          // Sanskrit terms
-          'tantra',
-          'tantras',
-          'agama',
-          'nigama',
-          'kula',
-          'vajra',
-          'mantra',
-          'mantras',
-          'kala',
-          'devata',
-          'devatas',
-          'murti',
-          'Vamachara',
-          
-          // Chakras & energy centers
-          'Ajna',
-          'Vishuddha',
-          'Muladhara',
-          'chakra',
-          'chakras',
-          'Kundalini',
-          
-          // Spiritual concepts
-          'Mahavidyas',
-          'Aghora',
-          'prana',
-          'siddhis',
-          'communion',
-          'self-deification'
-        ],
-        boost_param: 'high'
+      const transcription = await client.audio.transcriptions.create({
+        file: audio,
+        model: 'whisper-large-v3-turbo',
+        language: 'en',
+        prompt: `This is a conversation about tantric spirituality, mysticism, and esoteric practices. Key terms include: Dattatreya, cybertantra, Shiva, Shakti, Kali, Ganapati, Ganesha, Ucchishta, tantra, tantras, agama, nigama, kula, vajra, mantra, mantras, kala, devata, devatas, murti, Vamachara, Ajna, Vishuddha, Muladhara, chakra, chakras, Kundalini, Mahavidyas, Aghora, prana, siddhis, communion.`,
       });
 
-      console.log('Transcription status:', transcript.status);
-      
-      // Clean up temp file
-      await fs.unlink(tempFilePath).catch(() => {});
-      
-      if (transcript.status === 'error') {
-        console.error('AssemblyAI error:', transcript.error);
-        return Response.json({ text: '' });
-      }
-
-      const text = transcript.text || '';
+      const text = transcription.text || '';
       console.log('Transcript result:', text ? `"${text}"` : 'empty');
       
       // Just return the transcript - frontend will handle the streaming
       return Response.json({ text });
+      
     } catch (transcribeError) {
-      // Clean up temp file on error
-      await fs.unlink(tempFilePath).catch(() => {});
+      console.error('Groq transcription error:', transcribeError);
       throw transcribeError;
     }
     

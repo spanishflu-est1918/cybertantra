@@ -113,19 +113,14 @@ const AudioMode = memo(function AudioMode() {
       );
       setIsUsingTool(isToolActive);
       
-      // Get tool output if available
-      const toolOutput = toolParts.find(part => 
-        'state' in part && part.state === 'output-available' && 'output' in part
-      )?.output;
-      
-      // Get regular text
+      // Get regular text (ignore tool outputs - only speak the assistant's response)
       const text = lastMessage.parts
         .filter(part => part.type === "text")
         .map(part => part.text)
         .join("");
       
-      // Speak tool output if available, otherwise speak regular text
-      const contentToSpeak = (typeof toolOutput === 'string' ? toolOutput : text);
+      // Only speak the assistant's integrated response, not tool outputs
+      const contentToSpeak = text;
       processorRef.current.processText(contentToSpeak, status === "ready");
     }
   }, [messages, status]);
