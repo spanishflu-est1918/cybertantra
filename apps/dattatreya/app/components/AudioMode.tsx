@@ -106,60 +106,27 @@ const AudioMode = memo(function AudioMode() {
   useEffect(() => {
     const lastMessage = messages[messages.length - 1];
     if (lastMessage?.role === "assistant") {
-      console.log("Assistant message received with parts:", lastMessage.parts.length);
-      console.log("Message parts:", lastMessage.parts.map(p => ({
-        type: p.type,
-        state: 'state' in p ? p.state : undefined,
-        hasText: 'text' in p ? !!p.text : false,
-        textLength: 'text' in p && p.text ? p.text.length : 0
-      })));
-      
-      // Check for tool parts in the message
-      const toolParts = lastMessage.parts.filter(
-        (part) => part.type?.startsWith("tool-")
+      // Check for active tool calls
+      const toolParts = lastMessage.parts.filter(part => part.type?.startsWith("tool-"));
+      const isToolActive = toolParts.some(part => 
+        'state' in part && (part.state === 'input-streaming' || part.state === 'input-available')
       );
+      setIsUsingTool(isToolActive);
       
-      // Check if any tool is currently being called or executing
-      const hasActiveToolCall = toolParts.some(
-        (part) => {
-          // Check the state property for tool execution status
-          if ('state' in part) {
-            return part.state === 'input-streaming' || 
-                   part.state === 'input-available';
-            // When state is 'output-available' or 'output-error', tool is done
-          }
-          return false;
-        }
-      );
+      // Get tool output if available
+      const toolOutput = toolParts.find(part => 
+        'state' in part && part.state === 'output-available' && 'output' in part
+      )?.output;
       
-      // Set tool usage state
-      setIsUsingTool(hasActiveToolCall);
+      // Get regular text
+      const text = lastMessage.parts
+        .filter(part => part.type === "text")
+        .map(part => part.text)
+        .join("");
       
-      // Log for debugging
-      if (toolParts.length > 0) {
-        console.log("Tool parts detected:", toolParts.map(p => ({ 
-          type: p.type, 
-          state: 'state' in p ? p.state : 'no-state',
-          output: 'output' in p ? (typeof p.output === 'string' ? p.output.substring(0, 100) + '...' : p.output) : 'no-output'
-        })));
-      }
-      
-      const textParts = lastMessage.parts.filter(
-        (part) => part.type === "text",
-      );
-      const newText = textParts.map((part) => part.text).join("");
-      
-      console.log("Text content length:", newText.length);
-      console.log("Status:", status);
-      const isReady = status === "ready";
-      console.log("Is ready?", isReady);
-      
-      if (newText.length > 0) {
-        console.log("Text preview:", newText.substring(0, 100) + "...");
-        console.log("Calling processText with isComplete:", isReady);
-      }
-
-      processorRef.current.processText(newText, isReady);
+      // Speak tool output if available, otherwise speak regular text
+      const contentToSpeak = (typeof toolOutput === 'string' ? toolOutput : text);
+      processorRef.current.processText(contentToSpeak, status === "ready");
     }
   }, [messages, status]);
 
