@@ -1,128 +1,155 @@
-import { memo } from "react";
+import { memo, useEffect, useRef } from "react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { useAudioRecorder } from "../hooks/useAudioRecorder";
 import { useTextToSpeech } from "../hooks/useTextToSpeech";
+import { createStreamTextProcessor } from "../utils/streamTextProcessor";
 
-interface AudioModeProps {
-  setMode: (mode: 'text' | 'audio') => void;
-}
-
-const AudioMode = memo(function AudioMode({
-  setMode
-}: AudioModeProps) {
+const AudioMode = memo(function AudioMode() {
   const { speak, isSpeaking } = useTextToSpeech();
-  
-  const handleTranscriptAndResponse = (text: string, response?: string) => {
-    console.log('AudioMode handleTranscriptAndResponse called with:', {
-      transcript: text,
-      hasResponse: !!response,
-      responseLength: response?.length
-    });
-    
-    // Speak the response if available
-    if (response) {
-      console.log('Speaking AI response:', response.substring(0, 100) + '...');
-      speak(response);
-    } else {
-      console.warn('No AI response to speak');
-    }
-  };
-  
-  const {
-    isRecording,
-    isTranscribing,
-    startRecording,
-    stopRecording
-  } = useAudioRecorder({
-    skipDownload: true,
-    skipTranscription: false,
-    onTranscript: handleTranscriptAndResponse
+
+  const processorRef = useRef(createStreamTextProcessor(speak));
+
+  useEffect(() => {
+    processorRef.current.updateSpeakFunction(speak);
+  }, [speak]);
+
+  const { messages, sendMessage, status, error } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+    }),
   });
-  
+
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage?.role === "assistant") {
+      const textParts = lastMessage.parts.filter(
+        (part) => part.type === "text",
+      );
+      const newText = textParts.map((part) => part.text).join("");
+
+      processorRef.current.processText(newText, status === "ready");
+    }
+  }, [messages, status]);
+
+  useEffect(() => {
+    if (error) {
+      console.error("Chat error:", error);
+    }
+  }, [error]);
+
+  const handleTranscript = async (text: string) => {
+    console.log("AudioMode received transcript:", text);
+
+    await sendMessage({
+      text: text,
+    });
+  };
+
+  const { isRecording, isTranscribing, startRecording, stopRecording } =
+    useAudioRecorder({
+      skipDownload: true,
+      skipTranscription: false,
+      onTranscript: handleTranscript,
+    });
+
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    // Don't allow recording while speaking
-    if (isSpeaking) {
-      console.log('Cannot record while speaking');
+
+    if (isSpeaking || status === "submitted" || status === "streaming") {
+      console.log("Cannot record while speaking or processing");
       return;
     }
-    
+
     if (isRecording) {
       stopRecording();
     } else {
+      processorRef.current.reset();
       startRecording();
     }
   };
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center select-none">
-      
       <div className="relative select-none">
         <button
           onClick={handleClick}
           className={`
             w-32 h-32 rounded-full border-2 transition-all duration-300 select-none
-            ${isTranscribing
-              ? 'border-white bg-white/20 scale-110 animate-pulse'
-              : isSpeaking
-              ? 'border-white/20 bg-white/5 opacity-50 cursor-not-allowed'
-              : isRecording 
-              ? 'border-white/80 bg-white/10 scale-110' 
-              : 'border-white/30 hover:border-white/50'
+            ${
+              isTranscribing
+                ? "border-yellow-400/80 bg-gradient-to-br from-yellow-500/10 to-white/10 scale-110 animate-pulse"
+                : isSpeaking
+                  ? "border-white/20 bg-white/5 opacity-50 cursor-not-allowed"
+                  : isRecording
+                    ? "border-white/80 bg-white/10 scale-110"
+                    : "border-white/30 hover:border-white/50"
             }
             flex items-center justify-center relative overflow-hidden
           `}
           disabled={isSpeaking}
-          style={{
-            WebkitUserSelect: 'none',
-            WebkitTouchCallout: 'none',
-            userSelect: 'none'
-          }}
         >
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className={`
+            <div
+              className={`
               w-24 h-24 border rounded-full absolute
-              ${isTranscribing 
-                ? 'border-2 border-white/40 animate-ping' 
-                : isRecording 
-                ? 'border border-white/20 animate-ping' 
-                : 'border border-white/20 animate-slow-pulse'}
-            `} />
-            <div className={`
-              w-16 h-16 border border-white/10 absolute
-              ${isTranscribing || isRecording ? 'animate-spin' : ''}
-            `} style={{ 
-              transform: 'rotate(45deg)',
-              animationDuration: isTranscribing ? '1.5s' : '3s'
-            }} />
-            <span 
-              className={`text-4xl ${isTranscribing || isRecording ? 'animate-pulse' : ''}`}
+              ${
+                isTranscribing
+                  ? "border-2 border-yellow-400/30 animate-ping"
+                  : isRecording
+                    ? "border border-white/20 animate-ping"
+                    : "border border-white/20 animate-slow-pulse"
+              }
+            `}
+            />
+            <div
+              className={`
+              w-16 h-16 border absolute
+              ${
+                isTranscribing
+                  ? "border-yellow-500/20 animate-spin"
+                  : isRecording
+                    ? "border-white/10 animate-spin"
+                    : "border-white/10"
+              }
+            `}
               style={{
-                WebkitUserSelect: 'none',
-                WebkitTouchCallout: 'none',
-                userSelect: 'none',
-                pointerEvents: 'none'
+                transform: "rotate(45deg)",
+                animationDuration: isTranscribing ? "1.5s" : "3s",
+              }}
+            />
+            <span
+              className={`text-4xl ${isTranscribing ? "text-yellow-400/60 animate-pulse" : isRecording ? "animate-pulse" : ""}`}
+              style={{
+                WebkitUserSelect: "none",
+                WebkitTouchCallout: "none",
+                userSelect: "none",
+                pointerEvents: "none",
               }}
             >
-              {'⦿'}
+              {"⦿"}
             </span>
           </div>
         </button>
-        
-        <div className={`
+
+        <div
+          className={`
           absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-xs whitespace-nowrap tracking-wider select-none pointer-events-none
-          ${isTranscribing 
-            ? 'text-white/60 animate-pulse' 
-            : 'text-white/40'}
-        `}>
+          ${
+            isTranscribing
+              ? "text-yellow-400/70 animate-pulse"
+              : "text-white/40"
+          }
+        `}
+        >
           {isSpeaking
-            ? 'SPEAKING...'
+            ? "CHANNELING..."
             : isTranscribing
-            ? 'TRANSCRIBING...'
-            : isRecording 
-            ? 'TAP TO STOP'
-            : 'TAP TO RECORD'}
+              ? "DECODING..."
+              : isRecording
+                ? "TAP TO STOP"
+                : "TAP TO RECORD"}
         </div>
       </div>
     </div>

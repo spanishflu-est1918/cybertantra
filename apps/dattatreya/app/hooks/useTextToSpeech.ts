@@ -1,40 +1,65 @@
 import { useRef, useEffect, useCallback, useState } from 'react';
 
 export function useTextToSpeech() {
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const queueRef = useRef<string[]>([]);
+  const isProcessingRef = useRef(false);
   
-  const speak = useCallback((text: string, options?: {
-    rate?: number;
-    pitch?: number;
-    volume?: number;
-  }) => {
+  const processQueue = useCallback(() => {
+    if (isProcessingRef.current || queueRef.current.length === 0) {
+      return;
+    }
+
     if (typeof window === 'undefined' || !window.speechSynthesis) {
       console.warn('Speech synthesis not available');
       return;
     }
-    
-    // Cancel any ongoing speech
-    window.speechSynthesis.cancel();
-    
-    // Create and speak new utterance
+
+    const text = queueRef.current.shift();
+    if (!text) return;
+
+    isProcessingRef.current = true;
+    setIsSpeaking(true);
+
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = options?.rate ?? 0.9;
-    utterance.pitch = options?.pitch ?? 1.0;
-    utterance.volume = options?.volume ?? 1.0;
+    utterance.rate = 0.9;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
     
-    // Track speaking state
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
+    utterance.onend = () => {
+      isProcessingRef.current = false;
+      
+      // Process next item in queue
+      if (queueRef.current.length > 0) {
+        setTimeout(processQueue, 100); // Small delay between sentences
+      } else {
+        setIsSpeaking(false);
+      }
+    };
     
-    utteranceRef.current = utterance;
+    utterance.onerror = (event) => {
+      console.error('Speech synthesis error:', event);
+      isProcessingRef.current = false;
+      setIsSpeaking(false);
+      queueRef.current = []; // Clear queue on error
+    };
+    
     window.speechSynthesis.speak(utterance);
   }, []);
+
+  const speak = useCallback((text: string) => {
+    if (!text.trim()) return;
+    
+    console.log('Adding to speech queue:', text);
+    queueRef.current.push(text);
+    processQueue();
+  }, [processQueue]);
   
   const cancel = useCallback(() => {
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       window.speechSynthesis.cancel();
+      queueRef.current = [];
+      isProcessingRef.current = false;
       setIsSpeaking(false);
     }
   }, []);

@@ -59,71 +59,7 @@ export async function POST(request: Request) {
       const text = transcript.text || '';
       console.log('Transcript result:', text ? `"${text}"` : 'empty');
       
-      // Send transcript to cybertantra process-voice endpoint
-      if (text) {
-        console.log('Sending transcript to cybertantra API...');
-        
-        // Determine endpoint based on environment
-        const isDevelopment = process.env.NODE_ENV === 'development';
-        const endpoint = isDevelopment 
-          ? 'http://localhost:9999/api/process-voice'
-          : 'https://cybertantra-omega.vercel.app/api/process-voice';
-        
-        console.log('Using endpoint:', endpoint);
-        console.log('API Key present:', !!process.env.CYBERTANTRA_API_KEY);
-        
-        try {
-          const processResponse = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': process.env.CYBERTANTRA_API_KEY || '',
-            },
-            body: JSON.stringify({ transcript: text }),
-          });
-          
-          console.log('Response status:', processResponse.status);
-          
-          if (processResponse.ok) {
-            const processData = await processResponse.json();
-            console.log('AI Response received:', processData.response ? processData.response.substring(0, 100) + '...' : 'No response');
-            return Response.json({ 
-              text,
-              response: processData.response 
-            });
-          } else {
-            const errorText = await processResponse.text();
-            console.error('API error:', processResponse.status, errorText);
-          }
-        } catch (processError) {
-          console.error('Failed to process transcript:', processError.message);
-          // Fallback to production if local fails in development
-          if (isDevelopment) {
-            console.log('Trying production endpoint as fallback...');
-            try {
-              const fallbackResponse = await fetch('https://cybertantra-omega.vercel.app/api/process-voice', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'x-api-key': process.env.CYBERTANTRA_API_KEY || '',
-                },
-                body: JSON.stringify({ transcript: text }),
-              });
-              
-              if (fallbackResponse.ok) {
-                const processData = await fallbackResponse.json();
-                return Response.json({ 
-                  text,
-                  response: processData.response 
-                });
-              }
-            } catch (fallbackError) {
-              console.error('Fallback also failed:', fallbackError.message);
-            }
-          }
-        }
-      }
-      
+      // Just return the transcript - frontend will handle the streaming
       return Response.json({ text });
     } catch (transcribeError) {
       // Clean up temp file on error

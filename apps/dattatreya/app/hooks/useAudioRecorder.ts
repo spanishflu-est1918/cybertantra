@@ -1,14 +1,13 @@
 import { useState, useRef, useCallback } from 'react';
 
 interface RecordingOptions {
-  onTranscript?: (text: string, response?: string) => void;
+  onTranscript?: (text: string) => void;
   skipTranscription?: boolean;
   skipDownload?: boolean;
 }
 
 export function useAudioRecorder(options: RecordingOptions = {}) {
   const [isRecording, setIsRecording] = useState(false);
-  const [isInitializing, setIsInitializing] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -69,15 +68,13 @@ export function useAudioRecorder(options: RecordingOptions = {}) {
             if (response.ok) {
               const data = await response.json();
               console.log('Frontend received from /api/transcribe:', {
-                text: data.text,
-                hasResponse: !!data.response,
-                responsePreview: data.response ? data.response.substring(0, 50) + '...' : 'No response'
+                text: data.text
               });
               
-              const { text, response: aiResponse } = data;
+              const { text } = data;
               if (text?.trim()) {
-                console.log('Calling onTranscript with:', text.trim(), aiResponse ? 'and AI response' : 'but no AI response');
-                options.onTranscript(text.trim(), aiResponse);
+                console.log('Calling onTranscript with:', text.trim());
+                options.onTranscript(text.trim());
               } else {
                 console.log('No text to transcribe');
               }
