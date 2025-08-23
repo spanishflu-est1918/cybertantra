@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { QueryAgent, getAIConfig } from '@cybertantra/ai';
 import { validateRequest, corsHeaders } from '../middleware';
 
-export async function OPTIONS(req: Request) {
+export async function OPTIONS() {
   return new Response(null, { status: 200, headers: await corsHeaders() });
 }
 
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     const answer = await agent.query(question, topK);
     
     // Also get the raw chunks for transparency
-    const chunks = await agent.search(question, topK);
+    // const chunks = await agent.search(question, topK);
 
     const headers = await corsHeaders();
     return NextResponse.json({ 

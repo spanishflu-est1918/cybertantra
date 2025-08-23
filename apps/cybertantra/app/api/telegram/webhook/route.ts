@@ -132,7 +132,7 @@ async function handleQuestion(ctx: Context, question: string) {
               undefined,
               fullResponse + '...'
             );
-          } catch (error) {
+          } catch {
             // If edit fails (rate limit), continue collecting
             console.log('Edit rate limit hit, continuing...');
           }
@@ -152,40 +152,19 @@ async function handleQuestion(ctx: Context, question: string) {
         undefined,
         fullResponse
       );
-    } catch (error) {
+    } catch {
       // If final edit fails, send as new message
       await ctx.reply(fullResponse);
     }
     
-  } catch (error) {
-    console.error('Error handling question:', error);
+  } catch (err) {
+    console.error('Error handling question:', err);
     ctx.reply(
       '❌ Sorry, I encountered an error while processing your question. Please try again later.'
     );
   }
 }
 
-function splitMessage(text: string, maxLength: number): string[] {
-  const chunks: string[] = [];
-  let currentChunk = '';
-  
-  const lines = text.split('\n');
-  
-  for (const line of lines) {
-    if (currentChunk.length + line.length + 1 > maxLength) {
-      chunks.push(currentChunk);
-      currentChunk = line;
-    } else {
-      currentChunk += (currentChunk ? '\n' : '') + line;
-    }
-  }
-  
-  if (currentChunk) {
-    chunks.push(currentChunk);
-  }
-  
-  return chunks;
-}
 
 export async function POST(req: Request) {
   try {

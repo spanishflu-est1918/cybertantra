@@ -32,7 +32,7 @@ export async function GET(req: Request) {
     // Validate URL format
     try {
       new URL(webhookUrl);
-    } catch (e) {
+    } catch {
       return new Response(
         `❌ Invalid URL format: ${webhookUrl}`,
         { status: 400 }

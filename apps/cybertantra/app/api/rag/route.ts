@@ -1,7 +1,7 @@
 import { getAIConfig, QueryAgent } from '@cybertantra/ai';
 import { validateRequest, corsHeaders } from '../middleware';
 
-export async function OPTIONS(req: Request) {
+export async function OPTIONS() {
   return new Response(null, { status: 200, headers: await corsHeaders() });
 }
 

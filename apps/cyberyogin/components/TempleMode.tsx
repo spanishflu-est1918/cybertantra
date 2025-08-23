@@ -47,7 +47,7 @@ export function TempleMode() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [handleEscape]);
 
   return (
     <div 
