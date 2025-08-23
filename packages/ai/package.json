@@ -13,13 +13,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@ai-sdk/openai": "2.0.0-beta.12",
+    "@ai-sdk/openai": "2.0.19",
     "@cybertantra/database": "workspace:*",
     "@google/generative-ai": "^0.1.1",
     "@mastra/core": "0.0.0-ai-v5-20250718021026",
     "@mastra/rag": "0.0.0-ai-v5-20250718021026",
     "@openrouter/ai-sdk-provider": "1.0.0-beta.5",
-    "ai": "5.0.0-beta.28",
+    "ai": "5.0.22",
     "elevenlabs": "^0.16.1",
     "lru-cache": "^10.0.0"
   },
