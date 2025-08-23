@@ -14,7 +14,7 @@ const AudioMode = memo(function AudioMode() {
   const getButtonClasses = () => {
     const base = "w-32 h-32 rounded-full border-2 transition-all duration-300 select-none flex items-center justify-center relative overflow-hidden";
     
-    if (isUsingTool) {
+    if (isUsingTool || status === "streaming" || status === "submitted") {
       return `${base} border-green-400/80 bg-gradient-to-br from-green-500/10 to-white/10 scale-110 animate-pulse`;
     }
     if (isTranscribing) {
@@ -32,7 +32,7 @@ const AudioMode = memo(function AudioMode() {
   const getOuterRingClasses = () => {
     const base = "w-24 h-24 border rounded-full absolute";
     
-    if (isUsingTool) {
+    if (isUsingTool || status === "streaming" || status === "submitted") {
       return `${base} border-2 border-green-400/30 animate-ping`;
     }
     if (isTranscribing) {
@@ -47,7 +47,7 @@ const AudioMode = memo(function AudioMode() {
   const getInnerRingClasses = () => {
     const base = "w-16 h-16 border absolute";
     
-    if (isUsingTool) {
+    if (isUsingTool || status === "streaming" || status === "submitted") {
       return `${base} border-green-500/20 animate-spin`;
     }
     if (isTranscribing) {
@@ -60,7 +60,7 @@ const AudioMode = memo(function AudioMode() {
   };
 
   const getCenterIconClasses = () => {
-    if (isUsingTool) {
+    if (isUsingTool || status === "streaming" || status === "submitted") {
       return "text-4xl text-green-400/60 animate-pulse";
     }
     if (isTranscribing) {
@@ -73,7 +73,7 @@ const AudioMode = memo(function AudioMode() {
   };
 
   const getStatusText = () => {
-    if (isUsingTool) return "CHANNELING...";
+    if (isUsingTool || status === "streaming" || status === "submitted") return "CHANNELING...";
     if (isSpeaking) return "CHANNELING...";
     if (isTranscribing) return "DECODING...";
     if (isRecording) return "TAP TO STOP";
@@ -83,7 +83,7 @@ const AudioMode = memo(function AudioMode() {
   const getStatusTextClasses = () => {
     const base = "absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-xs whitespace-nowrap tracking-wider select-none pointer-events-none";
     
-    if (isUsingTool) {
+    if (isUsingTool || status === "streaming" || status === "submitted") {
       return `${base} text-green-400/70 animate-pulse`;
     }
     if (isTranscribing) {
@@ -131,11 +131,18 @@ const AudioMode = memo(function AudioMode() {
     }
   }, [error]);
 
-  const handleTranscript = async (text: string) => {
-    console.log("AudioMode received transcript:", text);
+  const handleTranscript = async (audioDataUrl: string) => {
+    console.log("AudioMode received audio data URL:", audioDataUrl.substring(0, 50) + "...");
 
     await sendMessage({
-      text: text,
+      parts: [
+        {
+          type: "file",
+          data: audioDataUrl,
+          mediaType: "audio/webm",
+          filename: "recording.webm"
+        }
+      ]
     });
   };
 
@@ -146,11 +153,13 @@ const AudioMode = memo(function AudioMode() {
       onTranscript: handleTranscript,
     });
 
+  const isProcessing = status === "submitted" || status === "streaming" || isTranscribing || isUsingTool;
+
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (isSpeaking || status === "submitted" || status === "streaming") {
+    if (isSpeaking || isProcessing) {
       console.log("Cannot record while speaking or processing");
       return;
     }
