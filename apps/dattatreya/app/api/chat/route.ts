@@ -1,4 +1,9 @@
-import { streamText, convertToModelMessages, tool as aiTool } from "ai";
+import {
+  streamText,
+  convertToModelMessages,
+  tool as aiTool,
+  stepCountIs,
+} from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { z as zodbert } from "zod/v4";
 import {
@@ -127,6 +132,7 @@ export async function POST(req: Request) {
         }),
       },
       toolChoice: "auto",
+      stopWhen: stepCountIs(5),
     });
     bench.end("ai-stream-generation");
     bench.summary();
