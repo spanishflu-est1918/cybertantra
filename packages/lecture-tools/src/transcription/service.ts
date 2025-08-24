@@ -60,23 +60,10 @@ export class TranscriptionService {
         WHERE filename = ${file}
       `;
       
-      // Check if transcript file exists
-      const baseName = path.basename(file, path.extname(file));
-      const transcriptPath = path.join(audioDir, 'transcripts', `${baseName}.txt`);
-      let transcriptExists = false;
-      
-      try {
-        await fs.access(transcriptPath);
-        transcriptExists = true;
-      } catch {
-        // Transcript doesn't exist
-      }
-      
       results.push({
         filename: file,
-        needsTranscription: !transcriptExists && 
-          (!existing.rows.length || existing.rows[0].status !== 'completed'),
-        existingTranscript: transcriptExists ? transcriptPath : undefined,
+        needsTranscription: !existing.rows.length || existing.rows[0].status !== 'completed',
+        existingTranscript: existing.rows[0]?.transcript_path,
         status: existing.rows[0]?.status,
       });
     }
@@ -213,25 +200,16 @@ export class TranscriptionService {
     const textPath = path.join(lecturesDir, `${baseName}.txt`);
     
     if (transcript.utterances && transcript.utterances.length > 0) {
-      // Format with speaker labels
-      let content = `# ${baseName}\n\n`;
-      content += `Transcription Date: ${new Date().toISOString()}\n`;
-      content += `Duration: ${this.formatDuration(transcript.audio_duration)}\n\n`;
-      content += '---\n\n';
-      
+      // Clean text only for vector DB ingestion
+      let content = '';
       transcript.utterances.forEach((utterance: any) => {
-        content += `[Speaker ${utterance.speaker}]: ${utterance.text}\n\n`;
+        content += utterance.text + ' ';
       });
       
-      await fs.writeFile(textPath, content, 'utf8');
+      await fs.writeFile(textPath, content.trim(), 'utf8');
     } else {
-      // Just plain text
-      let content = `# ${baseName}\n\n`;
-      content += `Transcription Date: ${new Date().toISOString()}\n\n`;
-      content += '---\n\n';
-      content += transcript.text;
-      
-      await fs.writeFile(textPath, content, 'utf8');
+      // Just plain text, no metadata
+      await fs.writeFile(textPath, transcript.text || '', 'utf8');
     }
     
     outputPath = textPath;
