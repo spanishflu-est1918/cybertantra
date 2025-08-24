@@ -144,14 +144,31 @@ export class ContentIngestion {
       const chunks = chunkedDocs.map(doc => doc.text);
       spinner.succeed(`   Created ${chunks.length} chunks`);
       
-      spinner.text = `   Generating embeddings for ${chunks.length} chunks...`;
-      
       // Generate embeddings using AI SDK v5 pattern with optimization
-      const { embeddings } = await embedMany({
-        model: this.google.textEmbeddingModel(EMBEDDING_MODEL),
-        values: chunks,
-        maxParallelCalls: MAX_PARALLEL_CALLS, // AI SDK v5 optimization
-      });
+      // Google has a limit of 100 embeddings per batch
+      let allEmbeddings: any[] = [];
+      
+      // Process in batches of 100 or less
+      const batchSize = 100;
+      const totalBatches = Math.ceil(chunks.length / batchSize);
+      
+      for (let i = 0; i < chunks.length; i += batchSize) {
+        const batchNum = Math.floor(i / batchSize) + 1;
+        const batch = chunks.slice(i, Math.min(i + batchSize, chunks.length));
+        
+        spinner.start(`   Generating embeddings... batch ${batchNum}/${totalBatches} (${batch.length} chunks)`);
+        
+        const { embeddings } = await embedMany({
+          model: this.google.textEmbeddingModel(EMBEDDING_MODEL),
+          values: batch,
+          maxParallelCalls: MAX_PARALLEL_CALLS, // AI SDK v5 optimization
+        });
+        allEmbeddings = allEmbeddings.concat(embeddings);
+      }
+      
+      spinner.succeed(`   Generated ${allEmbeddings.length} embeddings`);
+      
+      const embeddings = allEmbeddings;
       
       // Prepare chunks with metadata
       const chunksWithEmbeddings: ChunkWithMetadata[] = chunks.map((content, index) => ({
@@ -159,7 +176,7 @@ export class ContentIngestion {
         chunkIndex: index,
         totalChunks: chunks.length,
         content,
-        embedding: embeddings[index].embedding,
+        embedding: embeddings[index], // AI SDK v5 returns the embedding array directly
         category: this.config.category,
         tags: this.config.tags,
         metadata: {
@@ -171,11 +188,34 @@ export class ContentIngestion {
       spinner.text = '   Storing in database...';
       
       // Store chunks
-      await this.storeChunks(chunksWithEmbeddings, filename);
-      
-      this.stats.totalChunks += chunks.length;
-      
-      spinner.succeed(`   Stored ${chunks.length} chunks`);
+      try {
+        await this.storeChunks(chunksWithEmbeddings, filename);
+        this.stats.totalChunks += chunks.length;
+        
+        // Verify embeddings were stored
+        const verification = await sql`
+          SELECT COUNT(*) as total, 
+                 COUNT(embedding) as with_embeddings 
+          FROM lecture_chunks 
+          WHERE source = ${filename}
+        `;
+        const verified = verification.rows[0];
+        
+        if (verified.with_embeddings === verified.total) {
+          spinner.succeed(`   Stored ${chunks.length} chunks with embeddings ✓`);
+        } else {
+          spinner.warn(`   Stored ${chunks.length} chunks (${verified.total - verified.with_embeddings} missing embeddings!)`);
+        }
+      } catch (storeError: any) {
+        // If it's a duplicate key error on metadata, chunks might have been stored
+        // Clean them up
+        if (storeError.code === '23505' && storeError.message?.includes('ingestion_metadata')) {
+          await sql`DELETE FROM lecture_chunks WHERE source = ${filename}`;
+          spinner.fail(`   File already processed, skipping`);
+          return true; // Not a failure, just already done
+        }
+        throw storeError;
+      }
       
       // Optional: Check embedding quality (deduplication)
       if (chunks.length > 1) {
@@ -198,6 +238,11 @@ export class ContentIngestion {
     
     for (let i = 0; i < Math.min(chunks.length - 1, 10); i++) {
       for (let j = i + 1; j < Math.min(chunks.length, 10); j++) {
+        // Check if embeddings exist and are arrays
+        if (!chunks[i].embedding || !chunks[j].embedding || 
+            !Array.isArray(chunks[i].embedding) || !Array.isArray(chunks[j].embedding)) {
+          continue;
+        }
         const similarity = cosineSimilarity(chunks[i].embedding, chunks[j].embedding);
         if (similarity > threshold) {
           duplicates.push([i, j, similarity]);
