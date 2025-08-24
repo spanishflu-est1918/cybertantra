@@ -75,7 +75,7 @@ async function transcribeVideo(
 
     // Step 2: Transcribe the downloaded audio
     console.log(`   🎙️  Transcribing audio...`);
-    await $`pnpm cli:transcribe process -d ${audioDir}`;
+    await $`pnpm cli:transcribe process -d ${audioDir} -y`;
 
     // Step 3: Find and move the transcript to the right category folder
     const files = await Bun.$`ls ${audioDir}/*.txt`.text();
