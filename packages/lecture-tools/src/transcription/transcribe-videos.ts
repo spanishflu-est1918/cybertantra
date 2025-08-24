@@ -34,96 +34,6 @@ async function setupDirectories(baseDir: string) {
   }
 }
 
-// Transcribe a single video
-async function transcribeVideo(
-  video: CategorizedVideo,
-  baseDir: string,
-  index: number,
-  total: number,
-): Promise<boolean> {
-  const sanitizedTitle = sanitizeFilename(video.title);
-  const outputDir = path.join(baseDir, video.category);
-  const outputFile = path.join(outputDir, `${sanitizedTitle}.txt`);
-
-  // Skip if already transcribed
-  if (await exists(outputFile)) {
-    console.log(
-      `\n⏭️  [${index}/${total}] Skipping (already exists): ${video.title}`,
-    );
-    return true;
-  }
-
-  console.log(`\n${"─".repeat(60)}`);
-  console.log(`📝 [${index}/${total}] Starting transcription...`);
-  console.log(`   📹 Title: ${video.title}`);
-  console.log(`   🏷️  Category: ${video.category.toUpperCase()}`);
-  console.log(`   ⏱️  Duration: ${video.duration || "Unknown"}`);
-  console.log(`   🔗 URL: ${video.link}`);
-  console.log(`${"─".repeat(60)}`);
-
-  const startTime = Date.now();
-  process.stdout.write(`   ⏳ Transcribing...`);
-
-  try {
-    // Step 1: Download audio using youtube command (single video only, not playlist)
-    const audioDir = path.join(baseDir, "audio_temp", `video_${index}`);
-    await mkdir(audioDir, { recursive: true });
-
-    console.log(`   📥 Downloading audio...`);
-    // The youtube command already has --no-playlist flag in download-youtube.ts
-    await $`pnpm cli:youtube ${video.link} -o ${audioDir}`;
-
-    // Step 2: Transcribe the downloaded audio
-    console.log(`   🎙️  Transcribing audio...`);
-    await $`pnpm cli:transcribe process -d ${audioDir} -y`;
-
-    // Step 3: Find and move the transcript to the right category folder
-    const files = await Bun.$`ls ${audioDir}/*.txt`.text();
-    const transcriptFile = files.trim().split("\n")[0]; // Get first .txt file
-
-    if (transcriptFile) {
-      const content = await Bun.file(transcriptFile).text();
-      await writeFile(outputFile, content);
-
-      // Clean up temp files
-      await $`rm -rf ${audioDir}`;
-    } else {
-      throw new Error("No transcript file generated");
-    }
-
-    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-    process.stdout.write(`\r   ✅ Success! (${elapsed}s)\n`);
-    console.log(`   💾 Saved to: ${outputFile}`);
-    return true;
-  } catch (error: any) {
-    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-    process.stdout.write(`\r   ❌ Failed! (${elapsed}s)\n`);
-
-    // Show more detailed error information
-    if (error.stderr) {
-      console.error(`   Error output: ${error.stderr}`);
-    }
-    if (error.stdout) {
-      console.error(`   Output: ${error.stdout}`);
-    }
-    console.error(`   Error: ${error.message || error}`);
-
-    // Try alternative: direct youtube-dl command
-    console.log(`   🔄 Trying alternative method with yt-dlp...`);
-    try {
-      const altResult =
-        await $`yt-dlp --write-auto-sub --sub-lang en --skip-download --sub-format txt "${video.link}" -o "${outputDir}/%(title)s.%(ext)s"`;
-      console.log(`   ✅ Alternative method succeeded`);
-      return true;
-    } catch (altError: any) {
-      console.error(
-        `   ❌ Alternative method also failed: ${altError.message || altError}`,
-      );
-    }
-
-    return false;
-  }
-}
 
 // Main transcription function
 async function main() {
@@ -188,53 +98,91 @@ async function main() {
   const baseDir = path.join(process.cwd(), "transcriptions");
   await setupDirectories(baseDir);
 
-  // Transcribe videos with progress tracking
+  // PHASE 1: Download all videos first
+  console.log(`\n${"═".repeat(60)}`);
+  console.log(`📥 PHASE 1: DOWNLOADING ALL VIDEOS`);
+  console.log(`${"═".repeat(60)}\n`);
+  
+  const downloadedVideos: Array<{video: CategorizedVideo, audioDir: string}> = [];
+  const failedDownloads: CategorizedVideo[] = [];
+  const startTime = Date.now();
+  
+  for (let i = 0; i < videos.length; i++) {
+    const video = videos[i];
+    const audioDir = path.join(baseDir, "audio_temp", `video_${i + 1}`);
+    
+    console.log(`\n[${i + 1}/${videos.length}] Downloading: ${video.title}`);
+    console.log(`   🔗 ${video.link}`);
+    
+    try {
+      await mkdir(audioDir, { recursive: true });
+      await $`pnpm cli:youtube ${video.link} -o ${audioDir}`;
+      console.log(`   ✅ Downloaded successfully`);
+      downloadedVideos.push({video, audioDir});
+    } catch (error) {
+      console.log(`   ❌ Download failed`);
+      failedDownloads.push(video);
+    }
+    
+    // Brief delay to avoid rate limiting
+    if (i < videos.length - 1) {
+      await Bun.sleep(1000);
+    }
+  }
+  
+  const downloadTime = ((Date.now() - startTime) / 1000 / 60).toFixed(1);
+  console.log(`\n${"─".repeat(60)}`);
+  console.log(`✅ Downloads complete: ${downloadedVideos.length}/${videos.length} successful`);
+  console.log(`⏱️  Total download time: ${downloadTime} minutes`);
+  
+  if (failedDownloads.length > 0) {
+    console.log(`❌ Failed downloads: ${failedDownloads.length}`);
+  }
+  
+  // PHASE 2: Transcribe all downloaded videos
+  console.log(`\n${"═".repeat(60)}`);
+  console.log(`🎙️  PHASE 2: TRANSCRIBING ALL VIDEOS`);
+  console.log(`${"═".repeat(60)}\n`);
+  
+  const transcriptionStart = Date.now();
   let successful = 0;
   let failed = 0;
   const failedVideos: CategorizedVideo[] = [];
-
-  const startTime = Date.now();
-  let remainingVideos = [...videos];
-
-  for (let i = 0; i < videos.length; i++) {
-    const video = videos[i];
-
-    console.log(`\n🎯 Currently processing: "${video.title}"`);
-
-    const success = await transcribeVideo(video, baseDir, i + 1, videos.length);
-    if (success) {
+  
+  for (let i = 0; i < downloadedVideos.length; i++) {
+    const {video, audioDir} = downloadedVideos[i];
+    const sanitizedTitle = sanitizeFilename(video.title);
+    const outputDir = path.join(baseDir, video.category);
+    const outputFile = path.join(outputDir, `${sanitizedTitle}.txt`);
+    
+    // Skip if already transcribed
+    if (await exists(outputFile)) {
+      console.log(`\n[${i + 1}/${downloadedVideos.length}] Skipping (already exists): ${video.title}`);
       successful++;
-
-      // Remove completed video from remaining list
-      remainingVideos = remainingVideos.filter((v) => v.link !== video.link);
-
-      // Update the input file if it exists
-      if (inputFile) {
-        await writeFile(inputFile, JSON.stringify(remainingVideos, null, 2));
-        console.log(
-          `   📝 Updated ${inputFile} - ${remainingVideos.length} videos remaining`,
-        );
-      }
-    } else {
+      continue;
+    }
+    
+    console.log(`\n[${i + 1}/${downloadedVideos.length}] Transcribing: ${video.title}`);
+    
+    try {
+      // Transcribe directly to the category folder
+      await $`pnpm cli:transcribe process -d ${audioDir} -o ${outputDir} -y`;
+      
+      console.log(`   ✅ Transcribed and saved to ${video.category} category`);
+      successful++;
+      
+      // Clean up audio files only
+      await $`rm -rf ${audioDir}`;
+    } catch (error) {
+      console.log(`   ❌ Transcription failed`);
       failed++;
       failedVideos.push(video);
     }
-
+    
     // Progress update
-    const progress = (((i + 1) / videos.length) * 100).toFixed(1);
-    const elapsed = ((Date.now() - startTime) / 1000 / 60).toFixed(1);
-    console.log(
-      `\n⏱️  Progress: ${progress}% (${i + 1}/${videos.length}) - Elapsed: ${elapsed} minutes`,
-    );
-    console.log(
-      `   ✅ ${successful} successful | ❌ ${failed} failed | 📋 ${remainingVideos.length} remaining`,
-    );
-
-    // Add delay to avoid rate limiting
-    if (i < videos.length - 1) {
-      console.log(`   ⏸️  Waiting 2 seconds before next video...`);
-      await Bun.sleep(2000);
-    }
+    const progress = (((i + 1) / downloadedVideos.length) * 100).toFixed(1);
+    const elapsed = ((Date.now() - transcriptionStart) / 1000 / 60).toFixed(1);
+    console.log(`   Progress: ${progress}% | Elapsed: ${elapsed} min`);
   }
 
   const totalTime = ((Date.now() - startTime) / 1000 / 60).toFixed(1);

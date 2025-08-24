@@ -61,6 +61,7 @@ program
   .command('process')
   .description('Transcribe audio files that need processing')
   .option('-d, --dir <directory>', 'Audio files directory', './audio')
+  .option('-o, --output <directory>', 'Output directory for transcripts')
   .option('-m, --model <tier>', 'Model tier: best or nano', 'best')
   .option('-b, --batch <size>', 'Batch size for parallel processing', '1')
   .option('--dry-run', 'Show what would be transcribed without doing it')
@@ -141,7 +142,7 @@ program
         const filePath = path.join(options.dir, file.filename);
         console.log(`\n[${processed + 1}/${needsTranscription.length}] Processing ${file.filename}`);
         
-        const result = await service.transcribeFile(filePath, config);
+        const result = await service.transcribeFile(filePath, config, options.output);
         
         if (result.success) {
           processed++;

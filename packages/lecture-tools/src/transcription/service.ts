@@ -62,7 +62,7 @@ export class TranscriptionService {
       
       // Check if transcript file exists
       const baseName = path.basename(file, path.extname(file));
-      const transcriptPath = path.join('./lectures', `${baseName}.txt`);
+      const transcriptPath = path.join(audioDir, 'transcripts', `${baseName}.txt`);
       let transcriptExists = false;
       
       try {
@@ -90,7 +90,8 @@ export class TranscriptionService {
       modelTier: 'best',
       speakerLabels: true,
       languageCode: 'en',
-    }
+    },
+    outputDir?: string
   ): Promise<TranscriptionResult> {
     const filename = path.basename(audioPath);
     const startTime = Date.now();
@@ -143,7 +144,8 @@ export class TranscriptionService {
       // Save transcript
       const outputPath = await this.saveTranscript(
         transcript, 
-        filename
+        filename,
+        outputDir
       );
       
       // Update database
@@ -197,10 +199,12 @@ export class TranscriptionService {
   
   private async saveTranscript(
     transcript: any, 
-    originalFileName: string
+    originalFileName: string,
+    outputDir?: string
   ): Promise<string> {
     const baseName = path.basename(originalFileName, path.extname(originalFileName));
-    const lecturesDir = './lectures';
+    // Use provided output directory or default to ./lectures
+    const lecturesDir = outputDir || './lectures';
     await fs.mkdir(lecturesDir, { recursive: true });
     
     let outputPath = '';
