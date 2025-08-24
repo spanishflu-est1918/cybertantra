@@ -58,22 +58,6 @@ async function main() {
       }
     ]);
 
-    // Duration for meditation/video content
-    let duration: number | undefined;
-    if (answers.category === 'meditation' || answers.category === 'video') {
-      const durationAnswer = await inquirer.prompt([
-        {
-          type: 'number',
-          name: 'duration',
-          message: 'Average duration in minutes (optional):',
-          validate: (input) => {
-            if (!input) return true;
-            return input > 0 ? true : 'Duration must be positive';
-          }
-        }
-      ]);
-      duration = durationAnswer.duration;
-    }
 
     // Confirmation
     console.log('\n📋 Ingestion Configuration:');
@@ -82,7 +66,6 @@ async function main() {
     console.log(`Directory: ${answers.directory}`);
     console.log(`Author: ${answers.author}`);
     if (tagsAnswer.tags.length > 0) console.log(`Tags: ${tagsAnswer.tags.join(', ')}`);
-    if (duration) console.log(`Duration: ${duration} minutes`);
     
     const confirm = await inquirer.prompt([
       {
@@ -103,8 +86,7 @@ async function main() {
       category: answers.category,
       directory: answers.directory,
       tags: tagsAnswer.tags,
-      author: answers.author,
-      duration
+      author: answers.author
     };
 
     const ingestion = new ContentIngestion(config);

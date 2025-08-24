@@ -65,7 +65,6 @@ async function runMigration() {
       // Add columns to lecture_chunks (one at a time)
       await sql`ALTER TABLE lecture_chunks ADD COLUMN IF NOT EXISTS category content_category DEFAULT 'lecture'`;
       await sql`ALTER TABLE lecture_chunks ADD COLUMN IF NOT EXISTS tags TEXT[]`;
-      await sql`ALTER TABLE lecture_chunks ADD COLUMN IF NOT EXISTS duration_minutes INTEGER`;
       await sql`ALTER TABLE lecture_chunks ADD COLUMN IF NOT EXISTS author VARCHAR(255) DEFAULT 'Unknown'`;
       await sql`ALTER TABLE lecture_chunks ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}'`;
       

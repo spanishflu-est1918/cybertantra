@@ -21,7 +21,6 @@ interface IngestionConfig {
   directory: string;
   tags?: string[];
   author?: string;
-  duration?: number;
 }
 
 interface ChunkWithMetadata {
@@ -33,7 +32,6 @@ interface ChunkWithMetadata {
   category: ContentCategory;
   tags?: string[];
   author?: string;
-  duration?: number;
   metadata?: Record<string, any>;
 }
 
@@ -154,7 +152,6 @@ export class ContentIngestion {
         category: this.config.category,
         tags: this.config.tags,
         author: this.config.author,
-        duration: this.config.duration,
         metadata: {
           processedAt: new Date().toISOString(),
           model: EMBEDDING_MODEL,
@@ -254,7 +251,6 @@ export class ContentIngestion {
       chunk.category,
       chunk.tags || null,
       chunk.author || null,
-      chunk.duration || null,
       JSON.stringify(chunk.metadata || {})
     ]);
     
@@ -270,7 +266,6 @@ export class ContentIngestion {
           category,
           tags,
           author,
-          duration_minutes,
           metadata
         )
         VALUES (
@@ -282,8 +277,7 @@ export class ContentIngestion {
           ${values[5]}::content_category,
           ${values[6]},
           ${values[7]},
-          ${values[8]},
-          ${values[9]}::jsonb
+          ${values[8]}::jsonb
         )
       `;
     }
