@@ -1,9 +1,6 @@
 // Ingestion
 export * from './ingestion/ingest';
 
-// Chunking
-export * from './chunking/intelligent-chunker';
-
 // Transcription
 export * from './transcription/transcribe';
 export * from './transcription/service';

@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack -p 9999",
     "build": "next build --turbopack",
     "start": "next start -p 9999",
-    "lint": "next lint"
+    "lint": "next lint",
   },
   "dependencies": {
     "@ai-sdk/openai": "2.0.19",
@@ -14,8 +14,6 @@
     "@cybertantra/database": "workspace:*",
     "@cybertantra/ui": "workspace:*",
     "@elevenlabs/elevenlabs-js": "^2.7.0",
-    "@mastra/core": "^0.11.1",
-    "@mastra/rag": "^1.0.4",
     "@openrouter/ai-sdk-provider": "1.1.2",
     "@vercel/postgres": "^0.10.0",
     "ai": "5.0.22",
