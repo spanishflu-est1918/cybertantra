@@ -1,4 +1,5 @@
 #!/usr/bin/env bun
+/* eslint-disable */
 
 import { $ } from 'bun'
 import { mkdir, exists, writeFile } from 'fs/promises'
