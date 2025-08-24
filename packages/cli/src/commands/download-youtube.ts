@@ -27,17 +27,10 @@ program
       
       try {
         // Get video info first to get title for filename
-        const info = await ytdlp.getVideoInfo(url);
-        const sanitizedTitle = info.title
-          .replace(/[^\w\s-]/g, '') // Remove special chars
-          .replace(/\s+/g, '_')     // Replace spaces with underscores
-          .toLowerCase();
+        // Use yt-dlp's own title extraction - no pre-fetch
+        const outputTemplate = path.join(options.output, `%(title)s.%(ext)s`);
         
-        const filename = `${sanitizedTitle}.${options.format}`;
-        const outputPath = path.join(options.output, filename);
-        
-        console.log(`   📝 Title: ${info.title}`);
-        console.log(`   💾 Saving as: ${filename}`);
+        console.log(`   📥 Downloading from: ${url}`);
         
         // Download audio only with better format selection
         await ytdlp.exec([
@@ -46,12 +39,15 @@ program
           '--audio-format', options.format,
           '--audio-quality', '0', // Best quality
           '-f', 'bestaudio/best', // Better format selection
-          '-o', outputPath,
+          '-o', outputTemplate,
           '--no-playlist', // Don't download entire playlist
-          '--ignore-errors' // Continue on errors
+          '--ignore-errors', // Continue on errors
+          '--restrict-filenames', // Sanitize filename
+          '--quiet',
+          '--progress'
         ]);
         
-        console.log(`   ✅ Downloaded: ${filename}`);
+        console.log(`   ✅ Downloaded successfully`);
         
       } catch (error) {
         console.error(`   ❌ Failed to download ${url}:`, error);
@@ -65,35 +61,5 @@ program
     console.log(`   3. Run: bun run cli:ingest`);
   });
 
-// Also support direct execution without commander for simple use
-if (process.argv.length === 3 && process.argv[2].startsWith('http')) {
-  const url = process.argv[2];
-  console.log(`📥 Quick download: ${url}`);
-  
-  (async () => {
-    try {
-      await fs.mkdir('./audio', { recursive: true });
-      
-      // Use yt-dlp's own title extraction in the output template
-      await ytdlp.exec([
-        url,
-        '-x',
-        '--audio-format', 'opus',
-        '--audio-quality', '0',
-        '-f', 'bestaudio/best',
-        '-o', './audio/%(title)s.%(ext)s',
-        '--no-playlist',
-        '--ignore-errors',
-        '--restrict-filenames',  // Sanitize filename automatically
-        '--quiet',
-        '--progress'
-      ]);
-      
-      console.log(`✅ Downloaded audio file`);
-    } catch (error) {
-      console.error('❌ Download failed:', error);
-    }
-  })();
-} else {
-  program.parse(process.argv);
-}
+// Parse arguments
+program.parse(process.argv);
