@@ -7,6 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start -p 9999",
     "lint": "next lint",
+    "transcribe-videos": "bun run scripts/transcribe-videos.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "2.0.19",
