@@ -299,7 +299,7 @@ export class ContentIngestion {
     console.log('\n========================================');
     console.log('📊 INGESTION COMPLETE');
     console.log('========================================');
-    console.log(`Category:         ${this.config.category.toUpperCase()}`);}
+    console.log(`Category:         ${this.config.category.toUpperCase()}`);
     if (this.config.tags && this.config.tags.length > 0) {
       console.log(`Tags:             ${this.config.tags.join(', ')}`);
     }
