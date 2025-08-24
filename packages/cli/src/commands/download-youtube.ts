@@ -74,27 +74,22 @@ if (process.argv.length === 3 && process.argv[2].startsWith('http')) {
     try {
       await fs.mkdir('./audio', { recursive: true });
       
-      const info = await ytdlp.getVideoInfo(url);
-      const filename = info.title
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '_')
-        .toLowerCase() + '.opus';
-      
-      console.log(`📝 ${info.title}`);
-      console.log(`💾 ${filename}`);
-      
+      // Use yt-dlp's own title extraction in the output template
       await ytdlp.exec([
         url,
         '-x',
         '--audio-format', 'opus',
         '--audio-quality', '0',
         '-f', 'bestaudio/best',
-        '-o', `./audio/${filename}`,
+        '-o', './audio/%(title)s.%(ext)s',
         '--no-playlist',
         '--ignore-errors',
+        '--restrict-filenames',  // Sanitize filename automatically
+        '--quiet',
+        '--progress'
       ]);
       
-      console.log(`✅ Downloaded to ./audio/${filename}`);
+      console.log(`✅ Downloaded audio file`);
     } catch (error) {
       console.error('❌ Download failed:', error);
     }
