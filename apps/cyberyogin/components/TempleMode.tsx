@@ -1,13 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { TEMPLE_ASCII_ART, TEMPLE_SYMBOLS, GURU_GREETINGS } from '@/lib/constants/mantras';
+import { useEffect, useState, useCallback } from 'react';
+import { TEMPLE_SYMBOLS } from '@/lib/constants/mantras';
 import { useTerminalContext } from '@/app/contexts/TerminalContext';
-import { useTerminalContext as useSharedTerminalContext } from '@cybertantra/ui/lib/contexts/TerminalContext';
 
 export function TempleMode() {
   const { setTempleModeActive } = useTerminalContext();
-  const { addToHistory } = useSharedTerminalContext();
   const [symbolIndex, setSymbolIndex] = useState(0);
   const [fadeIn, setFadeIn] = useState(false);
 
@@ -15,28 +13,20 @@ export function TempleMode() {
     // Animate entrance
     setFadeIn(true);
     
-    // Add temple greeting
-    const greeting = GURU_GREETINGS[Math.floor(Math.random() * GURU_GREETINGS.length)];
-    setTimeout(() => {
-      addToHistory({ type: 'output', content: TEMPLE_ASCII_ART });
-      addToHistory({ type: 'output', content: greeting, typewriter: true });
-    }, 500);
-
     // Rotate symbols
     const interval = setInterval(() => {
       setSymbolIndex((prev) => (prev + 1) % TEMPLE_SYMBOLS.length);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [addToHistory]);
+  }, []);
 
-  const handleEscape = () => {
+  const handleEscape = useCallback(() => {
     setFadeIn(false);
     setTimeout(() => {
       setTempleModeActive(false);
-      addToHistory({ type: 'output', content: 'Exiting the digital temple... 🙏' });
     }, 300);
-  };
+  }, [setTempleModeActive]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
