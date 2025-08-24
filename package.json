@@ -24,7 +24,8 @@
     "cli:transcribe": "cd packages/cli && bun run transcribe",
     "cli:youtube": "cd packages/cli && bun run youtube",
     "cli:absorb": "cd packages/cli && bun run absorb",
-    "transcribe": "bun packages/lecture-tools/src/transcription/transcribe.ts"
+    "transcribe": "bun packages/lecture-tools/src/transcription/transcribe.ts",
+    "transcribe-videos": "bun packages/lecture-tools/src/transcription/transcribe-videos.ts"
   },
   "devDependencies": {
     "turbo": "^2.5.6",
