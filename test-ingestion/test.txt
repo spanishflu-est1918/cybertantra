@@ -1,0 +1,11 @@
+This is a test file for ingestion. It contains some sample text to verify that the chunking is working properly.
+
+The chunking system should split this text into appropriate chunks using Mastra's MDocument recursive strategy. Each chunk should be around 1024 characters with 200 character overlaps.
+
+This is a second paragraph with more content. We want to make sure that the system properly handles multiple paragraphs and creates chunks at natural boundaries like paragraph breaks and sentence endings.
+
+Here's another section with even more text to ensure we have enough content to trigger the chunking mechanism. The recursive splitter should first try to split at double newlines (paragraphs), then single newlines, then sentences, and finally at word boundaries if needed.
+
+Let's add some more content here to make sure we have enough text. The ingestion system should handle this gracefully and create multiple chunks if needed. Each chunk will then be embedded using Google's embedding model and stored in PostgreSQL with pgvector.
+
+This final paragraph ensures we have sufficient content for testing. The system should process this file, create appropriate chunks, generate embeddings, and store everything in the database without errors.
