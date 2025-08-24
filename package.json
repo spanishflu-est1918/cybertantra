@@ -35,6 +35,7 @@
     "@ai-sdk/google": "2.0.0-beta.15",
     "@ai-sdk/openai": "2.0.19",
     "@ai-sdk/react": "2.0.19",
+    "@mastra/rag": "^1.1.0",
     "@openrouter/ai-sdk-provider": "1.0.0-beta.5",
     "@vercel/postgres": "^0.10.0",
     "ai": "5.0.22",

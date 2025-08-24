@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 import { embedMany, cosineSimilarity } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { MDocument } from '@mastra/rag';
 import { sql } from '@cybertantra/database';
 import fs from 'fs/promises';
 import path from 'path';
@@ -8,8 +9,8 @@ import crypto from 'crypto';
 import ora from 'ora';
 import { EMBEDDING_MODEL, EMBEDDING_DIMENSION } from '@cybertantra/ai';
 
-const CHUNK_SIZE = 1024;
-const CHUNK_OVERLAP = 200;
+const CHUNK_SIZE = 1024;  // Mastra default
+const CHUNK_OVERLAP = 200;  // Mastra default
 const MAX_PARALLEL_CALLS = 5; // AI SDK v5 optimization
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000;
@@ -127,9 +128,21 @@ export class ContentIngestion {
         return true;
       }
       
-      // Create chunks
+      // Create chunks using Mastra
       const spinner = ora('   Creating chunks...').start();
-      const chunks = this.createSmartChunks(content);
+      
+      const mDoc = MDocument.fromText(content, {
+        metadata: { source: filename },
+      });
+      
+      const chunkedDocs = await mDoc.chunk({
+        strategy: 'recursive',
+        maxSize: CHUNK_SIZE,
+        overlap: CHUNK_OVERLAP,
+      });
+      
+      const chunks = chunkedDocs.map(doc => doc.text);
+      spinner.succeed(`   Created ${chunks.length} chunks`);
       
       spinner.text = `   Generating embeddings for ${chunks.length} chunks...`;
       
@@ -177,42 +190,6 @@ export class ContentIngestion {
     }
   }
 
-  private createSmartChunks(text: string): string[] {
-    const chunks: string[] = [];
-    
-    // Split by paragraphs first (double newline)
-    const paragraphs = text.split(/\n\n+/);
-    let currentChunk = '';
-    let wordCount = 0;
-    
-    for (const paragraph of paragraphs) {
-      const paragraphWords = paragraph.split(/\s+/).length;
-      
-      // If adding this paragraph would exceed chunk size, save current chunk
-      if (wordCount + paragraphWords > CHUNK_SIZE / 5 && currentChunk) { // Approximate words
-        chunks.push(currentChunk.trim());
-        
-        // Create overlap by keeping last part of current chunk
-        const overlap = currentChunk
-          .split(/\s+/)
-          .slice(-(CHUNK_OVERLAP / 5)) // Approximate overlap in words
-          .join(' ');
-        
-        currentChunk = overlap + '\n\n' + paragraph;
-        wordCount = overlap.split(/\s+/).length + paragraphWords;
-      } else {
-        currentChunk += (currentChunk ? '\n\n' : '') + paragraph;
-        wordCount += paragraphWords;
-      }
-    }
-    
-    // Add remaining content
-    if (currentChunk.trim()) {
-      chunks.push(currentChunk.trim());
-    }
-    
-    return chunks;
-  }
 
   private async checkEmbeddingQuality(chunks: ChunkWithMetadata[]): Promise<void> {
     // Sample check: find highly similar chunks that might be duplicates
