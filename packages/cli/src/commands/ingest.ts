@@ -37,12 +37,6 @@ async function main() {
             return 'Directory does not exist';
           }
         }
-      },
-      {
-        type: 'input',
-        name: 'author',
-        message: 'Who is the author/teacher of this content?',
-        default: 'Unknown'
       }
     ]);
 
@@ -64,7 +58,6 @@ async function main() {
     console.log('----------------------------');
     console.log(`Category: ${answers.category}`);
     console.log(`Directory: ${answers.directory}`);
-    console.log(`Author: ${answers.author}`);
     if (tagsAnswer.tags.length > 0) console.log(`Tags: ${tagsAnswer.tags.join(', ')}`);
     
     const confirm = await inquirer.prompt([
@@ -85,8 +78,7 @@ async function main() {
     const config = {
       category: answers.category,
       directory: answers.directory,
-      tags: tagsAnswer.tags,
-      author: answers.author
+      tags: tagsAnswer.tags
     };
 
     const ingestion = new ContentIngestion(config);

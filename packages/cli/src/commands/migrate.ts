@@ -65,13 +65,11 @@ async function runMigration() {
       // Add columns to lecture_chunks (one at a time)
       await sql`ALTER TABLE lecture_chunks ADD COLUMN IF NOT EXISTS category content_category DEFAULT 'lecture'`;
       await sql`ALTER TABLE lecture_chunks ADD COLUMN IF NOT EXISTS tags TEXT[]`;
-      await sql`ALTER TABLE lecture_chunks ADD COLUMN IF NOT EXISTS author VARCHAR(255) DEFAULT 'Unknown'`;
       await sql`ALTER TABLE lecture_chunks ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}'`;
       
       // Add columns to ingestion_metadata (one at a time)
       await sql`ALTER TABLE ingestion_metadata ADD COLUMN IF NOT EXISTS category content_category DEFAULT 'lecture'`;
       await sql`ALTER TABLE ingestion_metadata ADD COLUMN IF NOT EXISTS tags TEXT[]`;
-      await sql`ALTER TABLE ingestion_metadata ADD COLUMN IF NOT EXISTS author VARCHAR(255) DEFAULT 'Unknown'`;
       
       spinner.text = 'Creating indexes...';
       
@@ -105,8 +103,7 @@ async function runMigration() {
       SELECT 
         category,
         COUNT(*) as chunk_count,
-        COUNT(DISTINCT source) as file_count,
-        COUNT(DISTINCT author) as author_count
+        COUNT(DISTINCT source) as file_count
       FROM lecture_chunks
       GROUP BY category
       ORDER BY category
@@ -115,7 +112,7 @@ async function runMigration() {
     console.log('\n📊 Final content distribution:');
     console.log('--------------------------------');
     for (const row of stats.rows) {
-      console.log(`${row.category}: ${row.chunk_count} chunks from ${row.file_count} files (${row.author_count} authors)`);
+      console.log(`${row.category}: ${row.chunk_count} chunks from ${row.file_count} files`);
     }
     
     console.log('\n✅ Migration complete!');

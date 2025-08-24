@@ -20,7 +20,6 @@ interface IngestionConfig {
   category: ContentCategory;
   directory: string;
   tags?: string[];
-  author?: string;
 }
 
 interface ChunkWithMetadata {
@@ -31,7 +30,6 @@ interface ChunkWithMetadata {
   embedding: number[];
   category: ContentCategory;
   tags?: string[];
-  author?: string;
   metadata?: Record<string, any>;
 }
 
@@ -151,7 +149,6 @@ export class ContentIngestion {
         embedding: embeddings[index].embedding,
         category: this.config.category,
         tags: this.config.tags,
-        author: this.config.author,
         metadata: {
           processedAt: new Date().toISOString(),
           model: EMBEDDING_MODEL,
@@ -250,7 +247,6 @@ export class ContentIngestion {
       JSON.stringify(chunk.embedding),
       chunk.category,
       chunk.tags || null,
-      chunk.author || null,
       JSON.stringify(chunk.metadata || {})
     ]);
     
@@ -265,7 +261,6 @@ export class ContentIngestion {
           embedding,
           category,
           tags,
-          author,
           metadata
         )
         VALUES (
@@ -276,8 +271,7 @@ export class ContentIngestion {
           ${values[4]}::vector,
           ${values[5]}::content_category,
           ${values[6]},
-          ${values[7]},
-          ${values[8]}::jsonb
+          ${values[7]}::jsonb
         )
       `;
     }
@@ -289,16 +283,14 @@ export class ContentIngestion {
         file_hash, 
         chunks_count,
         category,
-        tags,
-        author
+        tags
       )
       VALUES (
         ${filename},
         ${fileHash},
         ${chunks.length},
         ${this.config.category}::content_category,
-        ${this.config.tags || null},
-        ${this.config.author || null}
+        ${this.config.tags || null}
       )
     `;
   }
@@ -307,10 +299,7 @@ export class ContentIngestion {
     console.log('\n========================================');
     console.log('📊 INGESTION COMPLETE');
     console.log('========================================');
-    console.log(`Category:         ${this.config.category.toUpperCase()}`);
-    if (this.config.author) {
-      console.log(`Author:           ${this.config.author}`);
-    }
+    console.log(`Category:         ${this.config.category.toUpperCase()}`);}
     if (this.config.tags && this.config.tags.length > 0) {
       console.log(`Tags:             ${this.config.tags.join(', ')}`);
     }

@@ -10,7 +10,6 @@ export interface QueryOptions {
   topK?: number;
   categories?: ContentCategory[];
   tags?: string[];
-  author?: string;
 }
 
 export interface QueryResult {
@@ -20,7 +19,6 @@ export interface QueryResult {
   chunkIndex?: number;
   category?: ContentCategory;
   tags?: string[];
-  author?: string;
 }
 
 export class QueryAgent {
@@ -46,7 +44,7 @@ export class QueryAgent {
     query: string,
     options: QueryOptions = {},
   ): Promise<QueryResult[]> {
-    const { topK = 5, categories = [], tags = [], author } = options;
+    const { topK = 5, categories = [], tags = [] } = options;
 
     try {
       const google = createGoogleGenerativeAI({
@@ -80,11 +78,6 @@ export class QueryAgent {
         params.tags = tags;
       }
 
-      if (author) {
-        whereConditions.push(`author = $${Object.keys(params).length + 1}`);
-        params.author = author;
-      }
-
       const whereClause =
         whereConditions.length > 0
           ? `WHERE ${whereConditions.join(" AND ")}`
@@ -94,7 +87,7 @@ export class QueryAgent {
       let dbQuery;
       if (whereConditions.length > 0) {
         // For now, let's handle each filter case explicitly
-        if (categories.length > 0 && !tags.length && !author) {
+        if (categories.length > 0 && !tags.length) {
           // Format categories array as PostgreSQL array literal
           const categoriesArray = "{" + categories.join(",") + "}";
           dbQuery = sql`
@@ -104,7 +97,6 @@ export class QueryAgent {
               chunk_index as "chunkIndex",
               category,
               tags,
-              author,
               1 - (embedding <=> ${embeddingStr}::vector) as score
             FROM lecture_chunks
             WHERE category = ANY(${categoriesArray}::content_category[])
@@ -120,7 +112,6 @@ export class QueryAgent {
               chunk_index as "chunkIndex",
               category,
               tags,
-              author,
               1 - (embedding <=> ${embeddingStr}::vector) as score
             FROM lecture_chunks
             ORDER BY embedding <=> ${embeddingStr}::vector
@@ -135,7 +126,6 @@ export class QueryAgent {
             chunk_index as "chunkIndex",
             category,
             tags,
-            author,
             1 - (embedding <=> ${embeddingStr}::vector) as score
           FROM lecture_chunks
           ORDER BY embedding <=> ${embeddingStr}::vector
@@ -152,7 +142,6 @@ export class QueryAgent {
         chunkIndex: row.chunkIndex,
         category: row.category as ContentCategory,
         tags: row.tags,
-        author: row.author,
       }));
     } catch (error) {
       console.error("Database query error:", error);
@@ -180,7 +169,6 @@ export class QueryAgent {
       .map((chunk, i) => {
         const meta = [
           chunk.category && `[${chunk.category.toUpperCase()}]`,
-          chunk.author && chunk.author !== "Unknown" && `by ${chunk.author}`,
           chunk.source,
         ]
           .filter(Boolean)
@@ -236,7 +224,6 @@ ${context}`,
       .map((chunk, i) => {
         const meta = [
           chunk.category && `[${chunk.category.toUpperCase()}]`,
-          chunk.author && chunk.author !== "Unknown" && `by ${chunk.author}`,
           chunk.source,
         ]
           .filter(Boolean)
@@ -311,7 +298,6 @@ Be insightful and thorough, making connections between different concepts when r
           SELECT
             COUNT(*) as chunk_count,
             COUNT(DISTINCT source) as file_count,
-            COUNT(DISTINCT author) as author_count,
             array_agg(DISTINCT unnest) as tags
           FROM lecture_chunks
           LEFT JOIN LATERAL unnest(tags) ON true
