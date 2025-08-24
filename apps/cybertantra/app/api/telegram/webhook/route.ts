@@ -90,7 +90,7 @@ async function handleQuestion(ctx: Context, question: string) {
     const queryAgent = new QueryAgent(config);
 
     // Always retrieve relevant lectures first (same as chat endpoint)
-    const chunks = await queryAgent.retrieve(question, 20);
+    const chunks = await queryAgent.retrieve(question, { topK: 20 });
     const context = chunks
       .map((chunk, i) => `[${i + 1}] From "${chunk.source}":\n${chunk.text}`)
       .join('\n\n---\n\n');

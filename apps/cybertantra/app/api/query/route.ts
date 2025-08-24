@@ -25,10 +25,10 @@ export async function POST(req: Request) {
     const agent = new QueryAgent(config);
     
     // Get answer with RAG
-    const answer = await agent.query(question, topK);
+    const answer = await agent.query(question, { topK });
     
     // Also get the raw chunks for transparency
-    // const chunks = await agent.search(question, topK);
+    // const chunks = await agent.search(question, { topK });
 
     const headers = await corsHeaders();
     return NextResponse.json({ 

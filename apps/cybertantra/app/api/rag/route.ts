@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     const queryAgent = new QueryAgent(config);
     
     // Retrieve relevant chunks
-    const chunks = await queryAgent.retrieve(query, limit);
+    const chunks = await queryAgent.retrieve(query, { topK: limit });
     
     // Format response for VAPI
     const response = {

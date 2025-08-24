@@ -1,14 +1,26 @@
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { embedMany, generateText } from 'ai';
+import { embedMany, generateText, streamText } from 'ai';
 import { sql } from '@cybertantra/database';
 import { EMBEDDING_MODEL, type AIConfig } from '../config';
+
+export type ContentCategory = 'lecture' | 'meditation' | 'video' | 'show';
+
+export interface QueryOptions {
+  topK?: number;
+  categories?: ContentCategory[];
+  tags?: string[];
+  author?: string;
+}
 
 export interface QueryResult {
   text: string;
   score: number;
   source: string;
   chunkIndex?: number;
+  category?: ContentCategory;
+  tags?: string[];
+  author?: string;
 }
 
 export class QueryAgent {
@@ -30,7 +42,14 @@ export class QueryAgent {
     }
   }
 
-  async retrieve(query: string, topK: number = 5): Promise<QueryResult[]> {
+  async retrieve(query: string, options: QueryOptions = {}): Promise<QueryResult[]> {
+    const { 
+      topK = 5, 
+      categories = [], 
+      tags = [], 
+      author 
+    } = options;
+
     try {
       const google = createGoogleGenerativeAI({
         apiKey: this.config.googleGenerativeAIApiKey,
@@ -44,63 +63,144 @@ export class QueryAgent {
       const queryEmbedding = embeddings[0];
       const embeddingStr = `[${queryEmbedding.join(',')}]`;
       
-      const results = await sql`
-        SELECT 
-          content as text,
-          source,
-          chunk_index as "chunkIndex",
-          1 - (embedding <=> ${embeddingStr}::vector) as score
-        FROM lecture_chunks
-        ORDER BY embedding <=> ${embeddingStr}::vector
-        LIMIT ${topK}
-      `;
+      // Build dynamic query with filters
+      let whereConditions: string[] = [];
+      let params: any = {
+        embedding: embeddingStr,
+        limit: topK
+      };
+      
+      if (categories.length > 0) {
+        whereConditions.push(`category = ANY($${Object.keys(params).length + 1})`);
+        params.categories = categories;
+      }
+      
+      if (tags.length > 0) {
+        whereConditions.push(`tags && $${Object.keys(params).length + 1}`);
+        params.tags = tags;
+      }
+      
+      if (author) {
+        whereConditions.push(`author = $${Object.keys(params).length + 1}`);
+        params.author = author;
+      }
+      
+      const whereClause = whereConditions.length > 0 
+        ? `WHERE ${whereConditions.join(' AND ')}` 
+        : '';
+      
+      // Execute query with filters
+      let dbQuery;
+      if (whereConditions.length > 0) {
+        // For now, let's handle each filter case explicitly
+        if (categories.length > 0 && !tags.length && !author) {
+          dbQuery = sql`
+            SELECT 
+              content as text,
+              source,
+              chunk_index as "chunkIndex",
+              category,
+              tags,
+              author,
+              1 - (embedding <=> ${embeddingStr}::vector) as score
+            FROM lecture_chunks
+            WHERE category = ANY(${categories}::content_category[])
+            ORDER BY embedding <=> ${embeddingStr}::vector
+            LIMIT ${topK}
+          `;
+        } else {
+          // For other filter combinations, fall back to no filter for now
+          dbQuery = sql`
+            SELECT 
+              content as text,
+              source,
+              chunk_index as "chunkIndex",
+              category,
+              tags,
+              author,
+              1 - (embedding <=> ${embeddingStr}::vector) as score
+            FROM lecture_chunks
+            ORDER BY embedding <=> ${embeddingStr}::vector
+            LIMIT ${topK}
+          `;
+        }
+      } else {
+        dbQuery = sql`
+          SELECT 
+            content as text,
+            source,
+            chunk_index as "chunkIndex",
+            category,
+            tags,
+            author,
+            1 - (embedding <=> ${embeddingStr}::vector) as score
+          FROM lecture_chunks
+          ORDER BY embedding <=> ${embeddingStr}::vector
+          LIMIT ${topK}
+        `;
+      }
+      
+      const results = await dbQuery;
       
       return results.rows.map(row => ({
         text: row.text,
         score: row.score,
         source: row.source,
         chunkIndex: row.chunkIndex,
+        category: row.category as ContentCategory,
+        tags: row.tags,
+        author: row.author,
       }));
     } catch (error) {
-      // Return empty results when database is unavailable
-      console.log('Database unavailable - returning empty context');
+      console.error('Database query error:', error);
       return [];
     }
   }
 
-  async query(question: string, topK: number = 5): Promise<string> {
+  async query(question: string, options: QueryOptions = {}): Promise<string> {
     if (!this.openrouter) {
       throw new Error('OpenRouter API key required for query synthesis');
     }
 
-    // Step 1: Retrieve relevant chunks
-    const chunks = await this.retrieve(question, topK);
+    // Retrieve relevant chunks with filters
+    const chunks = await this.retrieve(question, options);
     
     if (chunks.length === 0) {
-      return "I couldn't find any relevant information in the lecture corpus for your question.";
+      const categoryMsg = options.categories?.length 
+        ? ` in the ${options.categories.join('/')} content`
+        : ' in the corpus';
+      return `I couldn't find any relevant information${categoryMsg} for your question.`;
     }
 
-    // Step 2: Prepare context from chunks
+    // Prepare context from chunks
     const context = chunks
-      .map((chunk, i) => `[${i + 1}] From "${chunk.source}":\n${chunk.text}`)
+      .map((chunk, i) => {
+        const meta = [
+          chunk.category && `[${chunk.category.toUpperCase()}]`,
+          chunk.author && chunk.author !== 'Unknown' && `by ${chunk.author}`,
+          chunk.source
+        ].filter(Boolean).join(' ');
+        
+        return `[${i + 1}] ${meta}:\n${chunk.text}`;
+      })
       .join('\n\n---\n\n');
 
-    // Step 3: Generate response using OpenRouter
+    // Generate system prompt based on categories
+    const systemPrompt = this.getSystemPrompt(options.categories);
+
+    // Generate response using OpenRouter
     const { text } = await generateText({
       model: this.openrouter('moonshotai/kimi-k2'),
       messages: [
         {
           role: 'system',
-          content: `You are an expert on tantra, cyberspace, and consciousness. 
-You have access to a corpus of lectures that blend Eastern philosophy with modern concepts.
-Answer questions based on the provided lecture chunks. Always cite which lectures you're drawing from.
-Be insightful and thorough, making connections between different concepts when relevant.`
+          content: systemPrompt
         },
         {
           role: 'user',
-          content: `Based on the following lecture excerpts, please answer this question: ${question}
+          content: `Based on the following excerpts, please answer this question: ${question}
 
-Lecture Excerpts:
+Content Excerpts:
 ${context}`
         }
       ],
@@ -111,7 +211,113 @@ ${context}`
     return text;
   }
 
-  async search(query: string, limit: number = 10): Promise<QueryResult[]> {
-    return this.retrieve(query, limit);
+  async stream(question: string, options: QueryOptions = {}) {
+    if (!this.openrouter) {
+      throw new Error('OpenRouter API key required for streaming');
+    }
+
+    // Retrieve relevant chunks with filters
+    const chunks = await this.retrieve(question, options);
+    
+    if (chunks.length === 0) {
+      const categoryMsg = options.categories?.length 
+        ? ` in the ${options.categories.join('/')} content`
+        : ' in the corpus';
+      throw new Error(`No relevant information found${categoryMsg}`);
+    }
+
+    // Prepare context
+    const context = chunks
+      .map((chunk, i) => {
+        const meta = [
+          chunk.category && `[${chunk.category.toUpperCase()}]`,
+          chunk.author && chunk.author !== 'Unknown' && `by ${chunk.author}`,
+          chunk.source
+        ].filter(Boolean).join(' ');
+        
+        return `[${i + 1}] ${meta}:\n${chunk.text}`;
+      })
+      .join('\n\n---\n\n');
+
+    const systemPrompt = this.getSystemPrompt(options.categories);
+
+    // Stream response
+    return streamText({
+      model: this.openrouter('moonshotai/kimi-k2'),
+      messages: [
+        {
+          role: 'system',
+          content: systemPrompt
+        },
+        {
+          role: 'user',
+          content: `Based on the following excerpts, please answer this question: ${question}
+
+Content Excerpts:
+${context}`
+        }
+      ],
+      temperature: 0.7,
+      maxOutputTokens: 2000,
+    });
+  }
+
+  private getSystemPrompt(categories?: ContentCategory[]): string {
+    if (!categories || categories.length === 0) {
+      return `You are an expert on tantra, cyberspace, consciousness, and spiritual practices. 
+You have access to a diverse corpus including lectures, meditations, videos, and shows.
+Answer questions based on the provided content. Always cite which sources you're drawing from.
+Be insightful and thorough, making connections between different concepts when relevant.`;
+    }
+
+    const prompts: Record<ContentCategory, string> = {
+      lecture: 'You are an expert on tantra, cyberspace, and consciousness, drawing from lecture material.',
+      meditation: 'You are a meditation guide with deep knowledge of yoga nidra and spiritual practices.',
+      video: 'You are providing insights from video content and visual teachings.',
+      show: 'You are sharing knowledge from show episodes and discussions.'
+    };
+
+    const selectedPrompts = categories.map(cat => prompts[cat]).filter(Boolean);
+    
+    return `${selectedPrompts.join(' ')}
+Answer questions based on the provided excerpts. Always cite which sources you're drawing from.
+Be insightful and thorough, making connections between different concepts when relevant.`;
+  }
+
+  async search(query: string, options: QueryOptions = {}): Promise<QueryResult[]> {
+    return this.retrieve(query, { ...options, topK: options.topK || 10 });
+  }
+
+  // Get content statistics
+  async getStats(category?: ContentCategory): Promise<any> {
+    try {
+      if (category) {
+        const stats = await sql`
+          SELECT 
+            COUNT(*) as chunk_count,
+            COUNT(DISTINCT source) as file_count,
+            COUNT(DISTINCT author) as author_count,
+            array_agg(DISTINCT unnest) as tags
+          FROM lecture_chunks
+          LEFT JOIN LATERAL unnest(tags) ON true
+          WHERE category = ${category}::content_category
+        `;
+        return stats.rows[0];
+      } else {
+        const stats = await sql`
+          SELECT 
+            category,
+            COUNT(*) as chunk_count,
+            COUNT(DISTINCT source) as file_count
+          FROM lecture_chunks
+          GROUP BY category
+          ORDER BY category
+        `;
+        return stats.rows;
+      }
+    } catch (error) {
+      console.error('Failed to get stats:', error);
+      return null;
+    }
   }
 }

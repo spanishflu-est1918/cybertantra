@@ -113,7 +113,7 @@ export async function POST(req: Request) {
               `[BENCH] Tool searchLectures called with query: "${query}", depth: ${depth} (${limit} chunks), complexity: ${complexity}`,
             );
             const toolStart = performance.now();
-            const chunks = await queryAgent.retrieve(query, limit);
+            const chunks = await queryAgent.retrieve(query, { topK: limit });
             const toolDuration = performance.now() - toolStart;
             console.log(
               `[BENCH] Tool searchLectures completed in ${toolDuration.toFixed(2)}ms`,

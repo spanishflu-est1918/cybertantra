@@ -1,7 +1,6 @@
 // Main agents
 export { QueryAgent } from './agents/query-agent';
-export type { QueryResult } from './agents/query-agent';
-export { createMastraAgent } from './agents/mastra-agent';
+export type { ContentCategory, QueryOptions, QueryResult } from './agents/query-agent';
 
 // Functions
 export { searchLectures } from './functions/search-lectures';

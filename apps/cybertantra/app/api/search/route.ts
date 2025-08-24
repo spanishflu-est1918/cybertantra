@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     const agent = new QueryAgent(config);
     
     // Direct vector search without synthesis
-    const results = await agent.search(query, limit);
+    const results = await agent.search(query, { topK: limit });
 
     const headers = await corsHeaders();
     return NextResponse.json({ 
