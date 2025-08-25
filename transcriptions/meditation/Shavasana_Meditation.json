@@ -1,0 +1,644 @@
+{
+  "segments": [
+    {
+      "start": 9.92,
+      "end": 10.48,
+      "text": "I sit",
+      "speaker": "A"
+    },
+    {
+      "start": 10.48,
+      "end": 12.48,
+      "text": "[pause 2.0s]"
+    },
+    {
+      "start": 12.48,
+      "end": 14.8,
+      "text": "in the shadow of the mountain",
+      "speaker": "A"
+    },
+    {
+      "start": 14.8,
+      "end": 20,
+      "text": "[pause 5.2s]"
+    },
+    {
+      "start": 20,
+      "end": 22.08,
+      "text": "illuminated by the light",
+      "speaker": "A"
+    },
+    {
+      "start": 22.08,
+      "end": 24.32,
+      "text": "[pause 2.2s]"
+    },
+    {
+      "start": 24.32,
+      "end": 25.52,
+      "text": "of Shiva.",
+      "speaker": "A"
+    },
+    {
+      "start": 25.52,
+      "end": 35.16,
+      "text": "[pause 9.6s]"
+    },
+    {
+      "start": 35.16,
+      "end": 37.32,
+      "text": "I feel the presence",
+      "speaker": "A"
+    },
+    {
+      "start": 37.32,
+      "end": 39.16,
+      "text": "[pause 1.8s]"
+    },
+    {
+      "start": 39.16,
+      "end": 41.32,
+      "text": "of Shiva in the wind",
+      "speaker": "A"
+    },
+    {
+      "start": 41.32,
+      "end": 45.24,
+      "text": "[pause 3.9s]"
+    },
+    {
+      "start": 45.24,
+      "end": 47,
+      "text": "and in the rushing stream.",
+      "speaker": "A"
+    },
+    {
+      "start": 47,
+      "end": 54.29,
+      "text": "[pause 7.3s]"
+    },
+    {
+      "start": 54.29,
+      "end": 56.13,
+      "text": "He brings steadiness.",
+      "speaker": "A"
+    },
+    {
+      "start": 56.13,
+      "end": 62.21,
+      "text": "[pause 6.1s]"
+    },
+    {
+      "start": 62.21,
+      "end": 64.77,
+      "text": "He brings order",
+      "speaker": "A"
+    },
+    {
+      "start": 64.77,
+      "end": 67.89,
+      "text": "[pause 3.1s]"
+    },
+    {
+      "start": 67.89,
+      "end": 69.41,
+      "text": "and coolness.",
+      "speaker": "A"
+    },
+    {
+      "start": 69.41,
+      "end": 83.26,
+      "text": "[pause 13.8s]"
+    },
+    {
+      "start": 83.26,
+      "end": 86.22,
+      "text": "Surrounded by rage",
+      "speaker": "A"
+    },
+    {
+      "start": 86.22,
+      "end": 92.54,
+      "text": "[pause 6.3s]"
+    },
+    {
+      "start": 92.54,
+      "end": 94.22,
+      "text": "and the lust for blood",
+      "speaker": "A"
+    },
+    {
+      "start": 94.22,
+      "end": 101.42,
+      "text": "[pause 7.2s]"
+    },
+    {
+      "start": 101.42,
+      "end": 103.42,
+      "text": "I lay upon the ground",
+      "speaker": "A"
+    },
+    {
+      "start": 103.42,
+      "end": 110.18,
+      "text": "[pause 6.8s]"
+    },
+    {
+      "start": 110.18,
+      "end": 112.1,
+      "text": "master of the self",
+      "speaker": "A"
+    },
+    {
+      "start": 112.1,
+      "end": 119.38,
+      "text": "[pause 7.3s]"
+    },
+    {
+      "start": 119.38,
+      "end": 124.18,
+      "text": "master over all that surrounds me.",
+      "speaker": "A"
+    },
+    {
+      "start": 124.18,
+      "end": 130.27,
+      "text": "[pause 6.1s]"
+    },
+    {
+      "start": 130.27,
+      "end": 131.31,
+      "text": "I exist within",
+      "speaker": "A"
+    },
+    {
+      "start": 131.31,
+      "end": 134.99,
+      "text": "[pause 3.7s]"
+    },
+    {
+      "start": 134.99,
+      "end": 135.63,
+      "text": "and without",
+      "speaker": "A"
+    },
+    {
+      "start": 135.63,
+      "end": 146.67,
+      "text": "[pause 11.0s]"
+    },
+    {
+      "start": 146.67,
+      "end": 149.47,
+      "text": "pure concentration",
+      "speaker": "A"
+    },
+    {
+      "start": 149.47,
+      "end": 160.84,
+      "text": "[pause 11.4s]"
+    },
+    {
+      "start": 160.84,
+      "end": 162.2,
+      "text": "of that divine",
+      "speaker": "A"
+    },
+    {
+      "start": 162.2,
+      "end": 164.28,
+      "text": "[pause 2.1s]"
+    },
+    {
+      "start": 164.28,
+      "end": 164.68,
+      "text": "light.",
+      "speaker": "A"
+    },
+    {
+      "start": 164.68,
+      "end": 177.88,
+      "text": "[pause 13.2s]"
+    },
+    {
+      "start": 177.88,
+      "end": 179.56,
+      "text": "The poisoned oceans",
+      "speaker": "A"
+    },
+    {
+      "start": 179.56,
+      "end": 185.49,
+      "text": "[pause 5.9s]"
+    },
+    {
+      "start": 185.49,
+      "end": 186.93,
+      "text": "are made pure",
+      "speaker": "A"
+    },
+    {
+      "start": 186.93,
+      "end": 188.69,
+      "text": "[pause 1.8s]"
+    },
+    {
+      "start": 188.69,
+      "end": 190.61,
+      "text": "as I consume them.",
+      "speaker": "A"
+    },
+    {
+      "start": 190.61,
+      "end": 203.33,
+      "text": "[pause 12.7s]"
+    },
+    {
+      "start": 203.33,
+      "end": 205.65,
+      "text": "In all action",
+      "speaker": "A"
+    },
+    {
+      "start": 205.65,
+      "end": 208.38,
+      "text": "[pause 2.7s]"
+    },
+    {
+      "start": 208.38,
+      "end": 209.26,
+      "text": "I advance",
+      "speaker": "A"
+    },
+    {
+      "start": 209.26,
+      "end": 210.78,
+      "text": "[pause 1.5s]"
+    },
+    {
+      "start": 210.78,
+      "end": 212.46,
+      "text": "up the mountain",
+      "speaker": "A"
+    },
+    {
+      "start": 212.46,
+      "end": 230.78,
+      "text": "[pause 18.3s]"
+    },
+    {
+      "start": 230.78,
+      "end": 233.19,
+      "text": "I seek the sun",
+      "speaker": "A"
+    },
+    {
+      "start": 233.19,
+      "end": 238.95,
+      "text": "[pause 5.8s]"
+    },
+    {
+      "start": 238.95,
+      "end": 239.83,
+      "text": "at the peak",
+      "speaker": "A"
+    },
+    {
+      "start": 239.83,
+      "end": 242.23,
+      "text": "[pause 2.4s]"
+    },
+    {
+      "start": 242.23,
+      "end": 243.27,
+      "text": "of the self.",
+      "speaker": "A"
+    },
+    {
+      "start": 243.27,
+      "end": 252.23,
+      "text": "[pause 9.0s]"
+    },
+    {
+      "start": 252.23,
+      "end": 258.319,
+      "text": "And in this struggle I remember the three purposes",
+      "speaker": "A"
+    },
+    {
+      "start": 258.319,
+      "end": 267.839,
+      "text": "[pause 9.5s]"
+    },
+    {
+      "start": 267.839,
+      "end": 268.639,
+      "text": "Meditation",
+      "speaker": "A"
+    },
+    {
+      "start": 268.639,
+      "end": 272.079,
+      "text": "[pause 3.4s]"
+    },
+    {
+      "start": 272.079,
+      "end": 275.759,
+      "text": "through the dissolution of time",
+      "speaker": "A"
+    },
+    {
+      "start": 275.759,
+      "end": 281.439,
+      "text": "[pause 5.7s]"
+    },
+    {
+      "start": 281.439,
+      "end": 282.319,
+      "text": "Consciousness",
+      "speaker": "A"
+    },
+    {
+      "start": 282.319,
+      "end": 284.38,
+      "text": "[pause 2.1s]"
+    },
+    {
+      "start": 284.38,
+      "end": 288.22,
+      "text": "through struggle against the body",
+      "speaker": "A"
+    },
+    {
+      "start": 288.22,
+      "end": 293.74,
+      "text": "[pause 5.5s]"
+    },
+    {
+      "start": 293.74,
+      "end": 294.14,
+      "text": "Control",
+      "speaker": "A"
+    },
+    {
+      "start": 294.14,
+      "end": 296.54,
+      "text": "[pause 2.4s]"
+    },
+    {
+      "start": 296.54,
+      "end": 300.38,
+      "text": "through the discipline of pain.",
+      "speaker": "A"
+    },
+    {
+      "start": 300.38,
+      "end": 311.11,
+      "text": "[pause 10.7s]"
+    },
+    {
+      "start": 311.11,
+      "end": 314.47,
+      "text": "There is no time. To me",
+      "speaker": "A"
+    },
+    {
+      "start": 314.47,
+      "end": 321.19,
+      "text": "[pause 6.7s]"
+    },
+    {
+      "start": 321.19,
+      "end": 322.79,
+      "text": "time dissolves",
+      "speaker": "A"
+    },
+    {
+      "start": 322.79,
+      "end": 325.19,
+      "text": "[pause 2.4s]"
+    },
+    {
+      "start": 325.19,
+      "end": 328.63,
+      "text": "in the waves of purity.",
+      "speaker": "A"
+    },
+    {
+      "start": 328.63,
+      "end": 346.32,
+      "text": "[pause 17.7s]"
+    },
+    {
+      "start": 346.32,
+      "end": 348.48,
+      "text": "There is no separation",
+      "speaker": "A"
+    },
+    {
+      "start": 348.48,
+      "end": 350.64,
+      "text": "[pause 2.2s]"
+    },
+    {
+      "start": 350.64,
+      "end": 351.04,
+      "text": "between",
+      "speaker": "A"
+    },
+    {
+      "start": 351.04,
+      "end": 352.88,
+      "text": "[pause 1.8s]"
+    },
+    {
+      "start": 352.88,
+      "end": 353.28,
+      "text": "body,",
+      "speaker": "A"
+    },
+    {
+      "start": 353.28,
+      "end": 355.12,
+      "text": "[pause 1.8s]"
+    },
+    {
+      "start": 355.12,
+      "end": 358,
+      "text": "mind and spirit.",
+      "speaker": "A"
+    },
+    {
+      "start": 358,
+      "end": 363.53,
+      "text": "[pause 5.5s]"
+    },
+    {
+      "start": 363.53,
+      "end": 366.33,
+      "text": "I am one consciousness,",
+      "speaker": "A"
+    },
+    {
+      "start": 366.33,
+      "end": 370.65,
+      "text": "[pause 4.3s]"
+    },
+    {
+      "start": 370.65,
+      "end": 373.21,
+      "text": "master of all.",
+      "speaker": "A"
+    },
+    {
+      "start": 373.21,
+      "end": 384.33,
+      "text": "[pause 11.1s]"
+    },
+    {
+      "start": 384.33,
+      "end": 384.81,
+      "text": "Pain",
+      "speaker": "A"
+    },
+    {
+      "start": 384.81,
+      "end": 386.75,
+      "text": "[pause 1.9s]"
+    },
+    {
+      "start": 386.75,
+      "end": 388.83,
+      "text": "does not break me.",
+      "speaker": "A"
+    },
+    {
+      "start": 388.83,
+      "end": 395.15,
+      "text": "[pause 6.3s]"
+    },
+    {
+      "start": 395.15,
+      "end": 398.43,
+      "text": "I am beyond destruction.",
+      "speaker": "A"
+    },
+    {
+      "start": 398.43,
+      "end": 408.27,
+      "text": "[pause 9.8s]"
+    },
+    {
+      "start": 408.27,
+      "end": 409.07,
+      "text": "The pain",
+      "speaker": "A"
+    },
+    {
+      "start": 409.07,
+      "end": 410.75,
+      "text": "[pause 1.7s]"
+    },
+    {
+      "start": 410.75,
+      "end": 412.2,
+      "text": "the that I endure",
+      "speaker": "A"
+    },
+    {
+      "start": 412.2,
+      "end": 414.36,
+      "text": "[pause 2.2s]"
+    },
+    {
+      "start": 414.36,
+      "end": 416.52,
+      "text": "brings me greater strength",
+      "speaker": "A"
+    },
+    {
+      "start": 416.52,
+      "end": 420.04,
+      "text": "[pause 3.5s]"
+    },
+    {
+      "start": 420.04,
+      "end": 421.96,
+      "text": "and greater control.",
+      "speaker": "A"
+    },
+    {
+      "start": 421.96,
+      "end": 434.36,
+      "text": "[pause 12.4s]"
+    },
+    {
+      "start": 434.36,
+      "end": 436.04,
+      "text": "Upon my chest",
+      "speaker": "A"
+    },
+    {
+      "start": 436.04,
+      "end": 441.47,
+      "text": "[pause 5.4s]"
+    },
+    {
+      "start": 441.47,
+      "end": 448.51,
+      "text": "the beautiful creation of Shakti dances freely.",
+      "speaker": "A"
+    },
+    {
+      "start": 448.51,
+      "end": 454.03,
+      "text": "[pause 5.5s]"
+    },
+    {
+      "start": 454.03,
+      "end": 456.19,
+      "text": "I am the foundation",
+      "speaker": "A"
+    },
+    {
+      "start": 456.19,
+      "end": 457.71,
+      "text": "[pause 1.5s]"
+    },
+    {
+      "start": 457.71,
+      "end": 458.99,
+      "text": "of the cosmos,",
+      "speaker": "A"
+    },
+    {
+      "start": 458.99,
+      "end": 466.6,
+      "text": "[pause 7.6s]"
+    },
+    {
+      "start": 466.6,
+      "end": 469.8,
+      "text": "the pillar of the universe.",
+      "speaker": "A"
+    },
+    {
+      "start": 469.8,
+      "end": 487.89,
+      "text": "[pause 18.1s]"
+    },
+    {
+      "start": 487.89,
+      "end": 488.13,
+      "text": "Sa.",
+      "speaker": "A"
+    }
+  ],
+  "fullText": "I sit in the shadow of the mountain illuminated by the light of Shiva. I feel the presence of Shiva in the wind and in the rushing stream. He brings steadiness. He brings order and coolness. Surrounded by rage and the lust for blood I lay upon the ground master of the self master over all that surrounds me. I exist within and without pure concentration of that divine light. The poisoned oceans are made pure as I consume them. In all action I advance up the mountain I seek the sun at the peak of the self. And in this struggle I remember the three purposes Meditation through the dissolution of time Consciousness through struggle against the body Control through the discipline of pain. There is no time. To me time dissolves in the waves of purity. There is no separation between body, mind and spirit. I am one consciousness, master of all. Pain does not break me. I am beyond destruction. The pain the that I endure brings me greater strength and greater control. Upon my chest the beautiful creation of Shakti dances freely. I am the foundation of the cosmos, the pillar of the universe. Sa.",
+  "duration": 8.5,
+  "metadata": {
+    "wordCount": 199,
+    "speakingTime": 1.9818166666666683,
+    "pauseTime": 5.988349999999998
+  }
+}

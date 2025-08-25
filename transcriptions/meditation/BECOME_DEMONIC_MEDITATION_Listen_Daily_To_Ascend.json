@@ -1,0 +1,622 @@
+{
+  "segments": [
+    {
+      "start": 1.76,
+      "end": 2.72,
+      "text": "Close your eyes.",
+      "speaker": "A"
+    },
+    {
+      "start": 2.72,
+      "end": 5.68,
+      "text": "[pause 3.0s]"
+    },
+    {
+      "start": 5.68,
+      "end": 6.32,
+      "text": "Relax.",
+      "speaker": "A"
+    },
+    {
+      "start": 6.32,
+      "end": 10.4,
+      "text": "[pause 4.1s]"
+    },
+    {
+      "start": 10.4,
+      "end": 12.8,
+      "text": "Take a deep breath.",
+      "speaker": "A"
+    },
+    {
+      "start": 12.8,
+      "end": 20.32,
+      "text": "[pause 7.5s]"
+    },
+    {
+      "start": 20.32,
+      "end": 21.6,
+      "text": "I want you to think about",
+      "speaker": "A"
+    },
+    {
+      "start": 21.6,
+      "end": 23.44,
+      "text": "[pause 1.8s]"
+    },
+    {
+      "start": 23.44,
+      "end": 24.56,
+      "text": "the last time",
+      "speaker": "A"
+    },
+    {
+      "start": 24.56,
+      "end": 27.84,
+      "text": "[pause 3.3s]"
+    },
+    {
+      "start": 27.84,
+      "end": 28.96,
+      "text": "you stopped.",
+      "speaker": "A"
+    },
+    {
+      "start": 28.96,
+      "end": 33.02,
+      "text": "[pause 4.1s]"
+    },
+    {
+      "start": 33.02,
+      "end": 34.3,
+      "text": "To take a deep breath",
+      "speaker": "A"
+    },
+    {
+      "start": 34.3,
+      "end": 36.38,
+      "text": "[pause 2.1s]"
+    },
+    {
+      "start": 36.38,
+      "end": 39.02,
+      "text": "and just relax.",
+      "speaker": "A"
+    },
+    {
+      "start": 39.02,
+      "end": 48.54,
+      "text": "[pause 9.5s]"
+    },
+    {
+      "start": 48.54,
+      "end": 49.82,
+      "text": "I bet it's been a while.",
+      "speaker": "A"
+    },
+    {
+      "start": 49.82,
+      "end": 56.78,
+      "text": "[pause 7.0s]"
+    },
+    {
+      "start": 56.78,
+      "end": 58.14,
+      "text": "Because every day",
+      "speaker": "A"
+    },
+    {
+      "start": 58.14,
+      "end": 63.88,
+      "text": "[pause 5.7s]"
+    },
+    {
+      "start": 63.88,
+      "end": 66.52,
+      "text": "you are held to a standard.",
+      "speaker": "A"
+    },
+    {
+      "start": 66.52,
+      "end": 69.64,
+      "text": "[pause 3.1s]"
+    },
+    {
+      "start": 69.64,
+      "end": 74.04,
+      "text": "A standard that you did not write",
+      "speaker": "A"
+    },
+    {
+      "start": 74.04,
+      "end": 75.64,
+      "text": "[pause 1.6s]"
+    },
+    {
+      "start": 75.64,
+      "end": 76.52,
+      "text": "for yourself.",
+      "speaker": "A"
+    },
+    {
+      "start": 76.52,
+      "end": 82.2,
+      "text": "[pause 5.7s]"
+    },
+    {
+      "start": 82.2,
+      "end": 85.16,
+      "text": "It was something that was handed down to you",
+      "speaker": "A"
+    },
+    {
+      "start": 85.16,
+      "end": 89.48,
+      "text": "[pause 4.3s]"
+    },
+    {
+      "start": 89.48,
+      "end": 96.34,
+      "text": "by people who see you as nothing more than cattle",
+      "speaker": "A"
+    },
+    {
+      "start": 96.34,
+      "end": 98.1,
+      "text": "[pause 1.8s]"
+    },
+    {
+      "start": 98.1,
+      "end": 98.98,
+      "text": "to be used",
+      "speaker": "A"
+    },
+    {
+      "start": 98.98,
+      "end": 101.3,
+      "text": "[pause 2.3s]"
+    },
+    {
+      "start": 101.3,
+      "end": 102.5,
+      "text": "and thrown aside",
+      "speaker": "A"
+    },
+    {
+      "start": 102.5,
+      "end": 105.62,
+      "text": "[pause 3.1s]"
+    },
+    {
+      "start": 105.62,
+      "end": 107.7,
+      "text": "when you can no longer be milked.",
+      "speaker": "A"
+    },
+    {
+      "start": 107.7,
+      "end": 114.1,
+      "text": "[pause 6.4s]"
+    },
+    {
+      "start": 114.1,
+      "end": 122.38,
+      "text": "These are the people who taught you right from wrong.",
+      "speaker": "A"
+    },
+    {
+      "start": 122.38,
+      "end": 125.89,
+      "text": "[pause 3.5s]"
+    },
+    {
+      "start": 125.89,
+      "end": 128.29,
+      "text": "They told you when to wake up,",
+      "speaker": "A"
+    },
+    {
+      "start": 128.29,
+      "end": 130.13,
+      "text": "[pause 1.8s]"
+    },
+    {
+      "start": 130.13,
+      "end": 131.25,
+      "text": "when to go to work,",
+      "speaker": "A"
+    },
+    {
+      "start": 131.25,
+      "end": 134.05,
+      "text": "[pause 2.8s]"
+    },
+    {
+      "start": 134.05,
+      "end": 135.25,
+      "text": "when to go to bed,",
+      "speaker": "A"
+    },
+    {
+      "start": 135.25,
+      "end": 138.53,
+      "text": "[pause 3.3s]"
+    },
+    {
+      "start": 138.53,
+      "end": 140.53,
+      "text": "how to eat, how to fuck,",
+      "speaker": "A"
+    },
+    {
+      "start": 140.53,
+      "end": 144.05,
+      "text": "[pause 3.5s]"
+    },
+    {
+      "start": 144.05,
+      "end": 145.41,
+      "text": "how to do anything.",
+      "speaker": "A"
+    },
+    {
+      "start": 145.41,
+      "end": 150.21,
+      "text": "[pause 4.8s]"
+    },
+    {
+      "start": 150.21,
+      "end": 152.29,
+      "text": "And if you deviate from that path,",
+      "speaker": "A"
+    },
+    {
+      "start": 152.29,
+      "end": 157.15,
+      "text": "[pause 4.9s]"
+    },
+    {
+      "start": 157.15,
+      "end": 158.19,
+      "text": "you're dead to them.",
+      "speaker": "A"
+    },
+    {
+      "start": 158.19,
+      "end": 161.07,
+      "text": "[pause 2.9s]"
+    },
+    {
+      "start": 161.07,
+      "end": 162.11,
+      "text": "You're dirt.",
+      "speaker": "A"
+    },
+    {
+      "start": 162.11,
+      "end": 171.95,
+      "text": "[pause 9.8s]"
+    },
+    {
+      "start": 171.95,
+      "end": 172.91,
+      "text": "And when you march",
+      "speaker": "A"
+    },
+    {
+      "start": 172.91,
+      "end": 174.51,
+      "text": "[pause 1.6s]"
+    },
+    {
+      "start": 174.51,
+      "end": 176.59,
+      "text": "lockstep in their system,",
+      "speaker": "A"
+    },
+    {
+      "start": 176.59,
+      "end": 180.91,
+      "text": "[pause 4.3s]"
+    },
+    {
+      "start": 180.91,
+      "end": 188.33,
+      "text": "you never have time to reflect on the fact that you. You are a slave.",
+      "speaker": "A"
+    },
+    {
+      "start": 188.33,
+      "end": 194.33,
+      "text": "[pause 6.0s]"
+    },
+    {
+      "start": 194.33,
+      "end": 203.61,
+      "text": "And so you just keep walking, walking to the beat of the master's drum.",
+      "speaker": "A"
+    },
+    {
+      "start": 203.61,
+      "end": 209.29,
+      "text": "[pause 5.7s]"
+    },
+    {
+      "start": 209.29,
+      "end": 210.41,
+      "text": "Never questioning",
+      "speaker": "A"
+    },
+    {
+      "start": 210.41,
+      "end": 212.49,
+      "text": "[pause 2.1s]"
+    },
+    {
+      "start": 212.49,
+      "end": 216.33,
+      "text": "whether the morality you were given as a child",
+      "speaker": "A"
+    },
+    {
+      "start": 216.33,
+      "end": 219.51,
+      "text": "[pause 3.2s]"
+    },
+    {
+      "start": 219.51,
+      "end": 223.67,
+      "text": "was designed with your best interest in mind.",
+      "speaker": "A"
+    },
+    {
+      "start": 223.67,
+      "end": 232.55,
+      "text": "[pause 8.9s]"
+    },
+    {
+      "start": 232.55,
+      "end": 233.35,
+      "text": "And it was",
+      "speaker": "A"
+    },
+    {
+      "start": 233.35,
+      "end": 234.87,
+      "text": "[pause 1.5s]"
+    },
+    {
+      "start": 234.87,
+      "end": 235.67,
+      "text": "designed",
+      "speaker": "A"
+    },
+    {
+      "start": 235.67,
+      "end": 244.87,
+      "text": "[pause 9.2s]"
+    },
+    {
+      "start": 244.87,
+      "end": 245.91,
+      "text": "when you were born.",
+      "speaker": "A"
+    },
+    {
+      "start": 245.91,
+      "end": 247.91,
+      "text": "[pause 2.0s]"
+    },
+    {
+      "start": 247.91,
+      "end": 250.85,
+      "text": "I'm sure that everyone around you",
+      "speaker": "A"
+    },
+    {
+      "start": 250.85,
+      "end": 253.25,
+      "text": "[pause 2.4s]"
+    },
+    {
+      "start": 253.25,
+      "end": 260.05,
+      "text": "looked at that baby and said, wow, observe this innocent little thing.",
+      "speaker": "A"
+    },
+    {
+      "start": 260.05,
+      "end": 264.45,
+      "text": "[pause 4.4s]"
+    },
+    {
+      "start": 264.45,
+      "end": 266.69,
+      "text": "But have you ever stopped to ask yourself",
+      "speaker": "A"
+    },
+    {
+      "start": 266.69,
+      "end": 269.09,
+      "text": "[pause 2.4s]"
+    },
+    {
+      "start": 269.09,
+      "end": 273.89,
+      "text": "what crime you were accused of from birth?",
+      "speaker": "A"
+    },
+    {
+      "start": 273.89,
+      "end": 280.02,
+      "text": "[pause 6.1s]"
+    },
+    {
+      "start": 280.02,
+      "end": 285.14,
+      "text": "Why was it necessary to assert your innocence?",
+      "speaker": "A"
+    },
+    {
+      "start": 285.14,
+      "end": 292.899,
+      "text": "[pause 7.8s]"
+    },
+    {
+      "start": 292.899,
+      "end": 294.9,
+      "text": "Why was it necessary",
+      "speaker": "A"
+    },
+    {
+      "start": 294.9,
+      "end": 296.42,
+      "text": "[pause 1.5s]"
+    },
+    {
+      "start": 296.42,
+      "end": 303.06,
+      "text": "from the very first scream that you uttered as you took your first breath,",
+      "speaker": "A"
+    },
+    {
+      "start": 303.06,
+      "end": 305.24,
+      "text": "[pause 2.2s]"
+    },
+    {
+      "start": 305.24,
+      "end": 308.44,
+      "text": "to justify your very existence",
+      "speaker": "A"
+    },
+    {
+      "start": 308.44,
+      "end": 311,
+      "text": "[pause 2.6s]"
+    },
+    {
+      "start": 311,
+      "end": 315.64,
+      "text": "based upon the taste of someone else?",
+      "speaker": "A"
+    },
+    {
+      "start": 315.64,
+      "end": 329.08,
+      "text": "[pause 13.4s]"
+    },
+    {
+      "start": 329.08,
+      "end": 333.88,
+      "text": "There is a realization that you can make right now",
+      "speaker": "A"
+    },
+    {
+      "start": 333.88,
+      "end": 335.58,
+      "text": "[pause 1.7s]"
+    },
+    {
+      "start": 335.58,
+      "end": 336.62,
+      "text": "that will free you.",
+      "speaker": "A"
+    },
+    {
+      "start": 336.62,
+      "end": 341.26,
+      "text": "[pause 4.6s]"
+    },
+    {
+      "start": 341.26,
+      "end": 344.7,
+      "text": "Free you from the bonds that were placed upon you",
+      "speaker": "A"
+    },
+    {
+      "start": 344.7,
+      "end": 346.22,
+      "text": "[pause 1.5s]"
+    },
+    {
+      "start": 346.22,
+      "end": 348.62,
+      "text": "from the moment of your conception.",
+      "speaker": "A"
+    },
+    {
+      "start": 348.62,
+      "end": 354.86,
+      "text": "[pause 6.2s]"
+    },
+    {
+      "start": 354.86,
+      "end": 356.62,
+      "text": "And that realization is this.",
+      "speaker": "A"
+    },
+    {
+      "start": 356.62,
+      "end": 365.34,
+      "text": "[pause 8.7s]"
+    },
+    {
+      "start": 365.34,
+      "end": 370.28,
+      "text": "There is no such thing as good or evil.",
+      "speaker": "A"
+    },
+    {
+      "start": 370.28,
+      "end": 373.16,
+      "text": "[pause 2.9s]"
+    },
+    {
+      "start": 373.16,
+      "end": 376.12,
+      "text": "There are only consequences.",
+      "speaker": "A"
+    },
+    {
+      "start": 376.12,
+      "end": 385.8,
+      "text": "[pause 9.7s]"
+    },
+    {
+      "start": 385.8,
+      "end": 386.2,
+      "text": "Now",
+      "speaker": "A"
+    },
+    {
+      "start": 386.2,
+      "end": 387.8,
+      "text": "[pause 1.6s]"
+    },
+    {
+      "start": 387.8,
+      "end": 388.44,
+      "text": "be free.",
+      "speaker": "A"
+    },
+    {
+      "start": 388.44,
+      "end": 395.66,
+      "text": "[pause 7.2s]"
+    },
+    {
+      "start": 395.66,
+      "end": 395.9,
+      "text": "Sa.",
+      "speaker": "A"
+    }
+  ],
+  "fullText": "Close your eyes. Relax. Take a deep breath. I want you to think about the last time you stopped. To take a deep breath and just relax. I bet it's been a while. Because every day you are held to a standard. A standard that you did not write for yourself. It was something that was handed down to you by people who see you as nothing more than cattle to be used and thrown aside when you can no longer be milked. These are the people who taught you right from wrong. They told you when to wake up, when to go to work, when to go to bed, how to eat, how to fuck, how to do anything. And if you deviate from that path, you're dead to them. You're dirt. And when you march lockstep in their system, you never have time to reflect on the fact that you. You are a slave. And so you just keep walking, walking to the beat of the master's drum. Never questioning whether the morality you were given as a child was designed with your best interest in mind. And it was designed when you were born. I'm sure that everyone around you looked at that baby and said, wow, observe this innocent little thing. But have you ever stopped to ask yourself what crime you were accused of from birth? Why was it necessary to assert your innocence? Why was it necessary from the very first scream that you uttered as you took your first breath, to justify your very existence based upon the taste of someone else? There is a realization that you can make right now that will free you. Free you from the bonds that were placed upon you from the moment of your conception. And that realization is this. There is no such thing as good or evil. There are only consequences. Now be free. Sa.",
+  "duration": 7.016666666666667,
+  "metadata": {
+    "wordCount": 321,
+    "speakingTime": 2.4833499999999966,
+    "pauseTime": 4.085650000000003
+  }
+}
