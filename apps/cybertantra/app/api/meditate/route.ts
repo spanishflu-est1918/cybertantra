@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { MeditationGeneratorAgent } from '@cybertantra/ai';
+import { MeditationGeneratorAgent, MeditationAudioService } from '@cybertantra/ai';
 import { validateRequest, corsHeaders } from '../middleware';
 
 export async function OPTIONS() {
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   if (validationError) return validationError;
 
   try {
-    const { topic, duration } = await req.json();
+    const { topic, duration, generateAudio = false, voiceId } = await req.json();
 
     if (!topic || !duration) {
       return NextResponse.json(
@@ -29,20 +29,38 @@ export async function POST(req: Request) {
     }
 
     console.log(`[API] Generating ${duration}-minute meditation on: ${topic}`);
+    console.log(`[API] Audio generation: ${generateAudio ? 'YES' : 'NO'}`);
 
+    // Generate meditation text
     const agent = new MeditationGeneratorAgent();
     const result = await agent.generate(topic, duration);
 
-    console.log(`[API] Generation complete:`, {
-      originalTextLength: result.originalText?.length || 0,
-      ssmlLength: result.ssml?.length || 0,
-      steps: result.steps,
+    console.log(`[API] Text generation complete:`, {
+      textLength: result.text?.length || 0,
+      topic: result.topic,
+      duration: result.duration,
     });
+
+    let audioResult = null;
+
+    // Generate audio if requested
+    if (generateAudio) {
+      console.log(`[API] Starting audio generation...`);
+      const audioService = new MeditationAudioService({ voiceId });
+      audioResult = await audioService.generateAndSave(result.text, topic, duration);
+      console.log(`[API] Audio complete:`, audioResult);
+    }
 
     const headers = await corsHeaders();
     return NextResponse.json({
       success: true,
-      meditation: result,
+      meditation: {
+        ...result,
+        ...(audioResult && {
+          audioPath: audioResult.audioPath,
+          audioSize: audioResult.audioSize,
+        }),
+      },
     }, { headers });
   } catch (error) {
     console.error("[API] Meditation generation error:", error);
