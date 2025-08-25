@@ -179,22 +179,19 @@ export class QueryAgent {
       .join("\n\n---\n\n");
 
     // Generate system prompt based on categories
-    const systemPrompt = this.getSystemPrompt(options.categories);
+    const systemPrompt =
+      this.getSystemPrompt(options.categories) +
+      "\n\nRetrieved lecture context:\n" +
+      context;
 
     // Generate response using OpenRouter
     const { text } = await generateText({
-      model: this.openrouter("moonshotai/kimi-k2"),
+      model: this.openrouter("qwen/qwen-2.5-72b-instruct"),
+      system: systemPrompt,
       messages: [
         {
-          role: "system",
-          content: systemPrompt,
-        },
-        {
           role: "user",
-          content: `Based on the following excerpts, please answer this question: ${question}
-
-Content Excerpts:
-${context}`,
+          content: question,
         },
       ],
       temperature: 0.7,
