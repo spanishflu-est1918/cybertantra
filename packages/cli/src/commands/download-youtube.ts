@@ -55,10 +55,6 @@ program
     }
     
     console.log(`\n🎉 Download complete! Audio files saved to: ${options.output}`);
-    console.log(`\n🎙️  Next steps:`);
-    console.log(`   1. Run: bun run transcribe scan -d ${options.output}`);
-    console.log(`   2. Run: bun run transcribe process -d ${options.output}`);
-    console.log(`   3. Run: bun run cli:ingest`);
   });
 
 // Parse arguments
