@@ -83,19 +83,12 @@ export class TranscriptionService {
     const results = [];
 
     for (const file of audioFiles) {
-      // Check if already transcribed
-      const existing = await sql`
-        SELECT status, transcript_path
-        FROM transcription_status
-        WHERE filename = ${file}
-      `;
-
+      // Always needs transcription - no database check
       results.push({
         filename: file,
-        needsTranscription:
-          !existing.rows.length || existing.rows[0].status !== "completed",
-        existingTranscript: existing.rows[0]?.transcript_path,
-        status: existing.rows[0]?.status,
+        needsTranscription: true,
+        existingTranscript: undefined,
+        status: undefined,
       });
     }
 
@@ -115,24 +108,6 @@ export class TranscriptionService {
     const startTime = Date.now();
 
     try {
-      // Update status to transcribing
-      await sql`
-        INSERT INTO transcription_status (
-          filename, file_path, file_size, status, model_tier,
-          speaker_labels, language_code, started_at
-        ) VALUES (
-          ${filename}, ${audioPath},
-          ${(await fs.stat(audioPath)).size},
-          'transcribing', ${config.modelTier},
-          ${config.speakerLabels}, ${config.languageCode},
-          CURRENT_TIMESTAMP
-        )
-        ON CONFLICT (filename) DO UPDATE SET
-          status = 'transcribing',
-          started_at = CURRENT_TIMESTAMP,
-          model_tier = ${config.modelTier}
-      `;
-
       console.log(
         `🎙️  Transcribing ${filename} with ${config.modelTier} model...`,
       );
@@ -173,27 +148,6 @@ export class TranscriptionService {
         outputDir,
       );
 
-      // Update database
-      await sql`
-        UPDATE transcription_status SET
-          status = 'completed',
-          assemblyai_transcript_id = ${transcript.id},
-          audio_duration_seconds = ${transcript.audio_duration},
-          cost_estimate = ${cost},
-          transcript_path = ${outputPath},
-          completed_at = CURRENT_TIMESTAMP
-        WHERE filename = ${filename}
-      `;
-
-      // Map audio to transcript
-      const transcriptFilename = path.basename(outputPath);
-      await sql`
-        INSERT INTO audio_transcript_mapping (audio_filename, transcript_filename)
-        VALUES (${filename}, ${transcriptFilename})
-        ON CONFLICT (audio_filename) DO UPDATE SET
-          transcript_filename = ${transcriptFilename}
-      `;
-
       const processingTime = (Date.now() - startTime) / 1000;
       console.log(
         `✅ Transcribed in ${processingTime.toFixed(1)}s | Cost: $${cost.toFixed(4)}`,
@@ -207,14 +161,6 @@ export class TranscriptionService {
       };
     } catch (error) {
       console.error(`❌ Failed to transcribe ${filename}:`, error);
-
-      await sql`
-        UPDATE transcription_status SET
-          status = 'failed',
-          error_message = ${error instanceof Error ? error.message : "Unknown error"},
-          completed_at = CURRENT_TIMESTAMP
-        WHERE filename = ${filename}
-      `;
 
       return {
         success: false,
@@ -297,10 +243,7 @@ export class TranscriptionService {
   }
 
   async createTranscriptionJob(totalFiles: number): Promise<void> {
-    await sql`
-      INSERT INTO transcription_jobs (job_id, total_files)
-      VALUES (${this.jobId}, ${totalFiles})
-    `;
+    // No database operations
   }
 
   async updateJobProgress(
@@ -309,25 +252,13 @@ export class TranscriptionService {
     duration: number,
     cost: number,
   ): Promise<void> {
-    await sql`
-      UPDATE transcription_jobs SET
-        processed_files = ${processed},
-        failed_files = ${failed},
-        total_duration_seconds = total_duration_seconds + ${duration},
-        total_cost = total_cost + ${cost}
-      WHERE job_id = ${this.jobId}
-    `;
+    // No database operations
   }
 
   async completeJob(
     status: "completed" | "failed" = "completed",
   ): Promise<void> {
-    await sql`
-      UPDATE transcription_jobs SET
-        status = ${status},
-        completed_at = CURRENT_TIMESTAMP
-      WHERE job_id = ${this.jobId}
-    `;
+    // No database operations
   }
 
   async transcribeWithTimestamps(
