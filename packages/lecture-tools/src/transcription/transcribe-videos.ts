@@ -34,7 +34,6 @@ async function setupDirectories(baseDir: string) {
   }
 }
 
-
 // Main transcription function
 async function main() {
   // Check if input is from file or stdin
@@ -42,14 +41,34 @@ async function main() {
   let inputFile: string | null = null;
   let input: string;
 
-  if (args.length > 0 && (await exists(args[0]))) {
+  // Check for --timestamps flag
+  const useTimestamps = args.includes("--timestamps") || args.includes("-t");
+  // Remove the flag from args before processing
+  const filteredArgs = args.filter(
+    (arg) => arg !== "--timestamps" && arg !== "-t",
+  );
+
+  if (filteredArgs.length > 0 && (await exists(filteredArgs[0]))) {
     // Input is a file path
-    inputFile = args[0];
+    inputFile = filteredArgs[0];
     input = await Bun.file(inputFile).text();
     console.log(`📂 Reading from file: ${inputFile}`);
-  } else {
+  } else if (filteredArgs.length === 0 && !process.stdin.isTTY) {
     // Input is from stdin
     input = await Bun.stdin.text();
+  } else {
+    // Show usage
+    console.log(`
+Usage: pnpm transcribe-videos [options] < selected-videos.json
+   or: pnpm transcribe-videos [options] selected-videos.json
+
+Options:
+  -t, --timestamps    Include word-level timestamps for meditation analysis
+
+Example:
+  pnpm transcribe-videos --timestamps meditations.json
+    `);
+    process.exit(1);
   }
 
   let videos: CategorizedVideo[];
@@ -70,7 +89,11 @@ async function main() {
   console.log(`\n${"═".repeat(60)}`);
   console.log(`🎬 YOUTUBE VIDEO TRANSCRIPTION TOOL`);
   console.log(`${"═".repeat(60)}`);
-  console.log(`\n📊 Found ${videos.length} videos to process\n`);
+  console.log(`\n📊 Found ${videos.length} videos to process`);
+  if (useTimestamps) {
+    console.log(`⏱️  Timestamps enabled for meditation analysis`);
+  }
+  console.log("");
 
   // Group by category for summary
   const categoryCounts = videos.reduce(
@@ -102,75 +125,91 @@ async function main() {
   console.log(`\n${"═".repeat(60)}`);
   console.log(`📥 PHASE 1: DOWNLOADING ALL VIDEOS`);
   console.log(`${"═".repeat(60)}\n`);
-  
-  const downloadedVideos: Array<{video: CategorizedVideo, audioDir: string}> = [];
+
+  const downloadedVideos: Array<{ video: CategorizedVideo; audioDir: string }> =
+    [];
   const failedDownloads: CategorizedVideo[] = [];
   const startTime = Date.now();
-  
+
   for (let i = 0; i < videos.length; i++) {
     const video = videos[i];
     const audioDir = path.join(baseDir, "audio_temp", `video_${i + 1}`);
-    
+
     console.log(`\n[${i + 1}/${videos.length}] Downloading: ${video.title}`);
     console.log(`   🔗 ${video.link}`);
-    
+
     try {
       await mkdir(audioDir, { recursive: true });
       await $`pnpm cli:youtube ${video.link} -o ${audioDir}`;
       console.log(`   ✅ Downloaded successfully`);
-      downloadedVideos.push({video, audioDir});
+      downloadedVideos.push({ video, audioDir });
     } catch (error) {
       console.log(`   ❌ Download failed`);
       failedDownloads.push(video);
     }
-    
+
     // Brief delay to avoid rate limiting
     if (i < videos.length - 1) {
       await Bun.sleep(1000);
     }
   }
-  
+
   const downloadTime = ((Date.now() - startTime) / 1000 / 60).toFixed(1);
   console.log(`\n${"─".repeat(60)}`);
-  console.log(`✅ Downloads complete: ${downloadedVideos.length}/${videos.length} successful`);
+  console.log(
+    `✅ Downloads complete: ${downloadedVideos.length}/${videos.length} successful`,
+  );
   console.log(`⏱️  Total download time: ${downloadTime} minutes`);
-  
+
   if (failedDownloads.length > 0) {
     console.log(`❌ Failed downloads: ${failedDownloads.length}`);
   }
-  
+
   // PHASE 2: Transcribe all downloaded videos
   console.log(`\n${"═".repeat(60)}`);
   console.log(`🎙️  PHASE 2: TRANSCRIBING ALL VIDEOS`);
   console.log(`${"═".repeat(60)}\n`);
-  
+
   const transcriptionStart = Date.now();
   let successful = 0;
   let failed = 0;
   const failedVideos: CategorizedVideo[] = [];
-  
+
   for (let i = 0; i < downloadedVideos.length; i++) {
-    const {video, audioDir} = downloadedVideos[i];
+    const { video, audioDir } = downloadedVideos[i];
     const sanitizedTitle = sanitizeFilename(video.title);
     const outputDir = path.join(baseDir, video.category);
-    const outputFile = path.join(outputDir, `${sanitizedTitle}.txt`);
-    
+    const extension = useTimestamps ? "json" : "txt";
+    const outputFile = path.join(outputDir, `${sanitizedTitle}.${extension}`);
+
     // Skip if already transcribed
     if (await exists(outputFile)) {
-      console.log(`\n[${i + 1}/${downloadedVideos.length}] Skipping (already exists): ${video.title}`);
+      console.log(
+        `\n[${i + 1}/${downloadedVideos.length}] Skipping (already exists): ${video.title}`,
+      );
       successful++;
       continue;
     }
-    
-    console.log(`\n[${i + 1}/${downloadedVideos.length}] Transcribing: ${video.title}`);
-    
+
+    console.log(
+      `\n[${i + 1}/${downloadedVideos.length}] Transcribing: ${video.title}`,
+    );
+
     try {
-      // Transcribe directly to the category folder
-      await $`pnpm cli:transcribe process -d ${audioDir} -o ${outputDir} -y`;
-      
-      console.log(`   ✅ Transcribed and saved to ${video.category} category`);
+      // Transcribe directly to the category folder with optional timestamps
+      if (useTimestamps) {
+        await $`pnpm cli:transcribe process -d ${audioDir} -o ${outputDir} -y -t`;
+        console.log(
+          `   ✅ Transcribed with timestamps and saved to ${video.category} category`,
+        );
+      } else {
+        await $`pnpm cli:transcribe process -d ${audioDir} -o ${outputDir} -y`;
+        console.log(
+          `   ✅ Transcribed and saved to ${video.category} category`,
+        );
+      }
       successful++;
-      
+
       // Clean up audio files only
       await $`rm -rf ${audioDir}`;
     } catch (error) {
@@ -178,7 +217,7 @@ async function main() {
       failed++;
       failedVideos.push(video);
     }
-    
+
     // Progress update
     const progress = (((i + 1) / downloadedVideos.length) * 100).toFixed(1);
     const elapsed = ((Date.now() - transcriptionStart) / 1000 / 60).toFixed(1);
