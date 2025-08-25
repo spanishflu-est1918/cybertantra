@@ -1,8 +1,8 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { generateText } from "ai";
+import { generateText, stepCountIs } from "ai";
 import { z } from "zod";
 import { tool } from "ai";
-import { QueryAgent, getAIConfig } from "../../index";
+import { getAIConfig, searchLectures } from "../../index";
 import { loadMeditationCorpus, type MeditationCorpusEntry } from "./corpus";
 
 export class MeditationGeneratorAgent {
@@ -40,13 +40,28 @@ export class MeditationGeneratorAgent {
           topic: z.string().describe("The topic to search for"),
         }),
         execute: async ({ topic }) => {
-          const config = getAIConfig();
-          const queryAgent = new QueryAgent(config);
-          console.log(`🔍 Retrieving knowledge about: ${topic}`);
-          const knowledge = await queryAgent.query(
-            `${topic} mantras symbolism practices meditation techniques chakras deities`,
-          );
-          return { knowledge };
+          try {
+            const config = getAIConfig();
+            console.log(`🔍 Searching lectures about: ${topic}`);
+            
+            // searchLectures expects (query, limit, googleApiKey)
+            const results = await searchLectures(
+              topic, 
+              20,
+              config.googleGenerativeAIApiKey!
+            );
+            
+            // Combine results into knowledge
+            const knowledge = results
+              .map(r => r.text)  // It's 'text' not 'content'
+              .join("\n\n");
+            
+            console.log(`✅ Found ${results.length} relevant chunks`);
+            return { knowledge: knowledge || "Using general meditation patterns." };
+          } catch (error) {
+            console.error("❌ Failed to search lectures:", error);
+            return { knowledge: "No specific knowledge found, using general patterns." };
+          }
         },
       }),
 
@@ -122,23 +137,16 @@ Output ONLY valid SSML:`;
     
     const { text, steps } = await generateText({
       model: this.openrouter("anthropic/claude-sonnet-4"),
-      messages: [
-        {
-          role: "system",
-          content: `You are a meditation generator agent. Your task is to:
-1. Load meditation examples using loadMeditationExamples
-2. Get topic knowledge using getTopicKnowledge
-3. Generate a meditation using generateMeditation
-4. Convert it to SSML using convertToSSML
-5. Return the final SSML meditation`,
-        },
-        {
-          role: "user",
-          content: `Generate a ${duration}-minute meditation on "${topic}"`,
-        },
-      ],
       tools,
-      toolChoice: "required",
+      stopWhen: stepCountIs(5),
+      system: `You are a meditation generator. Use the available tools to:
+1. Load meditation examples from the corpus
+2. Get knowledge about the topic from lectures  
+3. Generate a meditation using that information
+4. Convert the result to SSML format
+
+Work step by step using the tools.`,
+      prompt: `Generate a ${duration}-minute meditation on "${topic}".`,
     });
     
     console.log(`📊 Agent completed with ${steps.length} steps`);
