@@ -1,6 +1,7 @@
 // Main agents
 export { QueryAgent } from './agents/query-agent';
 export type { ContentCategory, QueryOptions, QueryResult } from './agents/query-agent';
+export { MeditationGeneratorAgent } from './agents/meditation-generator';
 
 // Functions
 export { searchLectures } from './functions/search-lectures';
