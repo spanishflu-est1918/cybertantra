@@ -156,30 +156,38 @@ program
         let result;
         if (options.timestamps) {
           // Use timestamped transcription for meditation analysis
-          const transcription = await service.transcribeWithTimestamps(
-            filePath,
-            config,
-          );
-          const outputDir = options.output || "./lectures";
-          const baseName = path.basename(
-            file.filename,
-            path.extname(file.filename),
-          );
-          const outputPath = path.join(
-            outputDir,
-            `${baseName}_timestamped.json`,
-          );
-          await service.saveTimestampedTranscript(
-            transcription,
-            outputPath,
-            "json",
-          );
-          result = {
-            success: true,
-            transcriptPath: outputPath,
-            duration: transcription.duration * 60, // convert back to seconds
-            cost: (transcription.duration / 60) * 0.00028, // estimate cost
-          };
+          try {
+            const transcription = await service.transcribeWithTimestamps(
+              filePath,
+              config,
+            );
+            const outputDir = options.output || "./lectures";
+            const baseName = path.basename(
+              file.filename,
+              path.extname(file.filename),
+            );
+            const outputPath = path.join(
+              outputDir,
+              `${baseName}.json`,
+            );
+            await service.saveTimestampedTranscript(
+              transcription,
+              outputPath,
+              "json",
+            );
+            result = {
+              success: true,
+              transcriptPath: outputPath,
+              duration: transcription.duration * 60, // convert back to seconds
+              cost: (transcription.duration / 60) * 0.00028, // estimate cost
+            };
+          } catch (error) {
+            console.error(`   ❌ Timestamped transcription failed:`, error);
+            result = {
+              success: false,
+              error: error instanceof Error ? error.message : 'Unknown error',
+            };
+          }
         } else {
           result = await service.transcribeFile(
             filePath,

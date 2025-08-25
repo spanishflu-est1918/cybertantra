@@ -2,7 +2,8 @@
 /* eslint-disable */
 
 import { $ } from "bun";
-import { mkdir, exists, writeFile } from "fs/promises";
+import { mkdir, writeFile } from "fs/promises";
+import { existsSync } from "fs";
 import path from "path";
 
 type Category = "lecture" | "meditation" | "video" | "show";
@@ -48,7 +49,7 @@ async function main() {
     (arg) => arg !== "--timestamps" && arg !== "-t",
   );
 
-  if (filteredArgs.length > 0 && (await exists(filteredArgs[0]))) {
+  if (filteredArgs.length > 0 && existsSync(filteredArgs[0])) {
     // Input is a file path
     inputFile = filteredArgs[0];
     input = await Bun.file(inputFile).text();
@@ -183,7 +184,7 @@ Example:
     const outputFile = path.join(outputDir, `${sanitizedTitle}.${extension}`);
 
     // Skip if already transcribed
-    if (await exists(outputFile)) {
+    if (existsSync(outputFile)) {
       console.log(
         `\n[${i + 1}/${downloadedVideos.length}] Skipping (already exists): ${video.title}`,
       );

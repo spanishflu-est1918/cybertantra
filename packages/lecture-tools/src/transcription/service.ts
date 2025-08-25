@@ -202,7 +202,7 @@ export class TranscriptionService {
       return {
         success: true,
         transcriptPath: outputPath,
-        duration: transcript.audio_duration,
+        duration: transcript.audio_duration ?? 0,
         cost,
       };
     } catch (error) {
@@ -479,6 +479,10 @@ export class TranscriptionService {
         content = this.formatTimestampedAsSRT(transcription);
         break;
     }
+
+    // Create directory if it doesn't exist
+    const dir = path.dirname(outputPath);
+    await fs.mkdir(dir, { recursive: true });
 
     await fs.writeFile(outputPath, content, "utf8");
   }
