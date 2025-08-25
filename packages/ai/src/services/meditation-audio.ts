@@ -1,7 +1,8 @@
 import { TextToSpeechService } from './text-to-speech';
-import { SegmentedTTSService } from './segmented-tts';
+import { parseTextIntoSegments, generateAllSegments, stitchAudioSegments } from '../utils/tts';
 import path from 'path';
 import fs from 'fs/promises';
+import crypto from 'crypto';
 
 export interface MeditationAudioOptions {
   voiceId?: string;
@@ -19,13 +20,13 @@ export interface MeditationAudioResult {
 
 export class MeditationAudioService {
   private tts: TextToSpeechService;
-  private segmentedTts: SegmentedTTSService;
+  private voiceId?: string;
   private outputDir: string;
   private useSegmented: boolean;
 
   constructor(options: MeditationAudioOptions = {}) {
     this.tts = new TextToSpeechService(options.voiceId);
-    this.segmentedTts = new SegmentedTTSService(options.voiceId);
+    this.voiceId = options.voiceId;
     this.outputDir = options.outputDir || path.join(process.cwd(), 'public', 'audio', 'meditations');
     this.useSegmented = options.useSegmented ?? true; // Default to segmented for better quality
   }
@@ -43,9 +44,40 @@ export class MeditationAudioService {
     
     // Use segmented generation if enabled (default)
     if (this.useSegmented) {
-      const result = await this.segmentedTts.generateSegmentedAudio(text, topic, duration);
+      // Parse text into segments
+      const segments = parseTextIntoSegments(text);
+      
+      // Create temp directory for segments
+      const sessionId = crypto.randomBytes(8).toString('hex');
+      const tempDir = path.join(process.cwd(), 'temp', 'audio-segments', sessionId);
+      await fs.mkdir(tempDir, { recursive: true });
+      
+      // Generate all segments (speech and silence)
+      const segmentPaths = await generateAllSegments(segments, tempDir, this.voiceId);
+      
+      // Create output filename
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const safeTopicName = topic.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .substring(0, 50);
+      const filename = `${safeTopicName}_${duration}min_segmented_${timestamp}.mp3`;
+      const outputPath = path.join(this.outputDir, filename);
+      
+      // Stitch segments together
+      await stitchAudioSegments(segmentPaths, outputPath);
+      
+      // Clean up temp files
+      await fs.rm(tempDir, { recursive: true, force: true }).catch(() => {});
+      
+      // Get file size
+      const stats = await fs.stat(outputPath);
+      
       return {
-        ...result,
+        audioPath: `/audio/meditations/${filename}`,
+        audioSize: stats.size,
+        filename,
+        segmentCount: segments.length,
         method: 'segmented'
       };
     }

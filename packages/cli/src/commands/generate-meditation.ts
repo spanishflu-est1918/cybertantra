@@ -1,26 +1,30 @@
 #!/usr/bin/env bun
 
 import { program } from "commander";
-import { MeditationGeneratorAgent } from "@cybertantra/ai";
-import fs from "fs/promises";
+import { MeditationOrchestrator } from "@cybertantra/ai";
 import path from "path";
 import dotenv from "dotenv";
 import inquirer from "inquirer";
 import chalk from "chalk";
+import ora from "ora";
 
 dotenv.config();
 
 program
   .name("generate-meditation")
-  .description("Generate AI-powered meditations")
-  .version("1.0.0");
+  .description("Generate AI-powered meditations with audio and music")
+  .version("2.0.0");
 
 program
   .command("create")
-  .description("Generate a new meditation interactively")
+  .description("Generate a new meditation with full audio production")
   .option("-t, --topic <topic>", "Meditation topic (e.g., 'Ganesha', 'Heart Chakra')")
   .option("-d, --duration <minutes>", "Duration in minutes", parseInt)
-  .option("-o, --output <file>", "Output file path")
+  .option("-o, --output <dir>", "Output directory")
+  .option("--no-audio", "Skip audio generation")
+  .option("--no-music", "Skip music generation")
+  .option("-v, --voice-id <id>", "ElevenLabs voice ID to use")
+  .option("--text-only", "Generate text only (no audio or music)")
   .action(async (options) => {
     try {
       console.log(chalk.cyan("\n🧘 Meditation Generator"));
@@ -54,50 +58,83 @@ program
               { name: "8 minutes (Short session)", value: 8 },
               { name: "10 minutes (Standard)", value: 10 },
               { name: "15 minutes (Extended)", value: 15 },
+              { name: "20 minutes (Deep practice)", value: 20 },
+              { name: "30 minutes (Full session)", value: 30 },
             ],
             default: 1, // 8 minutes
           },
         ]);
         duration = durationAnswer.duration;
       }
+
+      // Validate duration
+      if (duration < 5 || duration > 30) {
+        console.error(chalk.red("Duration must be between 5 and 30 minutes"));
+        process.exit(1);
+      }
+
+      // Ask about audio generation if not specified
+      let generateAudio = options.audio;
+      let generateMusic = options.music;
+      
+      if (!options.textOnly && generateAudio !== false && generateMusic !== false) {
+        const audioOptions = await inquirer.prompt([
+          {
+            type: "confirm",
+            name: "generateAudio",
+            message: "Generate narrated audio?",
+            default: true,
+          },
+          {
+            type: "confirm",
+            name: "generateMusic",
+            message: "Generate background music?",
+            default: true,
+            when: (answers) => answers.generateAudio,
+          },
+        ]);
+        generateAudio = audioOptions.generateAudio;
+        generateMusic = audioOptions.generateMusic;
+      } else if (options.textOnly) {
+        generateAudio = false;
+        generateMusic = false;
+      }
+      
+      // Set output directory
+      const outputDir = options.output 
+        ? path.resolve(options.output)
+        : path.join(process.cwd(), "meditations", `${topic.replace(/\s+/g, '-')}_${Date.now()}`);
       
       console.log(chalk.gray("\n─".repeat(40)));
       console.log(chalk.yellow(`📿 Topic: ${topic}`));
       console.log(chalk.yellow(`⏱️  Duration: ${duration} minutes`));
+      console.log(chalk.yellow(`🎙️  Audio: ${generateAudio ? 'Yes' : 'No'}`));
+      console.log(chalk.yellow(`🎵 Music: ${generateMusic ? 'Yes' : 'No'}`));
+      console.log(chalk.yellow(`📁 Output: ${outputDir}`));
       console.log(chalk.gray("─".repeat(40) + "\n"));
       
-      const agent = new MeditationGeneratorAgent();
+      // Use the orchestrator
+      const spinner = ora("Generating meditation...").start();
+      const orchestrator = new MeditationOrchestrator();
       
-      // Generate meditation
-      const result = await agent.generate(topic, duration);
+      const result = await orchestrator.generateComplete({
+        topic,
+        duration,
+        generateAudio,
+        generateMusic,
+        voiceId: options.voiceId,
+        outputDir,
+      });
       
-      // Save to file if output specified
-      if (options.output) {
-        const outputPath = path.resolve(options.output);
-        const outputDir = path.dirname(outputPath);
-        await fs.mkdir(outputDir, { recursive: true });
-        
-        // Save both versions
-        const basename = path.basename(outputPath, path.extname(outputPath));
-        const textPath = path.join(outputDir, `${basename}.txt`);
-        const ssmlPath = path.join(outputDir, `${basename}.ssml`);
-        
-        await fs.writeFile(textPath, result.originalText);
-        await fs.writeFile(ssmlPath, result.ssml);
-        
-        console.log(chalk.green(`\n✅ Meditation saved to:`));
-        console.log(chalk.gray(`   Text: ${textPath}`));
-        console.log(chalk.gray(`   SSML: ${ssmlPath}`));
-      } else {
-        // Print to console
-        console.log(chalk.cyan("\n" + "═".repeat(60)));
-        console.log(chalk.cyan("MEDITATION TEXT:"));
-        console.log(chalk.cyan("═".repeat(60)));
-        console.log(result.originalText);
-        console.log(chalk.cyan("\n" + "═".repeat(60)));
-        console.log(chalk.cyan("SSML OUTPUT:"));
-        console.log(chalk.cyan("═".repeat(60)));
-        console.log(result.ssml);
+      spinner.succeed("Meditation generation complete!");
+      
+      console.log(chalk.green.bold("\n✨ Meditation generated successfully!"));
+      console.log(chalk.gray(`\nAll files saved to: ${outputDir}`));
+      
+      if (result.finalAudioPath) {
+        console.log(chalk.cyan(`\n🎧 Complete meditation: ${result.finalAudioPath}`));
+      } else if (result.audioPath && outputDir) {
+        console.log(chalk.cyan(`\n🎙️ Voice-only meditation saved`));
       }
       
       // Ask if user wants to generate another

@@ -25,6 +25,7 @@
     "cli:youtube": "cd packages/cli && bun run youtube",
     "cli:absorb": "cd packages/cli && bun run absorb",
     "cli:meditate": "cd packages/cli && bun run src/commands/generate-meditation.ts",
+    "cli:extract-vocals": "cd packages/cli && bun run extract-vocals",
     "transcribe": "bun packages/lecture-tools/src/transcription/transcribe.ts",
     "transcribe-videos": "bun packages/lecture-tools/src/transcription/transcribe-videos.ts",
     "download-videos": "bun packages/lecture-tools/src/transcription/download-videos.ts"

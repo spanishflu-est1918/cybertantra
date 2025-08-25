@@ -282,8 +282,11 @@ ${avoidElements.length > 0 ? `Avoid: ${avoidElements.join(', ')}.` : ''}`;
     try {
       console.log(`🎵 Generating music with custom parameters`);
       
-      const prompt = this.buildPromptFromParameters(params, durationMinutes);
-      const durationMs = durationMinutes * 60 * 1000;
+      // Cap at 5 minutes (ElevenLabs limit)
+      const actualDuration = Math.min(durationMinutes, 5);
+      
+      const prompt = this.buildPromptFromParameters(params, actualDuration);
+      const durationMs = actualDuration * 60 * 1000;
       
       // Call ElevenLabs music API
       const config = getAIConfig();
@@ -397,4 +400,5 @@ ${avoidElements.length > 0 ? `Avoid: ${avoidElements.join(', ')}.` : ''}`;
       throw error;
     }
   }
+
 }

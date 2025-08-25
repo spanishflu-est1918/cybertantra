@@ -28,8 +28,9 @@ export class TextToSpeechService {
       apiKey: config.elevenLabsApiKey,
     });
 
-    // Use provided voice ID or Skyler as default
-    this.defaultVoiceId = voiceId || process.env.SKYLER_11LABS_VOICE || "21m00Tcm4TlvDq8ikWAM";
+    // Always prioritize meditation voice from env, then provided voiceId, never fall back to Rachel
+    this.defaultVoiceId = process.env.ELEVENLABS_MEDITATION_VOICE_ID || voiceId || "OboNP9Mp1f3WyTIrLGiP";
+    // console.log(`🎤 TTS Service initialized with voice: ${this.defaultVoiceId} (env: ${process.env.ELEVENLABS_MEDITATION_VOICE_ID}, provided: ${voiceId})`);
   }
 
   /**
@@ -41,12 +42,12 @@ export class TextToSpeechService {
     options: TextToSpeechOptions = {}
   ): Promise<Buffer> {
     try {
-      console.log(`🎙️ Generating audio with voice: ${options.voiceId || this.defaultVoiceId}`);
+      // console.log(`🎙️ Generating audio with voice: ${options.voiceId || this.defaultVoiceId}`);
       
       // ElevenLabs already accepts the hybrid format directly
       // Just ensure break tags are properly formatted
       const cleanedText = this.ensureProperBreakTags(text);
-      console.log(`📝 Text ready for TTS (${cleanedText.length} chars)`);
+      // console.log(`📝 Text ready for TTS (${cleanedText.length} chars)`);
 
       const audioStream = await this.client.generate({
         voice: options.voiceId || this.defaultVoiceId,
@@ -67,7 +68,7 @@ export class TextToSpeechService {
       }
 
       const audioBuffer = Buffer.concat(chunks);
-      console.log(`✅ Generated audio: ${audioBuffer.length} bytes`);
+      // console.log(`✅ Generated audio: ${audioBuffer.length} bytes`);
 
       return audioBuffer;
     } catch (error) {
@@ -100,7 +101,7 @@ export class TextToSpeechService {
     const fs = await import("fs/promises");
     const audioBuffer = await this.generateAudio(text, options);
     await fs.writeFile(outputPath, audioBuffer);
-    console.log(`💾 Saved audio to: ${outputPath}`);
+    // console.log(`💾 Saved audio to: ${outputPath}`);
   }
 
   /**
@@ -135,9 +136,8 @@ export class TextToSpeechService {
           next_reset_date: new Date(subscription.next_character_count_reset_unix * 1000).toISOString(),
         },
         user: {
-          email: user.email,
-          is_new_user: user.is_new_user,
-          xi_api_key: user.xi_api_key?.substring(0, 10) + '...',
+          // User details from API
+          ...user as any
         }
       };
     } catch (error) {
@@ -162,10 +162,10 @@ export class TextToSpeechService {
       pro: { limit: 500000, cost: 99, overage: 0.18 }, // $0.18 per 1000 chars over
     };
     
-    const tierInfo = pricing[tier.toLowerCase()] || pricing.free;
+    const tierInfo = pricing[tier.toLowerCase() as keyof typeof pricing] || pricing.free;
     
     let estimatedCost = 0;
-    if (characterCount > tierInfo.limit && tierInfo.overage) {
+    if (characterCount > tierInfo.limit && 'overage' in tierInfo && tierInfo.overage) {
       const overageChars = characterCount - tierInfo.limit;
       estimatedCost = (overageChars / 1000) * tierInfo.overage;
     }
