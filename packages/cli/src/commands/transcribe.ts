@@ -96,16 +96,6 @@ program
         `\n🎙️  Found ${needsTranscription.length} files to transcribe`,
       );
 
-      // Estimate cost
-      const estimatedHours = needsTranscription.length * 1.5; // Assume 1.5 hours average
-      const costPerHour = options.model === "nano" ? 0.2 : 0.28;
-      const estimatedCost = estimatedHours * costPerHour;
-
-      console.log(`\n💰 Cost Estimate:`);
-      console.log(`   Model: ${options.model}`);
-      console.log(`   Estimated duration: ${estimatedHours} hours`);
-      console.log(`   Estimated cost: $${estimatedCost.toFixed(2)}`);
-
       if (options.dryRun) {
         console.log("\n🔍 Dry run - no files will be transcribed");
         needsTranscription.forEach((f) => {
@@ -120,7 +110,7 @@ program
           {
             type: "confirm",
             name: "proceed",
-            message: `Proceed with transcription? (Est. $${estimatedCost.toFixed(2)})`,
+            message: `Proceed with transcription?`,
             default: true,
           },
         ]);
