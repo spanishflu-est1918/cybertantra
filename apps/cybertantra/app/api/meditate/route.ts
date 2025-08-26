@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     const meditationSession = await saveMeditationSession({
       topic: result.topic,
       duration: result.duration,
-      audioPath: result.finalAudioPath,
+      audioPath: result.finalAudioPath || '',
       audioSize: result.finalAudioSize,
       voiceId,
     });
