@@ -2,6 +2,7 @@
 
 import { program } from "commander";
 import { generateCompleteMeditation } from "@cybertantra/ai";
+import { saveMeditationSession } from "@cybertantra/database";
 import path from "path";
 import dotenv from "dotenv";
 import inquirer from "inquirer";
@@ -116,6 +117,17 @@ program
         duration,
         voiceId: options.voiceId,
       });
+
+      // Save to database and generate shareable URL
+      const meditationSession = await saveMeditationSession({
+        topic: result.topic,
+        duration: result.duration,
+        audioPath: result.finalAudioPath,
+        audioSize: result.finalAudioSize,
+        voiceId: options.voiceId,
+      });
+
+      const shareUrl = `https://cybertantra.vercel.app/meditation/${meditationSession.slug}`;
       
       spinner.succeed("Meditation generation complete!");
       
@@ -127,6 +139,9 @@ program
       } else if (result.audioPath) {
         console.log(chalk.cyan(`\n🎙️ Voice-only meditation saved`));
       }
+
+      console.log(chalk.magenta.bold(`\n🔗 Shareable URL: ${shareUrl}`));
+      console.log(chalk.gray(`   ID: ${meditationSession.id}`));
       
       // Ask if user wants to generate another
       const { another } = await inquirer.prompt([

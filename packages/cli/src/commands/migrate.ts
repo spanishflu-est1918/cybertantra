@@ -115,12 +115,36 @@ async function runMigration() {
       console.log(`${row.category}: ${row.chunk_count} chunks from ${row.file_count} files`);
     }
     
+    // Create meditation_sessions table
+    spinner.start('Creating meditation_sessions table...');
+    
+    await sql`
+      CREATE TABLE IF NOT EXISTS meditation_sessions (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        slug VARCHAR(255) UNIQUE NOT NULL,
+        topic VARCHAR(255) NOT NULL,
+        duration INTEGER NOT NULL,
+        audio_path TEXT NOT NULL,
+        audio_size INTEGER,
+        voice_id VARCHAR(255),
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+      )
+    `;
+
+    // Create indexes
+    await sql`CREATE INDEX IF NOT EXISTS idx_meditation_slug ON meditation_sessions (slug)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_meditation_created_at ON meditation_sessions (created_at DESC)`;
+    
+    spinner.succeed('Meditation sessions table ready!');
+
     console.log('\n✅ Migration complete!');
     console.log('   You can now ingest content with categories:');
     console.log('   - lecture (teaching material)');
     console.log('   - meditation (yoga nidras)');
     console.log('   - video (transcripts)');
-    console.log('   - show (podcasts)\n');
+    console.log('   - show (podcasts)');
+    console.log('\n   🧘 Meditation sessions table created for shareable URLs!\n');
 
   } catch (error) {
     spinner.fail('Migration failed');

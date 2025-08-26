@@ -33,7 +33,7 @@ export async function generateMeditationAudio(
     topic,
     duration,
     voiceId,
-    outputDir = path.join(process.cwd(), 'public', 'audio', 'meditations'),
+    outputDir = path.join(path.resolve(__dirname, '../../../../../apps/cybertantra'), 'public', 'audio', 'meditations'),
     useSegmented = true,
   } = options;
 

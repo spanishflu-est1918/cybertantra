@@ -64,10 +64,11 @@ export async function generateCompleteMeditation(
 
   console.log(`[Orchestrator] Audio and music generated`);
 
-  // Step 3: Determine output path - ALWAYS use public/audio/meditations
+  // Step 3: Determine output path - ALWAYS save to cybertantra app's public directory
   const filename = `${topic.replace(/\s+/g, "-")}_${duration}min_complete_${Date.now()}.mp3`;
+  const appRoot = path.resolve(__dirname, '../../../../../apps/cybertantra');
   const finalAudioPath = path.join(
-    process.cwd(),
+    appRoot,
     "public",
     "audio",
     "meditations",
