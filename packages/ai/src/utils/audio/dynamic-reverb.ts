@@ -111,7 +111,7 @@ export async function applyDynamicReverb(
               .outputOptions(['-t', `${fadeUpStart}`])
               .audioCodec('copy')
               .output(segment1Path)
-              .on('end', res)
+              .on('end', () => res())
               .on('error', rej)
               .run();
           });
@@ -130,7 +130,7 @@ export async function applyDynamicReverb(
               .audioCodec('libmp3lame')
               .audioBitrate('192k')
               .output(segment2Path)
-              .on('end', res)
+              .on('end', () => res())
               .on('error', rej)
               .run();
           });
@@ -146,7 +146,7 @@ export async function applyDynamicReverb(
                 ])
                 .audioCodec('copy')
                 .output(segment3Path)
-                .on('end', res)
+                .on('end', () => res())
                 .on('error', rej)
                 .run();
             });
@@ -166,7 +166,7 @@ export async function applyDynamicReverb(
               .audioCodec('libmp3lame')
               .audioBitrate('192k')
               .output(segment4Path)
-              .on('end', res)
+              .on('end', () => res())
               .on('error', rej)
               .run();
           });
