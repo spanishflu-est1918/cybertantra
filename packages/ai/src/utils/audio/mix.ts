@@ -10,11 +10,14 @@ export async function mixVoiceWithMusic(
   outputPath: string
 ): Promise<void> {
   return new Promise((resolve, reject) => {
-    // Simple mixing without sidechain
+    console.log(`🎚️ Music volume being applied: ${AUDIO_CONFIG.musicVolume}`);
+    
+    // Use weights parameter instead of volume filter for proper mixing
+    // weights="1 0.04" means voice at full volume, music at 4% volume
     const filterComplex = 
       `[0:a]aformat=channel_layouts=stereo[voice];` +
-      `[1:a]volume=${AUDIO_CONFIG.musicVolume},aformat=channel_layouts=stereo,aloop=loop=-1:size=2e+09[music];` +
-      `[voice][music]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[final]`;
+      `[1:a]aformat=channel_layouts=stereo,aloop=loop=-1:size=2e+09[music];` +
+      `[voice][music]amix=inputs=2:duration=first:dropout_transition=0:weights='1 ${AUDIO_CONFIG.musicVolume}':normalize=0[final]`;
     
     ffmpeg()
       .input(voicePath)

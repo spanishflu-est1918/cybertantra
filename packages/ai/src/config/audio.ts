@@ -4,7 +4,7 @@
 
 export const AUDIO_CONFIG = {
   // Volume settings
-  musicVolume: 0.08,         // Background music volume (reduced for better balance)
+  musicVolume: 0.03,         // Background music volume (75% of 0.04 for better balance)
   
   // Voice processing
   voiceTempo: 0.95,          // Slight tempo reduction for meditative pace
