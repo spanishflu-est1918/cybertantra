@@ -21,7 +21,6 @@ export type {
   MeditationAudioOptions,
   MeditationAudioResult,
 } from "./services/meditation-audio";
-export { MeditationMusicService } from "./services/meditation-music";
 
 // Meditation utilities (new functional approach)
 export { 

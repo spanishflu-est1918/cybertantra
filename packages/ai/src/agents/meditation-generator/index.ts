@@ -1,12 +1,8 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateText, stepCountIs } from "ai";
-import { z } from "zod";
-import { tool } from "ai";
 import { getAIConfig, searchLectures } from "../../index";
 import { loadMeditationCorpus, type MeditationCorpusEntry } from "./corpus";
-import { MeditationMusicService } from "../../services/meditation-music";
-import type { MusicPromptParameters } from "../../services/meditation-music";
+import type { MusicPromptParameters } from "../../utils/meditation/generate-music";
 
 export class MeditationGeneratorAgent {
   private openrouter: any;
@@ -19,9 +15,10 @@ export class MeditationGeneratorAgent {
   }
 
   async generate(topic: string, duration: number) {
-    console.log(`☠️ Initiating ${duration}-minute ritual transmission: ${topic}`);
+    console.log(
+      `☠️ Initiating ${duration}-minute ritual transmission: ${topic}`,
+    );
 
-    // 1. Gather all data first
     console.log(`🌙 Channeling the meditation corpus from the void...`);
     const corpus = await loadMeditationCorpus();
     console.log(`📿 Absorbed ${corpus.length} sacred transmissions`);
@@ -37,13 +34,14 @@ export class MeditationGeneratorAgent {
       );
 
       knowledge = results.map((r) => r.text).join("\n\n");
-      console.log(`🔥 Retrieved ${results.length} fragments of forbidden wisdom`);
+      console.log(
+        `🔥 Retrieved ${results.length} fragments of forbidden wisdom`,
+      );
     } catch (error) {
       console.error("⚠️ The akashic records remain silent:", error);
       knowledge = "Channeling from the primordial void...";
     }
 
-    // 2. Generate meditation text with ElevenLabs-ready format
     console.log(`🕉️ Weaving sacred utterances with divine silence...`);
     const meditationText = await this.createMeditationText(
       topic,
@@ -52,20 +50,19 @@ export class MeditationGeneratorAgent {
       knowledge,
     );
 
-    // 3. Generate music parameters based on the knowledge and tone
-    console.log(`🎭 Divining the sonic landscape from the meditation's essence...`);
+    console.log(
+      `🎭 Divining the sonic landscape from the meditation's essence...`,
+    );
     const musicParameters = await this.generateMusicParameters(
       topic,
       knowledge,
-      meditationText
+      meditationText,
     );
 
     const result = {
-      text: meditationText,  // This already has <break> tags
       topic,
       duration,
       timestamp: new Date().toISOString(),
-      musicParameters,  // Add music generation parameters
     };
 
     console.log(`⚡ The ritual is complete!`);
@@ -118,7 +115,6 @@ Example: "Close your eyes. <break time="2.5s" /> Feel your body settling. <break
     const { text } = await generateText({
       model: this.openrouter("anthropic/claude-sonnet-4"),
       prompt,
-      temperature: 0.8,  // Slightly higher for more variation
     });
 
     console.log(`💀 Transmission received (${text.length} runes):`);
@@ -131,122 +127,96 @@ Example: "Close your eyes. <break time="2.5s" /> Feel your body settling. <break
   private async generateMusicParameters(
     topic: string,
     knowledge: string,
-    meditationText: string
+    meditationText: string,
   ): Promise<MusicPromptParameters> {
-    // First, analyze the ACTUAL tone of the meditation
-    const analysisPrompt = `Read this meditation carefully and analyze its TRUE tone:
+    const prompt = `Generate a music prompt for ElevenLabs Music API based on the meditation content.
 
-${meditationText}
+EXAMPLES (following ElevenLabs format):
 
-Topic: ${topic}
+Topic: "Ucchista Ganapati"
+Meditation excerpt: "Feel the nuclear fire of transformation burning away all that is stale..."
+Music prompt: "Dark nuclear ambient meditation soundtrack. Distorted synthesizers, industrial drones, metallic textures. Minor key, beatless, 5 minutes. Instrumental only. Confrontational and alchemical atmosphere."
 
-ANALYZE THE ACTUAL CONTENT:
-- If it mentions poison, nuclear fire, death, void, leftover energy, transgression → IT'S DARK
-- If it mentions light, love, peace, healing, gratitude → IT'S LIGHT  
-- If it mentions breath, awareness, presence → IT'S NEUTRAL/MEDITATIVE
-- If it mentions fire, transformation, power → IT'S INTENSE
+Topic: "Breath Awareness"
+Meditation excerpt: "Follow the natural rhythm of your breath, feeling it flow..."
+Music prompt: "Deep flowing ambient meditation. Ethereal pads, singing bowls, subtle wind textures. Minor key, beatless, 5 minutes. Instrumental only. Expansive and calming atmosphere."
 
-What is the REAL tone? Look for actual words like:
-- "radioactive", "poison", "nuclear", "death", "void" = DARK AS FUCK
-- "light", "love", "healing", "peace" = LIGHT
-- "breath", "awareness", "mindfulness" = MEDITATIVE
+Topic: "Shadow Work"
+Meditation excerpt: "Descend into the darkness within, confronting what has been hidden..."
+Music prompt: "Haunting dark ambient introspection. Reversed sounds, sub-bass drones, dissonant harmonics. Minor key, beatless, 5 minutes. Instrumental only. Psychological depth atmosphere."
 
-Output ONE WORD: DARK, LIGHT, MEDITATIVE, or INTENSE`;
+NOW GENERATE FOR:
 
-    const { text: tone } = await generateText({
-      model: this.openrouter("anthropic/claude-sonnet-4"),
-      prompt: analysisPrompt,
-      temperature: 0.3,
-    });
+Topic: "${topic}"
+Meditation excerpt: "${meditationText.substring(0, 500)}..."
 
-    console.log(`🌑 Detected Energetic Signature: ${tone.trim()}`);
+Based on the actual content and tone, generate a concise music prompt following this format:
+[Mood descriptors] [genre/style]. [Instruments/textures]. [Key], beatless, [duration]. Instrumental only. [Atmosphere].
 
-    // Now generate appropriate music parameters based on ACTUAL tone
-    let moodGuide = "";
-    let instrumentGuide = "";
-    
-    if (tone.includes("DARK")) {
-      moodGuide = "nuclear, toxic, abyssal, confrontational, industrial, doom-laden";
-      instrumentGuide = "distorted drones, industrial textures, nuclear reactor hums, metallic scrapes, dark ambient pads";
-    } else if (tone.includes("LIGHT")) {
-      moodGuide = "luminous, expansive, celestial, ethereal, transcendent";
-      instrumentGuide = "crystal bowls, shimmering pads, angelic textures, high frequency drones";
-    } else if (tone.includes("INTENSE")) {
-      moodGuide = "powerful, transformative, electric, fierce, dynamic";
-      instrumentGuide = "deep bass drones, ritual drums, brass textures, thunderous atmospheres";
-    } else {
-      moodGuide = "meditative, hypnotic, contemplative, deep, grounding";
-      instrumentGuide = "singing bowls, subtle drones, breath-like textures, earth tones";
-    }
-
-    // Override for explicitly dark topics
-    const darkTopics = ['ucchista', 'ganapati', 'nuclear', 'poison', 'void', 'death', 'kali', 'bhairava'];
-    const isExplicitlyDark = darkTopics.some(dark => topic.toLowerCase().includes(dark));
-    
-    if (isExplicitlyDark) {
-      moodGuide = "dark, intense, mysterious, transformative, powerful";
-      instrumentGuide = "deep bass drones, metallic textures, industrial ambient, dark synthesizers, subterranean rumbles";
-    }
-
-    const prompt = `Create music for ${topic}.
-Detected tone: ${tone.trim()}
-
-The music should be:
-- Mood: ${moodGuide}
-- Instruments: ${instrumentGuide}
-- Always beatless dark ambient (no rhythm, no melody)
-- ${isExplicitlyDark ? 'Dark and intense - think Tim Hecker, Lustmord, dark ambient' : 'Match the actual energy'}
-- This is serious meditation music, not relaxation
-
-Output a JSON object:
-- mood: descriptive mood words that match the tone
-- key: "minor" 
-- instruments: array of 3-5 appropriate dark instruments/textures
-- tempo: "beatless"
-- atmosphere: 2-5 words capturing the essence
-- avoidElements: ["vocals", "drums", "sudden changes"]
-
-Output ONLY valid JSON:`;
+Keep it under 50 words. Focus on what TO include, not what to avoid.
+Output ONLY the music prompt text:`;
 
     try {
-      const { text } = await generateText({
+      const { text: musicPrompt } = await generateText({
         model: this.openrouter("anthropic/claude-sonnet-4"),
         prompt,
-        temperature: 0.5,
+        temperature: 0.7,
       });
 
-      // Remove markdown code blocks if present
-      const cleanText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-      
-      // Parse the JSON response
-      const parsed = JSON.parse(cleanText);
-      
-      // Ensure all required fields with defaults
+      console.log(
+        `🎼 Generated music prompt: ${musicPrompt.substring(0, 200)}...`,
+      );
+
+      const moodMatch = musicPrompt.match(
+        /Create a ([^instrumental]+) instrumental/,
+      );
+      const mood = moodMatch ? moodMatch[1].trim() : "dark, meditative";
+
+      const instrumentsMatch = musicPrompt.match(/Features: ([^.]+)\./);
+      const instruments = instrumentsMatch
+        ? instrumentsMatch[1].split(",").map((i) => i.trim())
+        : ["layered synthesizers", "ambient drones"];
+
+      const atmosphereMatch = musicPrompt.match(
+        /Create a ([^atmosphere]+) atmosphere/,
+      );
+      const atmosphere = atmosphereMatch
+        ? atmosphereMatch[1].trim()
+        : "hypnotic and deep";
+
+      const avoidMatch = musicPrompt.match(/Avoid: ([^.]+)\./);
+      const avoidElements = avoidMatch
+        ? avoidMatch[1].split(",").map((a) => a.trim())
+        : ["percussion", "vocals", "sudden changes"];
+
       const parameters: MusicPromptParameters = {
-        mood: parsed.mood || "meditative, introspective",
-        key: parsed.key === "major" ? "major" : "minor",
-        instruments: parsed.instruments || ["ambient synthesizers", "subtle drones"],
-        tempo: parsed.tempo || "beatless",
-        atmosphere: parsed.atmosphere || "hypnotic and deep",
+        mood,
+        key: "minor",
+        instruments,
+        tempo: "beatless",
+        atmosphere,
         topic: topic,
-        avoidElements: parsed.avoidElements || ["vocals", "sudden changes"]
+        avoidElements,
       };
 
-      console.log(`🎼 Generated music parameters:`, parameters);
+      console.log(`🌑 Extracted parameters:`, parameters);
       return parameters;
     } catch (error) {
       console.error("Failed to generate music parameters:", error);
-      // Return sensible defaults
+
       return {
-        mood: "meditative, contemplative",
+        mood: "dark, meditative, ambient, introspective",
         key: "minor",
-        instruments: ["ambient synthesizers", "subtle drones", "soft textures"],
+        instruments: [
+          "layered synthesizers",
+          "ambient drones",
+          "subtle textures",
+        ],
         tempo: "beatless",
-        atmosphere: "peaceful and introspective",
+        atmosphere: "hypnotic and deep",
         topic: topic,
-        avoidElements: ["vocals", "drums", "sudden changes"]
+        avoidElements: ["percussion", "vocals", "sudden changes"],
       };
     }
   }
-
 }
