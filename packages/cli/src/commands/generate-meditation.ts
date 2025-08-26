@@ -127,7 +127,7 @@ program
         voiceId: options.voiceId,
       });
 
-      const shareUrl = `https://cybertantra.vercel.app/meditation/${meditationSession.slug}`;
+      const shareUrl = `https://dattatreya.vercel.app/meditation/${meditationSession.slug}`;
       
       spinner.succeed("Meditation generation complete!");
       

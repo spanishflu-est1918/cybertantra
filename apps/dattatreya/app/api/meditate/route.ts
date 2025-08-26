@@ -49,8 +49,8 @@ export async function POST(req: Request) {
 
     // Generate share URL
     const baseUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://cybertantra.vercel.app' 
-      : 'http://localhost:9999';
+      ? 'https://dattatreya.vercel.app' 
+      : 'http://localhost:3002';
     const shareUrl = `${baseUrl}/meditation/${meditationSession.slug}`;
 
     console.log(`[API] Generated shareable URL: ${shareUrl}`);
