@@ -27,7 +27,7 @@ export class MeditationAudioService {
   constructor(options: MeditationAudioOptions = {}) {
     this.tts = new TextToSpeechService(options.voiceId);
     this.voiceId = options.voiceId;
-    this.outputDir = options.outputDir || path.join(process.cwd(), 'public', 'audio', 'meditations');
+    this.outputDir = options.outputDir || path.join(path.resolve(__dirname, '../../../../apps/cybertantra'), 'public', 'audio', 'meditations');
     this.useSegmented = options.useSegmented ?? true; // Default to segmented for better quality
   }
 

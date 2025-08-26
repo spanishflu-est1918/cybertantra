@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateCompleteMeditation } from "@cybertantra/ai";
+import { saveMeditationSession } from "@cybertantra/database";
 import { corsHeaders } from "../middleware";
 
 export async function OPTIONS() {
@@ -37,11 +38,31 @@ export async function POST(req: Request) {
       voiceId,
     });
 
+    // Save to database and generate shareable URL
+    const meditationSession = await saveMeditationSession({
+      topic: result.topic,
+      duration: result.duration,
+      audioPath: result.finalAudioPath || '',
+      audioSize: result.finalAudioSize,
+      voiceId,
+    });
+
+    // Generate share URL
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://dattatreya.vercel.app' 
+      : 'http://localhost:3002';
+    const shareUrl = `${baseUrl}/meditation/${meditationSession.slug}`;
+
+    console.log(`[API] Generated shareable URL: ${shareUrl}`);
+
     const headers = await corsHeaders();
     return NextResponse.json(
       {
         success: true,
         meditation: {
+          id: meditationSession.id,
+          slug: meditationSession.slug,
+          shareUrl,
           text: result.text,
           topic: result.topic,
           duration: result.duration,
