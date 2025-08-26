@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { program } from "commander";
-import { MeditationOrchestrator } from "@cybertantra/ai";
+import { generateCompleteMeditation } from "@cybertantra/ai";
 import path from "path";
 import dotenv from "dotenv";
 import inquirer from "inquirer";
@@ -100,40 +100,31 @@ program
         generateMusic = false;
       }
       
-      // Set output directory
-      const outputDir = options.output 
-        ? path.resolve(options.output)
-        : path.join(process.cwd(), "meditations", `${topic.replace(/\s+/g, '-')}_${Date.now()}`);
-      
       console.log(chalk.gray("\n─".repeat(40)));
       console.log(chalk.yellow(`📿 Topic: ${topic}`));
       console.log(chalk.yellow(`⏱️  Duration: ${duration} minutes`));
       console.log(chalk.yellow(`🎙️  Audio: ${generateAudio ? 'Yes' : 'No'}`));
       console.log(chalk.yellow(`🎵 Music: ${generateMusic ? 'Yes' : 'No'}`));
-      console.log(chalk.yellow(`📁 Output: ${outputDir}`));
+      console.log(chalk.yellow(`📁 Output: public/audio/meditations/`));
       console.log(chalk.gray("─".repeat(40) + "\n"));
       
-      // Use the orchestrator
+      // Generate the meditation
       const spinner = ora("Generating meditation...").start();
-      const orchestrator = new MeditationOrchestrator();
       
-      const result = await orchestrator.generateComplete({
+      const result = await generateCompleteMeditation({
         topic,
         duration,
-        generateAudio,
-        generateMusic,
         voiceId: options.voiceId,
-        outputDir,
       });
       
       spinner.succeed("Meditation generation complete!");
       
       console.log(chalk.green.bold("\n✨ Meditation generated successfully!"));
-      console.log(chalk.gray(`\nAll files saved to: ${outputDir}`));
+      console.log(chalk.gray(`\nAll files saved to: public/audio/meditations/`));
       
       if (result.finalAudioPath) {
         console.log(chalk.cyan(`\n🎧 Complete meditation: ${result.finalAudioPath}`));
-      } else if (result.audioPath && outputDir) {
+      } else if (result.audioPath) {
         console.log(chalk.cyan(`\n🎙️ Voice-only meditation saved`));
       }
       

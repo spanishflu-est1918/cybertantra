@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { MeditationOrchestrator } from "@cybertantra/ai";
+import { generateCompleteMeditation } from "@cybertantra/ai";
 import { corsHeaders } from "../middleware";
 
 export async function OPTIONS() {
@@ -31,8 +31,7 @@ export async function POST(req: Request) {
     console.log(`[API] Generating ${duration}-minute meditation on: ${topic}`);
 
     // Use the orchestrator
-    const orchestrator = new MeditationOrchestrator();
-    const result = await orchestrator.generateComplete({
+    const result = await generateCompleteMeditation({
       topic,
       duration,
       voiceId,

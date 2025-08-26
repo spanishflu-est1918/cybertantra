@@ -11,24 +11,33 @@ export { MeditationGeneratorAgent } from "./agents/meditation-generator";
 export { searchLectures } from "./functions/search-lectures";
 export type { SearchResult } from "./functions/search-lectures";
 
-// Services
+// Services (for external API wrappers)
 export { TextToSpeechService } from "./services/text-to-speech";
 export type { TextToSpeechOptions } from "./services/text-to-speech";
+
+// Legacy exports (deprecated - use utils/meditation instead)
 export { MeditationAudioService } from "./services/meditation-audio";
 export type {
   MeditationAudioOptions,
   MeditationAudioResult,
 } from "./services/meditation-audio";
 export { MeditationMusicService } from "./services/meditation-music";
-export type {
-  MusicPromptParameters,
-  MusicGenerationResult,
-} from "./services/meditation-music";
-export { MeditationOrchestrator } from "./services/meditation-orchestrator";
+
+// Meditation utilities (new functional approach)
+export { 
+  generateCompleteMeditation,
+  generateMeditationAudio,
+  generateMeditationMusic
+} from "./utils/meditation";
 export type {
   MeditationOptions,
   MeditationResult,
-} from "./services/meditation-orchestrator";
+  AudioGenerationOptions,
+  AudioGenerationResult,
+  MusicGenerationOptions,
+  MusicGenerationResult,
+  MusicPromptParameters
+} from "./utils/meditation";
 
 // Config
 export {

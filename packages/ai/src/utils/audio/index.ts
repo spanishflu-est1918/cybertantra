@@ -4,4 +4,5 @@ export * from './reverb';
 export * from './tuning';
 export * from './tempo';
 export * from './add-silence';
+export * from './normalize';
 export * from './compose';
