@@ -28,7 +28,7 @@ export interface MeditationResult {
  * Generate a complete meditation with text, audio, and music
  */
 export async function generateCompleteMeditation(
-  options: MeditationOptions
+  options: MeditationOptions,
 ): Promise<MeditationResult> {
   const {
     topic,
@@ -37,14 +37,14 @@ export async function generateCompleteMeditation(
   } = options;
 
   console.log(
-    `[Orchestrator] Starting meditation generation for: ${topic} (${duration} min)`
+    `[Orchestrator] Starting meditation generation for: ${topic} (${duration} min)`,
   );
 
   // Step 1: Generate meditation text
   const agent = new MeditationGeneratorAgent();
   const textResult = await agent.generate(topic, duration);
   console.log(
-    `[Orchestrator] Text generated: ${textResult.text?.length || 0} chars`
+    `[Orchestrator] Text generated: ${textResult.text?.length || 0} chars`,
   );
 
   // Step 2: Generate audio and music in parallel
@@ -59,20 +59,24 @@ export async function generateCompleteMeditation(
     generateMeditationMusic({
       parameters: textResult.musicParameters,
       duration: Math.min(duration, 5),
+      outputDir: path.resolve(
+        __dirname,
+        "../../../../../apps/dattatreya/public/audio/music",
+      ),
     }),
   ]);
 
   console.log(`[Orchestrator] Audio and music generated`);
 
-  // Step 3: Determine output path - ALWAYS save to cybertantra app's public directory
+  // Step 3: Determine output path - ALWAYS save to dattatreya app's public directory
   const filename = `${topic.replace(/\s+/g, "-")}_${duration}min_complete_${Date.now()}.mp3`;
-  const appRoot = path.resolve(__dirname, '../../../../../apps/cybertantra');
+  const appRoot = path.resolve(__dirname, "../../../../../apps/dattatreya");
   const finalAudioPath = path.join(
     appRoot,
     "public",
     "audio",
     "meditations",
-    filename
+    filename,
   );
 
   // Step 4: Use actual file paths for mixing

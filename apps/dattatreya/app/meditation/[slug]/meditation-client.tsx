@@ -27,22 +27,22 @@ export default function MeditationClient({ meditation }: MeditationClientProps) 
   };
 
   return (
-    <div className="min-h-screen bg-black text-white font-serif">
+    <div className="min-h-screen bg-black text-white font-mono">
       {/* Centered container with vertical centering */}
       <div className="min-h-screen flex items-center justify-center p-8">
-        <div className="max-w-xl w-full">
-          {/* Title */}
-          <h1 className="text-5xl font-light text-center mb-4 tracking-wide">
-            {meditation.topic}
-          </h1>
-          
-          {/* Duration */}
-          <p className="text-center text-gray-400 text-sm tracking-widest uppercase mb-12">
-            {meditation.duration} minutes
-          </p>
+        <div className="max-w-xl w-full flex flex-col gap-16">
+          {/* Title and Duration */}
+          <div className="flex flex-col gap-4">
+            <h1 className="text-5xl font-light text-center tracking-wide font-mono">
+              {meditation.topic}
+            </h1>
+            <p className="text-center text-gray-400 text-sm tracking-widest uppercase font-mono">
+              {meditation.duration} minutes
+            </p>
+          </div>
 
           {/* Audio Player - Custom styled */}
-          <div className="mb-12">
+          <div>
             <audio 
               controls 
               className="w-full"
@@ -59,33 +59,24 @@ export default function MeditationClient({ meditation }: MeditationClientProps) 
 
           {/* Share */}
           <div className="border-t border-gray-800 pt-8">
-            <p className="text-center text-sm text-gray-500 mb-4">Share this meditation</p>
-            <div className="space-y-3">
+            <p className="text-center text-sm text-gray-500 mb-6 font-mono">Share this meditation</p>
+            <div className="flex flex-col gap-4">
               <input
                 type="text"
                 value={typeof window !== 'undefined' ? window.location.href : ''}
                 readOnly
-                className="w-full bg-transparent border-b border-gray-800 pb-2 text-sm text-gray-400 focus:outline-none focus:border-gray-600 transition-colors"
+                className="w-full bg-transparent border-b border-gray-800 pb-2 text-sm text-gray-400 focus:outline-none focus:border-gray-600 transition-colors font-mono"
                 onClick={(e) => e.currentTarget.select()}
               />
               <button
                 onClick={handleCopyLink}
-                className="w-full py-3 text-sm tracking-widest uppercase border border-gray-800 hover:border-white hover:bg-white hover:text-black transition-all duration-300"
+                className="w-full py-3 text-sm tracking-widest uppercase border border-gray-800 hover:border-white hover:bg-white hover:text-black transition-all duration-300 font-mono"
               >
                 {copied ? 'Copied' : 'Copy Link'}
               </button>
             </div>
           </div>
 
-          {/* Footer */}
-          <div className="mt-12 text-center">
-            <a 
-              href="/" 
-              className="text-gray-500 text-xs tracking-widest uppercase hover:text-white transition-colors"
-            >
-              Return
-            </a>
-          </div>
         </div>
       </div>
     </div>
