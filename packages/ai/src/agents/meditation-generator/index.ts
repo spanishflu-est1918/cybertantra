@@ -85,6 +85,12 @@ export class MeditationGeneratorAgent {
   ): Promise<string> {
     const examplesJson = JSON.stringify(examples, null, 2);
 
+    // Calculate target word count based on duration
+    // Average speaking rate: ~130 words per minute for slow, meditative speech
+    // With pauses, effective rate is ~100 words per minute
+    const targetWordCount = duration * 100;
+    const maxWordCount = targetWordCount + 50;
+
     const prompt = `You are a master meditation creator, deeply experienced in tantric and yogic traditions. I'm going to give you examples of meditations, relevant knowledge, and the meditation you need to create.
 
 <style>
@@ -96,7 +102,13 @@ ${examplesJson}
 </example_meditations>
 
 <task>
-Create a ${duration}-minute meditation on: "${topic}"
+Create EXACTLY a ${duration}-minute meditation on: "${topic}"
+
+DURATION REQUIREMENTS:
+- Target length: ${targetWordCount} words (MAXIMUM ${maxWordCount} words)
+- This is a ${duration}-minute meditation when spoken slowly with pauses
+- DO NOT exceed ${maxWordCount} words under any circumstances
+- Keep it concise and focused
 
 Here's relevant knowledge about the topic:
 <relevant_knowledge>
@@ -108,8 +120,19 @@ ${knowledge}
 Write the meditation text with <break time="X.Xs" /> tags embedded for pauses, where X.X is seconds.
 Add breaks liberally - between sentences, after phrases, wherever the meditation needs to breathe.
 
-CRITICAL: Output ONLY plain text with break tags. NO markdown, NO asterisks, NO formatting, NO titles.
-Just the meditation words and break tags.
+CRITICAL:
+- Output ONLY plain text with break tags. NO markdown, NO asterisks, NO formatting, NO titles.
+- MUST BE ${targetWordCount}-${maxWordCount} WORDS TOTAL for a ${duration}-minute meditation
+- When referencing chakra locations, naturally include the Sanskrit name:
+  * If mentioning "root" or "base of spine" → add "Mooladhara"
+  * If mentioning "sacral" or "below the navel" → add "Swadhisthana"
+  * If mentioning "solar plexus" or "navel" → add "Manipura"
+  * If mentioning "heart" or "heart center" → add "Anahata"
+  * If mentioning "throat" → add "Vishuddhi"
+  * If mentioning "third eye" or "between eyebrows" → add "Ajna"
+  * If mentioning "crown" or "top of head" → add "Sahasrara"
+  Example: "Feel the energy at your heart center, the seat of Anahata" or "Bring awareness to the throat, the Vishuddhi chakra"
+- Just the meditation words and break tags.
 
 Example: "Close your eyes. <break time="2.5s" /> Feel your body settling. <break time="1.8s" /> Take a deep breath — <break time="0.8s" /> breathing from your belly <break time="1.2s" /> up to your chest. <break time="4s" />"
 </output>`;
