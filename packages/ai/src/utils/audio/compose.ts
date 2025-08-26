@@ -5,6 +5,8 @@ import { mixVoiceWithMusic } from './mix';
 import { changeAudioTempo } from './tempo';
 import { convertTo432Hz } from './tuning';
 import { applySoxReverbSafe } from './reverb';
+import { applyDynamicReverb } from './dynamic-reverb';
+import { addFinalSilence } from './add-final-silence';
 import { normalizeAudioVolume } from './normalize';
 import { AUDIO_CONFIG } from '../../config/audio';
 
@@ -58,19 +60,21 @@ export async function composeMeditation(
     await convertTo432Hz(currentPath, tunedPath);
     currentPath = tunedPath;
 
-    // Step 4: Apply reverb
+    // Step 4: Apply dynamic reverb (uses Sox reverb with changing intensity)
     const reverbPath = path.join(tempDir, 'reverb.mp3');
-    await applySoxReverbSafe(currentPath, reverbPath, {
+    await applyDynamicReverb(currentPath, reverbPath, {
       reverberance: reverb.reverberance ?? AUDIO_CONFIG.reverb.reverberance,
       damping: reverb.damping ?? AUDIO_CONFIG.reverb.damping,
       roomScale: reverb.roomScale ?? AUDIO_CONFIG.reverb.roomScale,
-      stereoDepth: AUDIO_CONFIG.reverb.stereoDepth,
-      preDelay: AUDIO_CONFIG.reverb.preDelay,
       wetGain: reverb.wetGain ?? AUDIO_CONFIG.reverb.wetGain
     });
     currentPath = reverbPath;
 
-    // Step 5: Normalize volume as final step
+    // Step 5: Add final silence (fade-out is already applied to music in mixing step)
+    // We'll just add silence at the end
+    currentPath = reverbPath; // Skip fade since it's handled in mix
+
+    // Step 6: Normalize volume as final step
     console.log('🎚️ Applying final volume normalization...');
     await normalizeAudioVolume(currentPath, outputPath, {
       targetLUFS: AUDIO_CONFIG.normalization.targetLUFS,
