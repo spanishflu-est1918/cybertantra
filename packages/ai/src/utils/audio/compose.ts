@@ -17,7 +17,6 @@ export async function composeMeditation(
   musicPath: string,
   outputPath: string,
   options: {
-    musicVolume?: number;
     voiceTempo?: number;
     reverb?: {
       reverberance?: number;
@@ -28,7 +27,6 @@ export async function composeMeditation(
   } = {}
 ): Promise<void> {
   const {
-    musicVolume = AUDIO_CONFIG.musicVolume,
     voiceTempo = AUDIO_CONFIG.voiceTempo,
     reverb = {}
   } = options;
@@ -57,8 +55,8 @@ export async function composeMeditation(
 
     // Step 3: Mix voice with music
     const mixedPath = path.join(tempDir, 'mixed.mp3');
-    console.log('🔊 Mixing with music volume:', musicVolume);
-    await mixVoiceWithMusic(currentVoicePath, musicPath, mixedPath, musicVolume);
+    console.log('🔊 Mixing voice with background music...');
+    await mixVoiceWithMusic(currentVoicePath, musicPath, mixedPath);
     let currentPath = mixedPath;
 
     // Step 4: Apply 432Hz (always)
