@@ -5,7 +5,6 @@ import { mixVoiceWithMusic } from './mix';
 import { changeAudioTempo } from './tempo';
 import { convertTo432Hz } from './tuning';
 import { applySoxReverbSafe } from './reverb';
-import { addSilenceToBeginning } from './add-silence';
 import { normalizeAudioVolume } from './normalize';
 import { AUDIO_CONFIG } from '../../config/audio';
 
@@ -43,28 +42,23 @@ export async function composeMeditation(
   try {
     let currentVoicePath = voicePath;
     
-    // Step 1: Add silence to beginning of voice
-    const silencePath = path.join(tempDir, 'voice_silence.mp3');
-    await addSilenceToBeginning(currentVoicePath, silencePath, AUDIO_CONFIG.silenceBeforeVoice);
-    currentVoicePath = silencePath;
-    
-    // Step 2: Apply tempo to voice (always 0.8)
+    // Step 1: Apply tempo to voice
     const tempoPath = path.join(tempDir, 'voice_tempo.mp3');
     await changeAudioTempo(currentVoicePath, tempoPath, voiceTempo);
     currentVoicePath = tempoPath;
 
-    // Step 3: Mix voice with music
+    // Step 2: Mix voice with music (includes 3s delay for voice)
     const mixedPath = path.join(tempDir, 'mixed.mp3');
     console.log('🔊 Mixing voice with background music...');
     await mixVoiceWithMusic(currentVoicePath, musicPath, mixedPath);
     let currentPath = mixedPath;
 
-    // Step 4: Apply 432Hz (always)
+    // Step 3: Apply 432Hz (always)
     const tunedPath = path.join(tempDir, 'tuned.mp3');
     await convertTo432Hz(currentPath, tunedPath);
     currentPath = tunedPath;
 
-    // Step 5: Apply reverb
+    // Step 4: Apply reverb
     const reverbPath = path.join(tempDir, 'reverb.mp3');
     await applySoxReverbSafe(currentPath, reverbPath, {
       reverberance: reverb.reverberance ?? AUDIO_CONFIG.reverb.reverberance,
@@ -76,7 +70,7 @@ export async function composeMeditation(
     });
     currentPath = reverbPath;
 
-    // Step 6: Normalize volume as final step
+    // Step 5: Normalize volume as final step
     console.log('🎚️ Applying final volume normalization...');
     await normalizeAudioVolume(currentPath, outputPath, {
       targetLUFS: AUDIO_CONFIG.normalization.targetLUFS,

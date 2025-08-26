@@ -12,14 +12,19 @@ export async function mixVoiceWithMusic(
   return new Promise((resolve, reject) => {
     console.log(`🎚️ Music volume being applied: ${AUDIO_CONFIG.musicVolume}`);
     console.log(`🎛️ Applying sidechain compression to duck music under voice`);
+    console.log(
+      `⏱️ Delaying voice by ${AUDIO_CONFIG.silenceBeforeVoice} seconds`,
+    );
 
     // Apply sidechain compression to duck music when voice is present
-    // Split voice into two streams: one for sidechain control, one for mixing
+    // Delay voice by 3 seconds using adelay filter
+    // Split delayed voice into two streams: one for sidechain control, one for mixing
+    const delayMs = AUDIO_CONFIG.silenceBeforeVoice * 1000;
     const filterComplex =
-      `[0:a]aformat=channel_layouts=stereo,asplit=2[voice_sc][voice_mix];` +
+      `[0:a]aformat=channel_layouts=stereo,adelay=${delayMs}|${delayMs},asplit=2[voice_sc][voice_mix];` +
       `[1:a]aformat=channel_layouts=stereo,aloop=loop=-1:size=2e+09[music_loop];` +
       `[music_loop][voice_sc]sidechaincompress=threshold=${AUDIO_CONFIG.sidechain.threshold}:ratio=${AUDIO_CONFIG.sidechain.ratio}:attack=${AUDIO_CONFIG.sidechain.attack}:release=${AUDIO_CONFIG.sidechain.release}[music_ducked];` +
-      `[voice_mix][music_ducked]amix=inputs=2:duration=first:dropout_transition=0:weights='1 ${AUDIO_CONFIG.musicVolume}'[final]`;
+      `[voice_mix][music_ducked]amix=inputs=2:duration=longest:dropout_transition=0:weights='1 ${AUDIO_CONFIG.musicVolume}'[final]`;
 
     ffmpeg()
       .input(voicePath)
