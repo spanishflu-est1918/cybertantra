@@ -61,6 +61,15 @@ async function generateSegmentedAudio(
 ): Promise<AudioGenerationResult> {
   const { text, topic, duration, voiceId, outputDir } = options;
   
+  // Debug: Check if text is defined
+  if (!text) {
+    console.error("❌ Text is undefined or empty in generateSegmentedAudio!");
+    throw new Error("Cannot generate audio: text is undefined");
+  }
+  
+  console.log(`📝 Text length: ${text.length} chars`);
+  console.log(`📝 First 200 chars: ${text.substring(0, 200)}...`);
+  
   // Parse text into segments
   const segments = parseTextIntoSegments(text);
   

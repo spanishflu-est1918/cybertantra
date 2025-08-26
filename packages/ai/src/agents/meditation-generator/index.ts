@@ -1,8 +1,9 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { generateText, stepCountIs } from "ai";
+import { generateText } from "ai";
 import { getAIConfig, searchLectures } from "../../index";
 import { loadMeditationCorpus, type MeditationCorpusEntry } from "./corpus";
 import type { MusicPromptParameters } from "../../utils/meditation/generate-music";
+import { AUDIO_CONFIG } from "../../config/audio";
 
 export class MeditationGeneratorAgent {
   private openrouter: any;
@@ -43,11 +44,16 @@ export class MeditationGeneratorAgent {
     }
 
     console.log(`🕉️ Weaving sacred utterances with divine silence...`);
+    // Check if we're using v3 for emotion tags
+    const useEmotionTags = AUDIO_CONFIG.ttsModel === "eleven_v3";
+    console.log(`🎭 Using ${AUDIO_CONFIG.ttsModel} model ${useEmotionTags ? 'with emotion tags' : 'without emotion tags'}`);
+    
     const meditationText = await this.createMeditationText(
       topic,
       duration,
       corpus.slice(0, 10),
       knowledge,
+      useEmotionTags,
     );
 
     console.log(
@@ -82,6 +88,7 @@ export class MeditationGeneratorAgent {
     duration: number,
     examples: MeditationCorpusEntry[],
     knowledge: string,
+    useEmotionTags: boolean = true, // Default to v3 alpha with emotions
   ): Promise<string> {
     const examplesJson = JSON.stringify(examples, null, 2);
 
@@ -90,6 +97,57 @@ export class MeditationGeneratorAgent {
     // With pauses, effective rate is ~100 words per minute
     const targetWordCount = duration * 100;
     const maxWordCount = targetWordCount + 50;
+
+    // Build output section based on model capabilities
+    const outputSection = useEmotionTags
+      ? `<output>
+Write the meditation text with <break time="X.Xs" /> tags for pauses AND [emotion] tags for vocal expression.
+
+EMOTION TAGS (use these to guide the voice):
+- [calm] or [soothing] - for general meditation tone
+- [whispers] - for intimate, gentle guidance
+- [softly] - for tender moments
+- [compassionate] - for loving-kindness sections
+- [powerful] - for empowerment/energy work
+- [mysterious] - for esoteric/tantric content
+- [sighs] - for release moments (use sparingly, creates actual sigh sound)
+- AVOID [breathes deeply] - it creates overlapping breath sounds
+
+Example: "[calm] Close your eyes. <break time="2.5s" /> [whispers] Feel your body settling into stillness. <break time="1.8s" /> [softly] Take a deep breath — <break time="0.8s" />"
+
+CRITICAL:
+- Output ONLY plain text with break tags and emotion tags. NO markdown, NO asterisks, NO formatting, NO titles.
+- MUST BE ${targetWordCount}-${maxWordCount} WORDS TOTAL for a ${duration}-minute meditation
+- Use emotion tags naturally throughout to enhance the meditation experience
+- When referencing chakra locations, naturally include the Sanskrit name:
+  * If mentioning "root" or "base of spine" → add "Mooladhara"
+  * If mentioning "sacral" or "below the navel" → add "Swadhisthana"
+  * If mentioning "solar plexus" or "navel" → add "Manipura"
+  * If mentioning "heart" or "heart center" → add "Anahata"
+  * If mentioning "throat" → add "Vishuddhi"
+  * If mentioning "third eye" or "between eyebrows" → add "Ajna"
+  * If mentioning "crown" or "top of head" → add "Sahasrara"
+  Example: "[softly] Feel the energy at your heart center, the seat of Anahata"
+</output>`
+      : `<output>
+Write the meditation text with <break time="X.Xs" /> tags embedded for pauses, where X.X is seconds.
+Add breaks liberally - between sentences, after phrases, wherever the meditation needs to breathe.
+
+CRITICAL:
+- Output ONLY plain text with break tags. NO markdown, NO asterisks, NO formatting, NO titles.
+- MUST BE ${targetWordCount}-${maxWordCount} WORDS TOTAL for a ${duration}-minute meditation
+- When referencing chakra locations, naturally include the Sanskrit name:
+  * If mentioning "root" or "base of spine" → add "Mooladhara"
+  * If mentioning "sacral" or "below the navel" → add "Swadhisthana"
+  * If mentioning "solar plexus" or "navel" → add "Manipura"
+  * If mentioning "heart" or "heart center" → add "Anahata"
+  * If mentioning "throat" → add "Vishuddhi"
+  * If mentioning "third eye" or "between eyebrows" → add "Ajna"
+  * If mentioning "crown" or "top of head" → add "Sahasrara"
+  Example: "Feel the energy at your heart center, the seat of Anahata"
+
+Example: "Close your eyes. <break time="2.5s" /> Feel your body settling. <break time="1.8s" /> Take a deep breath — <break time="0.8s" /> breathing from your belly <break time="1.2s" /> up to your chest. <break time="4s" />"
+</output>`;
 
     const prompt = `You are a master meditation creator, deeply experienced in tantric and yogic traditions. I'm going to give you examples of meditations, relevant knowledge, and the meditation you need to create.
 
@@ -116,26 +174,7 @@ ${knowledge}
 </relevant_knowledge>
 </task>
 
-<output>
-Write the meditation text with <break time="X.Xs" /> tags embedded for pauses, where X.X is seconds.
-Add breaks liberally - between sentences, after phrases, wherever the meditation needs to breathe.
-
-CRITICAL:
-- Output ONLY plain text with break tags. NO markdown, NO asterisks, NO formatting, NO titles.
-- MUST BE ${targetWordCount}-${maxWordCount} WORDS TOTAL for a ${duration}-minute meditation
-- When referencing chakra locations, naturally include the Sanskrit name:
-  * If mentioning "root" or "base of spine" → add "Mooladhara"
-  * If mentioning "sacral" or "below the navel" → add "Swadhisthana"
-  * If mentioning "solar plexus" or "navel" → add "Manipura"
-  * If mentioning "heart" or "heart center" → add "Anahata"
-  * If mentioning "throat" → add "Vishuddhi"
-  * If mentioning "third eye" or "between eyebrows" → add "Ajna"
-  * If mentioning "crown" or "top of head" → add "Sahasrara"
-  Example: "Feel the energy at your heart center, the seat of Anahata" or "Bring awareness to the throat, the Vishuddhi chakra"
-- Just the meditation words and break tags.
-
-Example: "Close your eyes. <break time="2.5s" /> Feel your body settling. <break time="1.8s" /> Take a deep breath — <break time="0.8s" /> breathing from your belly <break time="1.2s" /> up to your chest. <break time="4s" />"
-</output>`;
+${outputSection}`;
 
     const { text } = await generateText({
       model: this.openrouter("anthropic/claude-sonnet-4"),

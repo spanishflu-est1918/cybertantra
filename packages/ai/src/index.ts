@@ -47,6 +47,7 @@ export {
   CHUNK_OVERLAP,
 } from "./config";
 export type { AIConfig } from "./config";
+export { AUDIO_CONFIG } from "./config/audio";
 
 // Audio Utils
 export { composeMeditation } from "./utils/audio";

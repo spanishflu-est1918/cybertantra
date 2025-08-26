@@ -1,5 +1,6 @@
 import { ElevenLabsClient } from "elevenlabs";
 import { getAIConfig } from "../config";
+import { AUDIO_CONFIG } from "../config/audio";
 
 export interface TextToSpeechOptions {
   voiceId?: string;
@@ -52,7 +53,7 @@ export class TextToSpeechService {
       const audioStream = await this.client.generate({
         voice: options.voiceId || this.defaultVoiceId,
         text: cleanedText,
-        model_id: options.modelId || "eleven_turbo_v2", // Turbo v2 supports break tags
+        model_id: options.modelId || AUDIO_CONFIG.ttsModel, // Use configured model
         voice_settings: options.voiceSettings || {
           stability: 0.5,
           similarity_boost: 0.8,
@@ -191,7 +192,7 @@ export class TextToSpeechService {
     const audioStream = await this.client.generate({
       voice: options.voiceId || this.defaultVoiceId,
       text: cleanedText,
-      model_id: options.modelId || "eleven_turbo_v2",
+      model_id: options.modelId || AUDIO_CONFIG.ttsModel,
       voice_settings: options.voiceSettings || {
         stability: 0.5,
         similarity_boost: 0.8,

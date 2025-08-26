@@ -3,12 +3,19 @@
  */
 
 export const AUDIO_CONFIG = {
+  // TTS Model Configuration
+  ttsModel: "eleven_turbo_v2" as "eleven_v3" | "eleven_turbo_v2",  // turbo v2 is more reliable
+  
   // Volume settings
   musicVolume: 0.03, // Background music volume (75% of 0.04 for better balance)
 
   // Voice processing
   voiceTempo: 0.95, // Slight tempo reduction for meditative pace
   silenceBeforeVoice: 3, // Seconds of silence before voice starts
+  
+  // Ending
+  fadeOutDuration: 10, // Seconds to fade out music at the end
+  silenceAfterFadeOut: 2, // Seconds of silence after fade out
 
   // Sidechain compression (ducking music under voice)
   sidechain: {
