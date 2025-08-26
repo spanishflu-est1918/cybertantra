@@ -60,9 +60,11 @@ export class MeditationGeneratorAgent {
     );
 
     const result = {
+      text: meditationText,
       topic,
       duration,
       timestamp: new Date().toISOString(),
+      musicParameters,
     };
 
     console.log(`⚡ The ritual is complete!`);
