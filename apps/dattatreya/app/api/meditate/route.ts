@@ -39,11 +39,18 @@ export async function POST(req: Request) {
     });
 
     // Save to database and generate shareable URL
+    const audioPath = result.finalAudioPath || result.audioPath;
+    const audioSize = result.finalAudioSize || result.audioSize;
+    
+    if (!audioPath) {
+      throw new Error("No audio path available");
+    }
+    
     const meditationSession = await saveMeditationSession({
       topic: result.topic,
       duration: result.duration,
-      audioPath: result.finalAudioPath,
-      audioSize: result.finalAudioSize,
+      audioPath,
+      audioSize,
       voiceId,
     });
 
@@ -67,8 +74,8 @@ export async function POST(req: Request) {
           topic: result.topic,
           duration: result.duration,
           musicParameters: result.musicParameters,
-          audioPath: result.finalAudioPath,  // Use the FINAL mixed audio
-          audioSize: result.finalAudioSize,  // Use the FINAL audio size
+          audioPath: result.finalAudioPath || result.audioPath,  // Use the FINAL mixed audio
+          audioSize: result.finalAudioSize || result.audioSize,  // Use the FINAL audio size
           voiceOnlyPath: result.audioPath,
           voiceOnlySize: result.audioSize,
           musicPath: result.musicPath,
