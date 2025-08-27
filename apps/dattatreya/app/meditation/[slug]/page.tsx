@@ -7,11 +7,12 @@ export const dynamicParams = true;
 export const revalidate = false; // Cache forever
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const meditation = await getMeditationBySlug(params.slug);
+  const { slug } = await params;
+  const meditation = await getMeditationBySlug(slug);
   
   if (!meditation) {
     return {
@@ -37,7 +38,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function MeditationPage({ params }: PageProps) {
-  const meditation = await getMeditationBySlug(params.slug);
+  const { slug } = await params;
+  const meditation = await getMeditationBySlug(slug);
 
   if (!meditation) {
     notFound();
