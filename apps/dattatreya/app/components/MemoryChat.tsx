@@ -40,12 +40,13 @@ export default function MemoryChat({ sessionId, setSessionId }: MemoryChatProps)
   const { messages, sendMessage, status, setMessages } = useChat({
     transport: new DefaultChatTransport({
       api: sessionId ? `/api/chat/${sessionId}` : "/api/chat",
-      prepareSendMessagesRequest({ messages }) {
-        // Send only the last message to optimize
-        return { 
-          body: { 
+      prepareSendMessagesRequest: ({ messages }) => {
+        // Send only the last message to optimize network usage
+        return {
+          body: {
             message: messages[messages.length - 1],
-          } 
+            messages: messages, // Also send full messages as fallback
+          },
         };
       },
     }),

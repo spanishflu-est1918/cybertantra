@@ -7,7 +7,6 @@ import {
   createUIMessageStreamResponse,
   validateUIMessages,
   createIdGenerator,
-  appendClientMessage,
   UIMessage,
 } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
@@ -40,24 +39,23 @@ export async function POST(
   const body = await req.json();
   bench.end("parse-request");
 
-  // Handle both full messages array and single message
+  // Handle both patterns: single message optimization or full messages array
   let messages: UIMessage[];
   
-  if (body.message) {
+  if (body.message && !body.messages) {
     // Single message optimization - load previous and append
     bench.start("load-conversation");
     const previousMessages = await store.load(sessionId);
     bench.end("load-conversation");
-
+    
     bench.start("append-message");
-    messages = appendClientMessage({
-      messages: previousMessages,
-      message: body.message,
-    });
+    messages = [...previousMessages, body.message];
     bench.end("append-message");
   } else if (body.messages) {
-    // Full messages array
+    // Full messages array (fallback or initial load)
+    bench.start("parse-messages");
     messages = body.messages;
+    bench.end("parse-messages");
   } else {
     return new Response("No messages provided", { status: 400 });
   }
