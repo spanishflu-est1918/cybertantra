@@ -45,3 +45,9 @@ next-env.d.ts
 # Turborepo
 .turbo
 packages/ai/test-voice.ts
+
+# audio files - too large for git
+apps/*/public/audio/
+*.wav
+*.mp3
+*.opus

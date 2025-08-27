@@ -28,6 +28,7 @@
     "cli:test-text": "cd packages/cli && bun run src/commands/test-meditation-text.ts",
     "cli:test-tts": "cd packages/cli && bun run src/commands/test-tts.ts",
     "cli:extract-vocals": "cd packages/cli && bun run extract-vocals",
+    "cli:import-skyler": "cd packages/cli && bun run src/commands/import-skyler-conversation.ts",
     "transcribe": "bun packages/lecture-tools/src/transcription/transcribe.ts",
     "transcribe-videos": "bun packages/lecture-tools/src/transcription/transcribe-videos.ts",
     "download-videos": "bun packages/lecture-tools/src/transcription/download-videos.ts"

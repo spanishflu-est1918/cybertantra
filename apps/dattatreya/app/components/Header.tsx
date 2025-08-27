@@ -1,5 +1,4 @@
 import { useRouter } from "next/navigation";
-import { generateId } from "ai";
 
 type Mode = 'text' | 'audio' | 'memory';
 
@@ -7,10 +6,9 @@ interface HeaderProps {
   mode: Mode;
   setMode: (mode: Mode) => void;
   sessionId?: string | null;
-  setSessionId?: (id: string | null) => void;
 }
 
-export default function Header({ mode, setMode, sessionId, setSessionId }: HeaderProps) {
+export default function Header({ mode, setMode, sessionId }: HeaderProps) {
   const router = useRouter();
   return (
     <div className="relative z-10 border-b border-white/10 backdrop-blur-sm select-none">

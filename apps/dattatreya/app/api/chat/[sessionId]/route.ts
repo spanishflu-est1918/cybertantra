@@ -6,7 +6,6 @@ import {
   createUIMessageStream,
   createUIMessageStreamResponse,
   validateUIMessages,
-  createIdGenerator,
   UIMessage,
 } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
@@ -39,11 +38,9 @@ export async function POST(
   const body = await req.json();
   bench.end("parse-request");
 
-  // Handle both patterns: single message optimization or full messages array
   let messages: UIMessage[];
   
   if (body.message && !body.messages) {
-    // Single message optimization - load previous and append
     bench.start("load-conversation");
     const previousMessages = await store.load(sessionId);
     bench.end("load-conversation");
@@ -52,7 +49,6 @@ export async function POST(
     messages = [...previousMessages, body.message];
     bench.end("append-message");
   } else if (body.messages) {
-    // Full messages array (fallback or initial load)
     bench.start("parse-messages");
     messages = body.messages;
     bench.end("parse-messages");
@@ -60,21 +56,18 @@ export async function POST(
     return new Response("No messages provided", { status: 400 });
   }
 
-  // Validate messages
   bench.start("validate-messages");
   const validatedMessages = await validateUIMessages({
     messages,
   });
   bench.end("validate-messages");
 
-  // Convert UI messages for the model
   bench.start("convert-ui-messages");
   const convertedMessages = await convertUIMessagesToModelMessages(
     validatedMessages
   );
   bench.end("convert-ui-messages");
 
-  // Check if we transcribed any audio
   const hadAudioTranscription = validatedMessages[
     validatedMessages.length - 1
   ]?.parts?.some(
@@ -194,12 +187,10 @@ export async function POST(
 
     bench.summary();
 
-    // If we had audio transcription, create a custom stream to handle message replacement
-    if (hadAudioTranscription) {
+      if (hadAudioTranscription) {
       const stream = createUIMessageStream({
         originalMessages: convertedMessages,
         execute: ({ writer }) => {
-          // Send a custom data part to signal message replacement
           writer.write({
             type: "data-message-replacement",
             data: {
@@ -214,7 +205,6 @@ export async function POST(
             transient: true,
           });
 
-          // Merge the AI response stream
           writer.merge(result.toUIMessageStream());
         },
       });
@@ -224,14 +214,11 @@ export async function POST(
       });
     }
 
-    // Normal response without audio transcription
     return result.toUIMessageStreamResponse({
       onFinish: async (message) => {
-        // Get updated messages and save to store
         const allMessages = [...convertedMessages, message];
         await store.save(sessionId, allMessages);
         
-        // Update metadata with title from first message if needed
         const conversation = await store.loadFull(sessionId);
         if (!conversation?.metadata?.title && allMessages.length > 0) {
           const firstUserMessage = allMessages.find(m => m.role === "user");
@@ -259,7 +246,6 @@ export async function POST(
   }
 }
 
-// GET endpoint to load conversation history
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ sessionId: string }> }

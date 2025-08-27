@@ -16,43 +16,30 @@ export interface Conversation {
 }
 
 export class ConversationStore {
-  /**
-   * Rough token estimation (4 chars ≈ 1 token)
-   */
   private estimateTokens(messages: UIMessage[]): number {
     const totalChars = messages.reduce((total, msg) => {
       let contentLength = 0;
       
-      // AI SDK v5 uses parts array instead of content property
       if (msg.parts && Array.isArray(msg.parts)) {
-        msg.parts.forEach(part => {
+        msg.parts.forEach((part: any) => {
           if (part.type === 'text' && part.text) {
             contentLength += part.text.length;
-          } else if (part.type === 'tool' && part.input) {
+          } else if (part.type?.startsWith('tool-') && part.input) {
             contentLength += JSON.stringify(part.input).length;
           } else {
             contentLength += JSON.stringify(part).length;
           }
         });
-      } else if (msg.content) {
-        // Fallback for any legacy messages that might have content
-        contentLength = typeof msg.content === 'string' 
-          ? msg.content.length 
-          : JSON.stringify(msg.content).length;
       }
       
       return total + contentLength + msg.role.length;
     }, 0);
     return Math.ceil(totalChars / 4);
   }
-  /**
-   * Save or update a conversation
-   */
   async save(sessionId: string, messages: UIMessage[], metadata?: ConversationMetadata): Promise<void> {
     try {
       const tokenCount = this.estimateTokens(messages);
       
-      // Log when approaching context limits
       if (tokenCount > 150000) {
         console.warn(`⚠️  Session ${sessionId} approaching context limit: ${tokenCount} tokens`);
       } else if (tokenCount > 100000) {
@@ -78,9 +65,6 @@ export class ConversationStore {
     }
   }
 
-  /**
-   * Load messages for a conversation
-   */
   async load(sessionId: string): Promise<UIMessage[]> {
     try {
       const result = await sql<{ messages: UIMessage[] }>`
@@ -95,9 +79,6 @@ export class ConversationStore {
     }
   }
 
-  /**
-   * Load full conversation with metadata
-   */
   async loadFull(sessionId: string): Promise<Conversation | null> {
     try {
       const result = await sql<Conversation>`
@@ -117,9 +98,6 @@ export class ConversationStore {
     }
   }
 
-  /**
-   * Check if a conversation exists
-   */
   async exists(sessionId: string): Promise<boolean> {
     try {
       const result = await sql<{ exists: boolean }>`
@@ -134,9 +112,6 @@ export class ConversationStore {
     }
   }
 
-  /**
-   * List recent conversations
-   */
   async listRecent(limit: number = 10): Promise<Array<{ id: string; metadata: ConversationMetadata; updatedAt: Date }>> {
     try {
       const result = await sql<{ id: string; metadata: ConversationMetadata; updatedAt: Date }>`
@@ -156,9 +131,6 @@ export class ConversationStore {
     }
   }
 
-  /**
-   * Delete a conversation
-   */
   async delete(sessionId: string): Promise<boolean> {
     try {
       const result = await sql`
@@ -173,9 +145,6 @@ export class ConversationStore {
     }
   }
 
-  /**
-   * Update conversation metadata
-   */
   async updateMetadata(sessionId: string, metadata: ConversationMetadata): Promise<void> {
     try {
       await sql`
@@ -190,9 +159,6 @@ export class ConversationStore {
     }
   }
 
-  /**
-   * Get conversation statistics
-   */
   async getStats(sessionId: string): Promise<{ messageCount: number; estimatedTokens: number; needsCompression: boolean } | null> {
     try {
       const messages = await this.load(sessionId);
