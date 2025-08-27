@@ -221,42 +221,12 @@ export async function POST(
 
       return createUIMessageStreamResponse({ 
         stream,
-        generateMessageId: createIdGenerator({ prefix: "msg" }),
-        onFinish: async ({ messages }) => {
-          await store.save(sessionId, messages);
-          
-          // Update metadata with title from first message if needed
-          const conversation = await store.loadFull(sessionId);
-          if (!conversation?.metadata?.title && messages.length > 0) {
-            const firstUserMessage = messages.find(m => m.role === "user");
-            if (firstUserMessage && typeof firstUserMessage.content === "string") {
-              await store.updateMetadata(sessionId, {
-                title: firstUserMessage.content.slice(0, 100),
-              });
-            }
-          }
-        },
       });
     }
 
     // Normal response without audio transcription
     return result.toUIMessageStreamResponse({
       originalMessages: convertedMessages,
-      generateMessageId: createIdGenerator({ prefix: "msg" }),
-      onFinish: async ({ messages }) => {
-        await store.save(sessionId, messages);
-        
-        // Update metadata with title from first message if needed
-        const conversation = await store.loadFull(sessionId);
-        if (!conversation?.metadata?.title && messages.length > 0) {
-          const firstUserMessage = messages.find(m => m.role === "user");
-          if (firstUserMessage && typeof firstUserMessage.content === "string") {
-            await store.updateMetadata(sessionId, {
-              title: firstUserMessage.content.slice(0, 100),
-            });
-          }
-        }
-      },
     });
   } catch (error) {
     console.error("Dattatreya memory chat error:", error);
