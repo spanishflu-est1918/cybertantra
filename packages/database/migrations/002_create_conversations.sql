@@ -1,6 +1,6 @@
 -- Create conversations table for storing chat history
 CREATE TABLE IF NOT EXISTS conversations (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id TEXT PRIMARY KEY,
   messages JSONB NOT NULL DEFAULT '[]'::jsonb,
   metadata JSONB DEFAULT '{}'::jsonb,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),

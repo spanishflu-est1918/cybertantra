@@ -24,7 +24,7 @@ export class ConversationStore {
       await sql`
         INSERT INTO conversations (id, messages, metadata, updated_at)
         VALUES (
-          ${sessionId}::uuid, 
+          ${sessionId}, 
           ${JSON.stringify(messages)}::jsonb,
           ${JSON.stringify(metadata || {})}::jsonb,
           NOW()
@@ -48,8 +48,7 @@ export class ConversationStore {
       const result = await sql<{ messages: UIMessage[] }>`
         SELECT messages 
         FROM conversations 
-        WHERE id = ${sessionId}::uuid
-      `;
+        WHERE id = ${sessionId}      `;
       
       return result.rows[0]?.messages || [];
     } catch (error) {
@@ -71,8 +70,7 @@ export class ConversationStore {
           created_at as "createdAt",
           updated_at as "updatedAt"
         FROM conversations 
-        WHERE id = ${sessionId}::uuid
-      `;
+        WHERE id = ${sessionId}      `;
       
       return result.rows[0] || null;
     } catch (error) {
@@ -88,8 +86,7 @@ export class ConversationStore {
     try {
       const result = await sql<{ exists: boolean }>`
         SELECT EXISTS(
-          SELECT 1 FROM conversations WHERE id = ${sessionId}::uuid
-        ) as exists
+          SELECT 1 FROM conversations WHERE id = ${sessionId}        ) as exists
       `;
       
       return result.rows[0]?.exists || false;
@@ -128,8 +125,7 @@ export class ConversationStore {
     try {
       const result = await sql`
         DELETE FROM conversations 
-        WHERE id = ${sessionId}::uuid
-        RETURNING id
+        WHERE id = ${sessionId}        RETURNING id
       `;
       
       return result.rowCount > 0;
@@ -149,8 +145,7 @@ export class ConversationStore {
         SET 
           metadata = metadata || ${JSON.stringify(metadata)}::jsonb,
           updated_at = NOW()
-        WHERE id = ${sessionId}::uuid
-      `;
+        WHERE id = ${sessionId}      `;
     } catch (error) {
       console.error('Failed to update conversation metadata:', error);
       throw new Error(`Failed to update metadata: ${error}`);

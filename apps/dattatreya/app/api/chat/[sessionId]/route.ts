@@ -26,10 +26,10 @@ const store = new ConversationStore();
 
 export async function POST(
   req: Request,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ) {
   const bench = createBenchmark();
-  const { sessionId } = params;
+  const { sessionId } = await params;
 
   if (!sessionId) {
     return new Response("Session ID required", { status: 400 });
@@ -277,9 +277,9 @@ export async function POST(
 // GET endpoint to load conversation history
 export async function GET(
   req: Request,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ) {
-  const { sessionId } = params;
+  const { sessionId } = await params;
 
   if (!sessionId) {
     return new Response("Session ID required", { status: 400 });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { generateId } from "ai";
 import Chat from "./Chat";
 import AudioMode from "./AudioMode";
 import MemoryChat from "./MemoryChat";

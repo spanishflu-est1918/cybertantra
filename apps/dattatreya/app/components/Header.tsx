@@ -1,12 +1,17 @@
+import { useRouter } from "next/navigation";
+import { generateId } from "ai";
+
 type Mode = 'text' | 'audio' | 'memory';
 
 interface HeaderProps {
   mode: Mode;
   setMode: (mode: Mode) => void;
   sessionId?: string | null;
+  setSessionId?: (id: string | null) => void;
 }
 
-export default function Header({ mode, setMode, sessionId }: HeaderProps) {
+export default function Header({ mode, setMode, sessionId, setSessionId }: HeaderProps) {
+  const router = useRouter();
   return (
     <div className="relative z-10 border-b border-white/10 backdrop-blur-sm select-none">
       <div className="flex items-center justify-between p-6">
@@ -24,7 +29,10 @@ export default function Header({ mode, setMode, sessionId }: HeaderProps) {
         <div className="flex items-center space-x-2">
           <div className="flex items-center border border-white/20 rounded-full">
             <button
-              onClick={() => setMode('text')}
+              onClick={() => {
+                if (mode !== 'text') router.push('/');
+                setMode('text');
+              }}
               className={`px-3 py-1.5 text-xs transition-all ${
                 mode === 'text' 
                   ? 'bg-white text-black' 
@@ -34,7 +42,10 @@ export default function Header({ mode, setMode, sessionId }: HeaderProps) {
               Text
             </button>
             <button
-              onClick={() => setMode('audio')}
+              onClick={() => {
+                if (mode !== 'audio') router.push('/');
+                setMode('audio');
+              }}
               className={`px-3 py-1.5 text-xs transition-all ${
                 mode === 'audio' 
                   ? 'bg-white text-black' 
@@ -44,7 +55,11 @@ export default function Header({ mode, setMode, sessionId }: HeaderProps) {
               Audio
             </button>
             <button
-              onClick={() => setMode('memory')}
+              onClick={() => {
+                if (mode !== 'memory') {
+                  router.push('/memory');
+                }
+              }}
               className={`px-3 py-1.5 text-xs transition-all ${
                 mode === 'memory' 
                   ? 'bg-white text-black' 

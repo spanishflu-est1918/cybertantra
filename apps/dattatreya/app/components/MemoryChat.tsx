@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { generateId } from "ai";
+import { useRouter } from "next/navigation";
 import Message from "./Message";
 import TextMode from "./TextMode";
 
@@ -13,6 +14,7 @@ interface MemoryChatProps {
 }
 
 export default function MemoryChat({ sessionId, setSessionId }: MemoryChatProps) {
+  const router = useRouter();
   const [input, setInput] = useState("");
   const [recentSessions, setRecentSessions] = useState<Array<{
     id: string;
@@ -89,12 +91,11 @@ export default function MemoryChat({ sessionId, setSessionId }: MemoryChatProps)
 
   const startNewSession = () => {
     const newId = generateId();
-    setSessionId(newId);
-    setMessages([]);
+    router.push(`/memory/${newId}`);
   };
 
   const loadSession = (id: string) => {
-    setSessionId(id);
+    router.push(`/memory/${id}`);
     setShowSessions(false);
   };
 
@@ -132,11 +133,6 @@ export default function MemoryChat({ sessionId, setSessionId }: MemoryChatProps)
             ◊ Recent Sessions ({recentSessions.length})
           </button>
         </div>
-        {sessionId && (
-          <div className="text-xs text-white/20 font-mono">
-            Session: {sessionId.slice(0, 8)}...
-          </div>
-        )}
       </div>
 
       {/* Recent sessions dropdown */}
@@ -244,7 +240,7 @@ export default function MemoryChat({ sessionId, setSessionId }: MemoryChatProps)
       <TextMode
         input={input}
         setInput={setInput}
-        handleSubmit={handleSubmit}
+        onSubmit={handleSubmit}
         isLoading={isLoading}
       />
     </main>
