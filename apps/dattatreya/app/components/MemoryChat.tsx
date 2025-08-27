@@ -22,6 +22,11 @@ export default function MemoryChat({ sessionId, setSessionId }: MemoryChatProps)
     updatedAt: Date;
   }>>([]);
   const [showSessions, setShowSessions] = useState(false);
+  const [conversationStats, setConversationStats] = useState<{
+    messageCount: number;
+    estimatedTokens: number;
+    needsCompression: boolean;
+  } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize session if not set
@@ -65,6 +70,12 @@ export default function MemoryChat({ sessionId, setSessionId }: MemoryChatProps)
           }
         })
         .catch((err) => console.error("Failed to load conversation:", err));
+      
+      // Load conversation stats
+      fetch(`/api/sessions/${sessionId}/stats`)
+        .then((res) => res.json())
+        .then((stats) => setConversationStats(stats))
+        .catch((err) => console.error("Failed to load stats:", err));
     }
   }, [sessionId, setMessages]);
 
@@ -133,6 +144,17 @@ export default function MemoryChat({ sessionId, setSessionId }: MemoryChatProps)
             ◊ Recent Sessions ({recentSessions.length})
           </button>
         </div>
+        
+        {/* Conversation stats */}
+        {conversationStats && (
+          <div className="flex items-center space-x-4 text-xs text-white/40">
+            <span>{conversationStats.messageCount} msgs</span>
+            <span>~{Math.round(conversationStats.estimatedTokens / 1000)}K tokens</span>
+            {conversationStats.needsCompression && (
+              <span className="text-yellow-400">⚠ Large conversation</span>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Recent sessions dropdown */}

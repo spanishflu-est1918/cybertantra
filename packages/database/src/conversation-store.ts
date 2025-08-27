@@ -17,10 +17,31 @@ export interface Conversation {
 
 export class ConversationStore {
   /**
+   * Rough token estimation (4 chars ≈ 1 token)
+   */
+  private estimateTokens(messages: UIMessage[]): number {
+    const totalChars = messages.reduce((total, msg) => {
+      const content = typeof msg.content === 'string' 
+        ? msg.content 
+        : JSON.stringify(msg.content);
+      return total + content.length + msg.role.length;
+    }, 0);
+    return Math.ceil(totalChars / 4);
+  }
+  /**
    * Save or update a conversation
    */
   async save(sessionId: string, messages: UIMessage[], metadata?: ConversationMetadata): Promise<void> {
     try {
+      const tokenCount = this.estimateTokens(messages);
+      
+      // Log when approaching context limits
+      if (tokenCount > 150000) {
+        console.warn(`⚠️  Session ${sessionId} approaching context limit: ${tokenCount} tokens`);
+      } else if (tokenCount > 100000) {
+        console.log(`📊 Session ${sessionId}: ${messages.length} messages, ~${tokenCount} tokens`);
+      }
+      
       await sql`
         INSERT INTO conversations (id, messages, metadata, updated_at)
         VALUES (
@@ -149,6 +170,28 @@ export class ConversationStore {
     } catch (error) {
       console.error('Failed to update conversation metadata:', error);
       throw new Error(`Failed to update metadata: ${error}`);
+    }
+  }
+
+  /**
+   * Get conversation statistics
+   */
+  async getStats(sessionId: string): Promise<{ messageCount: number; estimatedTokens: number; needsCompression: boolean } | null> {
+    try {
+      const messages = await this.load(sessionId);
+      if (messages.length === 0) return null;
+      
+      const estimatedTokens = this.estimateTokens(messages);
+      const needsCompression = estimatedTokens > 150000;
+      
+      return {
+        messageCount: messages.length,
+        estimatedTokens,
+        needsCompression
+      };
+    } catch (error) {
+      console.error('Failed to get conversation stats:', error);
+      return null;
     }
   }
 }
