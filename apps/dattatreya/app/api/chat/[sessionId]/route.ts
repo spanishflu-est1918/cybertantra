@@ -226,7 +226,22 @@ export async function POST(
 
     // Normal response without audio transcription
     return result.toUIMessageStreamResponse({
-      originalMessages: convertedMessages,
+      onFinish: async (message) => {
+        // Get updated messages and save to store
+        const allMessages = [...convertedMessages, message];
+        await store.save(sessionId, allMessages);
+        
+        // Update metadata with title from first message if needed
+        const conversation = await store.loadFull(sessionId);
+        if (!conversation?.metadata?.title && allMessages.length > 0) {
+          const firstUserMessage = allMessages.find(m => m.role === "user");
+          if (firstUserMessage && typeof firstUserMessage.content === "string") {
+            await store.updateMetadata(sessionId, {
+              title: firstUserMessage.content.slice(0, 100),
+            });
+          }
+        }
+      },
     });
   } catch (error) {
     console.error("Dattatreya memory chat error:", error);
