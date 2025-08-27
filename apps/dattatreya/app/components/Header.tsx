@@ -1,9 +1,12 @@
+type Mode = 'text' | 'audio' | 'memory';
+
 interface HeaderProps {
-  mode: 'text' | 'audio';
-  setMode: (mode: 'text' | 'audio') => void;
+  mode: Mode;
+  setMode: (mode: Mode) => void;
+  sessionId?: string | null;
 }
 
-export default function Header({ mode, setMode }: HeaderProps) {
+export default function Header({ mode, setMode, sessionId }: HeaderProps) {
   return (
     <div className="relative z-10 border-b border-white/10 backdrop-blur-sm select-none">
       <div className="flex items-center justify-between p-6">
@@ -13,7 +16,9 @@ export default function Header({ mode, setMode }: HeaderProps) {
           </div>
           <div>
             <h1 className="text-xl font-light tracking-[0.2em] uppercase">Dattatreya</h1>
-            <p className="text-xs text-white/40 tracking-wider mt-1">∴ Eternal Wisdom Interface ∴</p>
+            <p className="text-xs text-white/40 tracking-wider mt-1">
+              {mode === 'memory' && sessionId ? '✦ Memory Active ✦' : '∴ Eternal Wisdom Interface ∴'}
+            </p>
           </div>
         </div>
         <div className="flex items-center space-x-2">
@@ -37,6 +42,16 @@ export default function Header({ mode, setMode }: HeaderProps) {
               }`}
             >
               Audio
+            </button>
+            <button
+              onClick={() => setMode('memory')}
+              className={`px-3 py-1.5 text-xs transition-all ${
+                mode === 'memory' 
+                  ? 'bg-white text-black' 
+                  : 'text-white/40 hover:text-white/80'
+              }`}
+            >
+              Memory
             </button>
           </div>
         </div>
