@@ -21,10 +21,27 @@ export class ConversationStore {
    */
   private estimateTokens(messages: UIMessage[]): number {
     const totalChars = messages.reduce((total, msg) => {
-      const content = typeof msg.content === 'string' 
-        ? msg.content 
-        : JSON.stringify(msg.content);
-      return total + content.length + msg.role.length;
+      let contentLength = 0;
+      
+      // AI SDK v5 uses parts array instead of content property
+      if (msg.parts && Array.isArray(msg.parts)) {
+        msg.parts.forEach(part => {
+          if (part.type === 'text' && part.text) {
+            contentLength += part.text.length;
+          } else if (part.type === 'tool' && part.input) {
+            contentLength += JSON.stringify(part.input).length;
+          } else {
+            contentLength += JSON.stringify(part).length;
+          }
+        });
+      } else if (msg.content) {
+        // Fallback for any legacy messages that might have content
+        contentLength = typeof msg.content === 'string' 
+          ? msg.content.length 
+          : JSON.stringify(msg.content).length;
+      }
+      
+      return total + contentLength + msg.role.length;
     }, 0);
     return Math.ceil(totalChars / 4);
   }
