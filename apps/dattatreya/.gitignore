@@ -45,3 +45,5 @@ certificates
 # Audio generation temp files
 public/audio/segmented/
 public/audio/music/
+# But allow meditation files
+!public/audio/meditations/

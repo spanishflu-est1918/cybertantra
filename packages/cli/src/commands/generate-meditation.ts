@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { program } from "commander";
-import { generateCompleteMeditation } from "@cybertantra/ai";
+import { generateCompleteMeditation, simplifyMeditationTitle } from "@cybertantra/ai";
 import { saveMeditationSession } from "@cybertantra/database";
 import path from "path";
 import dotenv from "dotenv";
@@ -118,9 +118,12 @@ program
         voiceId: options.voiceId,
       });
 
+      // Simplify the topic title
+      const simplifiedTopic = await simplifyMeditationTitle(result.topic);
+      
       // Save to database and generate shareable URL
       const meditationSession = await saveMeditationSession({
-        topic: result.topic,
+        topic: simplifiedTopic,
         duration: result.duration,
         audioPath: result.finalAudioPath,
         audioSize: result.finalAudioSize,

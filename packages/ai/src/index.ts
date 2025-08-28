@@ -55,3 +55,6 @@ export { composeMeditation } from "./utils/audio";
 // Prompts
 export { CYBERTANTRA_SYSTEM_PROMPT } from "./prompts/cybertantra-agent";
 export { DATTATREYA_SYSTEM_PROMPT } from "./prompts/dattatreya";
+
+// Utils
+export { simplifyMeditationTitle } from "./utils/title-simplifier";

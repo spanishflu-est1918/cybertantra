@@ -5,21 +5,37 @@ import ffmpeg from 'fluent-ffmpeg';
  */
 export async function generateSilence(duration: number, outputPath: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    ffmpeg()
-      .input('anullsrc=r=44100:cl=mono')
-      .inputFormat('lavfi')
-      .duration(duration)
-      .audioCodec('libmp3lame')
-      .audioBitrate('128k')
-      .output(outputPath)
-      .on('end', () => {
-        // console.log(`🔇 Generated ${duration}s silence`);
-        resolve();
-      })
-      .on('error', (err) => {
-        console.error(`❌ Failed to generate silence:`, err);
+    // Use spawn directly to bypass fluent-ffmpeg capability detection
+    const { spawn } = require('child_process');
+    const { execSync } = require('child_process');
+    
+    try {
+      const ffmpegPath = execSync('which ffmpeg', { encoding: 'utf-8' }).trim();
+      
+      const ffmpegProcess = spawn(ffmpegPath, [
+        '-f', 'lavfi',
+        '-i', 'anullsrc=r=44100:cl=mono',
+        '-t', duration.toString(),
+        '-c:a', 'libmp3lame',
+        '-b:a', '128k',
+        '-y',
+        outputPath
+      ]);
+      
+      ffmpegProcess.on('close', (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`FFmpeg exited with code ${code}`));
+        }
+      });
+      
+      ffmpegProcess.on('error', (err) => {
         reject(err);
-      })
-      .run();
+      });
+      
+    } catch (error) {
+      reject(error);
+    }
   });
 }

@@ -46,8 +46,11 @@ next-env.d.ts
 .turbo
 packages/ai/test-voice.ts
 
-# audio files - too large for git
-apps/*/public/audio/
+# audio files - too large for git (except meditations)
+apps/*/public/audio/music/
+apps/*/public/audio/segmented/
+apps/*/public/audio/temp/
 *.wav
-*.mp3
 *.opus
+*.mp3
+!apps/*/public/audio/meditations/*.mp3
