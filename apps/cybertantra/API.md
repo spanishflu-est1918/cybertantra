@@ -122,6 +122,68 @@ Pure RAG retrieval for external agents (e.g., VAPI).
 }
 ```
 
+## MCP Server
+
+The MCP (Model Context Protocol) server allows AI assistants like Claude Desktop or Cursor to query the Guru directly.
+
+**Endpoint:** `/api/mcp`
+
+### Available Tools
+
+#### query_guru
+Ask the Guru a question using RAG-enhanced Q&A.
+
+**Parameters:**
+- `question` (string, required): The question to ask
+- `topK` (number, optional): Number of passages to retrieve (default: 5, max: 20)
+
+#### search_lectures
+Search through lecture transcripts using vector similarity.
+
+**Parameters:**
+- `query` (string, required): The search query
+- `limit` (number, optional): Max results to return (default: 10, max: 50)
+
+#### generate_outline
+Generate a detailed chapter outline for a topic.
+
+**Parameters:**
+- `topic` (string, required): The topic to generate an outline for
+
+### Connecting to MCP Server
+
+**Local Development:**
+```bash
+# Run the dev server
+pnpm dev:cybertantra
+
+# Test with MCP Inspector
+npx @modelcontextprotocol/inspector@latest http://localhost:9999
+```
+
+**Claude Desktop Configuration:**
+Add to your Claude Desktop config (`~/.claude/claude_desktop_config.json`):
+```json
+{
+  "mcpServers": {
+    "cybertantra-guru": {
+      "url": "http://localhost:9999/api/mcp"
+    }
+  }
+}
+```
+
+**Production (Vercel):**
+```json
+{
+  "mcpServers": {
+    "cybertantra-guru": {
+      "url": "https://cybertantra-omega.vercel.app/api/mcp"
+    }
+  }
+}
+```
+
 ## Environment Variables
 
 Required in Vercel:

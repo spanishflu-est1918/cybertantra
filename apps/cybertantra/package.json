@@ -20,13 +20,15 @@
     "ai": "5.0.22",
     "clsx": "^2.1.1",
     "focus-trap-react": "^10.3.0",
+    "mcp-handler": "^1.0.3",
     "next": "15.4.4",
     "orate": "^2.0.6",
     "pgvector": "^0.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-youtube": "^10.1.0",
-    "telegraf": "^4.16.3"
+    "telegraf": "^4.16.3",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
