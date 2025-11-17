@@ -22,15 +22,15 @@ export async function generateSilence(duration: number, outputPath: string): Pro
         outputPath
       ]);
       
-      ffmpegProcess.on('close', (code) => {
+      ffmpegProcess.on('close', (code: number | null) => {
         if (code === 0) {
           resolve();
         } else {
           reject(new Error(`FFmpeg exited with code ${code}`));
         }
       });
-      
-      ffmpegProcess.on('error', (err) => {
+
+      ffmpegProcess.on('error', (err: Error) => {
         reject(err);
       });
       

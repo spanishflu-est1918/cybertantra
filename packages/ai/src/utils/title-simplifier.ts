@@ -29,7 +29,7 @@ Always return ONLY the simplified title, nothing else. Use lowercase unless it's
         }
       ],
       temperature: 0.3,
-      maxTokens: 10
+      maxOutputTokens: 10
     });
 
     return result.text.trim().toLowerCase();

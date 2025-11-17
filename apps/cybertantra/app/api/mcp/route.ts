@@ -123,8 +123,8 @@ async function handleGenerateOutline(args: { topic: string }) {
 }
 
 const handler = createMcpHandler(
-  (server) => {
-    // @ts-expect-error - mcp-handler has overly complex generics causing type depth issues
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (server: any) => {
     server.tool(
       "query_guru",
       "Ask the Guru a question about Tantra, consciousness, yoga, spirituality, or related topics. Uses RAG to search through lecture transcripts and synthesize an answer.",
@@ -132,7 +132,6 @@ const handler = createMcpHandler(
       handleQueryGuru,
     );
 
-    // @ts-expect-error - mcp-handler has overly complex generics causing type depth issues
     server.tool(
       "search_lectures",
       "Search through lecture transcripts using vector similarity. Returns relevant text passages without synthesis.",
@@ -140,7 +139,6 @@ const handler = createMcpHandler(
       handleSearchLectures,
     );
 
-    // @ts-expect-error - mcp-handler has overly complex generics causing type depth issues
     server.tool(
       "generate_outline",
       "Generate a detailed chapter outline for a topic based on lecture content.",
