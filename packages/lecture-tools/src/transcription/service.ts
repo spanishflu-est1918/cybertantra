@@ -47,6 +47,21 @@ export interface TranscriptionWithTimestamps {
   };
 }
 
+export interface DiarizedUtterance {
+  speaker: string;
+  text: string;
+  start: number; // seconds
+  end: number; // seconds
+  confidence?: number;
+}
+
+export interface DiarizationResult {
+  utterances: DiarizedUtterance[];
+  speakers: string[];
+  duration: number; // seconds
+  speakerStats: Record<string, { totalTime: number; wordCount: number }>;
+}
+
 export class TranscriptionService {
   private client: AssemblyAI;
   private jobId: string;
@@ -491,5 +506,148 @@ export class TranscriptionService {
       .padStart(2, "0")}:${secs.toString().padStart(2, "0")},${millis
       .toString()
       .padStart(3, "0")}`;
+  }
+
+  async transcribeWithDiarization(
+    audioPath: string,
+    config: TranscriptionConfig = {
+      modelTier: "best",
+      speakerLabels: true,
+      languageCode: "en",
+    },
+    speakerNames?: Record<string, string>,
+  ): Promise<DiarizationResult> {
+    console.log(`🎙️  Starting diarization transcription...`);
+
+    const aaiConfig: any = {
+      audio: audioPath,
+      speaker_labels: true, // Always true for diarization
+      language_code: config.languageCode,
+    };
+
+    if (config.modelTier === "nano") {
+      // @ts-ignore
+      aaiConfig.speech_model = "nano";
+    }
+
+    const transcript = await this.client.transcripts.transcribe(aaiConfig);
+
+    if (transcript.status === "error") {
+      throw new Error(transcript.error || "Transcription failed");
+    }
+
+    const utterances: DiarizedUtterance[] = [];
+    const speakerSet = new Set<string>();
+    const speakerStats: Record<string, { totalTime: number; wordCount: number }> = {};
+
+    if (transcript.utterances) {
+      for (const utterance of transcript.utterances) {
+        const speakerId = utterance.speaker || "Unknown";
+        const speakerLabel = speakerNames?.[speakerId] || `Speaker ${speakerId}`;
+
+        speakerSet.add(speakerLabel);
+
+        // Initialize or update speaker stats
+        if (!speakerStats[speakerLabel]) {
+          speakerStats[speakerLabel] = { totalTime: 0, wordCount: 0 };
+        }
+
+        const duration = (utterance.end - utterance.start) / 1000;
+        speakerStats[speakerLabel].totalTime += duration;
+        speakerStats[speakerLabel].wordCount += utterance.text.split(/\s+/).length;
+
+        utterances.push({
+          speaker: speakerLabel,
+          text: utterance.text,
+          start: utterance.start / 1000,
+          end: utterance.end / 1000,
+          confidence: utterance.confidence,
+        });
+      }
+    }
+
+    return {
+      utterances,
+      speakers: Array.from(speakerSet),
+      duration: transcript.audio_duration || 0,
+      speakerStats,
+    };
+  }
+
+  formatDiarizedAsDialogue(
+    result: DiarizationResult,
+    options: {
+      includeTimestamps?: boolean;
+      includeStats?: boolean;
+    } = {},
+  ): string {
+    const { includeTimestamps = true, includeStats = true } = options;
+    let content = "";
+
+    // Header
+    content += "# Dialogue Transcript\n\n";
+
+    // Stats section
+    if (includeStats) {
+      content += "## Summary\n\n";
+      content += `- **Duration**: ${this.formatDuration(result.duration)}\n`;
+      content += `- **Speakers**: ${result.speakers.length} (${result.speakers.join(", ")})\n\n`;
+
+      content += "### Speaker Statistics\n\n";
+      content += "| Speaker | Speaking Time | Words | Avg Words/Min |\n";
+      content += "|---------|--------------|-------|---------------|\n";
+
+      for (const [speaker, stats] of Object.entries(result.speakerStats)) {
+        const minutes = stats.totalTime / 60;
+        const wordsPerMin = minutes > 0 ? (stats.wordCount / minutes).toFixed(0) : "0";
+        const formattedTime = this.formatDuration(Math.round(stats.totalTime));
+        content += `| ${speaker} | ${formattedTime} | ${stats.wordCount} | ${wordsPerMin} |\n`;
+      }
+      content += "\n---\n\n";
+    }
+
+    // Dialogue
+    content += "## Dialogue\n\n";
+
+    let lastSpeaker = "";
+    for (const utterance of result.utterances) {
+      const timestamp = includeTimestamps ? `[${this.formatTimestamp(utterance.start)}] ` : "";
+
+      // Add speaker label when speaker changes
+      if (utterance.speaker !== lastSpeaker) {
+        content += `\n**${utterance.speaker}**${timestamp ? ` ${timestamp}` : ""}\n`;
+        lastSpeaker = utterance.speaker;
+      } else if (includeTimestamps) {
+        content += `${timestamp}`;
+      }
+
+      content += `${utterance.text}\n`;
+    }
+
+    return content;
+  }
+
+  async saveDiarizedTranscript(
+    result: DiarizationResult,
+    outputPath: string,
+    format: "dialogue" | "json" = "dialogue",
+    options?: { includeTimestamps?: boolean; includeStats?: boolean },
+  ): Promise<void> {
+    let content = "";
+
+    switch (format) {
+      case "dialogue":
+        content = this.formatDiarizedAsDialogue(result, options);
+        break;
+      case "json":
+        content = JSON.stringify(result, null, 2);
+        break;
+    }
+
+    // Create directory if it doesn't exist
+    const dir = path.dirname(outputPath);
+    await fs.mkdir(dir, { recursive: true });
+
+    await fs.writeFile(outputPath, content, "utf8");
   }
 }

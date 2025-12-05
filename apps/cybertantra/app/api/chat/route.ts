@@ -34,11 +34,11 @@ export async function POST(req: Request) {
 
     // Use streamText with OpenRouter directly
     const result = streamText({
-      model: openrouter("moonshotai/kimi-k2"),
+      model: openrouter("anthropic/claude-opus-4.5"),
       system: CYBERTANTRA_SYSTEM_PROMPT,
       messages,
-      temperature: 0.8,
-      maxOutputTokens: 500,
+      temperature: 0.85,
+      maxTokens: 4000,
     });
 
     // Return the stream response with CORS headers
