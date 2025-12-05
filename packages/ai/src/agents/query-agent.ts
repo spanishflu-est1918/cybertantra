@@ -186,7 +186,7 @@ export class QueryAgent {
 
     // Generate response using OpenRouter
     const { text } = await generateText({
-      model: this.openrouter("qwen/qwen-2.5-72b-instruct"),
+      model: this.openrouter("anthropic/claude-opus-4.5"),
       system: systemPrompt,
       messages: [
         {
@@ -194,8 +194,8 @@ export class QueryAgent {
           content: question,
         },
       ],
-      temperature: 0.7,
-      maxOutputTokens: 2000,
+      temperature: 0.85,
+      maxOutputTokens: 8000,
     });
 
     return text;
@@ -234,7 +234,7 @@ export class QueryAgent {
 
     // Stream response
     return streamText({
-      model: this.openrouter("moonshotai/kimi-k2"),
+      model: this.openrouter("anthropic/claude-opus-4.5"),
       messages: [
         {
           role: "system",
@@ -248,8 +248,8 @@ Content Excerpts:
 ${context}`,
         },
       ],
-      temperature: 0.7,
-      maxOutputTokens: 2000,
+      temperature: 0.85,
+      maxOutputTokens: 8000,
     });
   }
 
