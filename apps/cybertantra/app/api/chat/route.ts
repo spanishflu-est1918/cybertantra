@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       system: CYBERTANTRA_SYSTEM_PROMPT,
       messages,
       temperature: 0.85,
-      maxTokens: 4000,
+      maxOutputTokens: 4000,
     });
 
     // Return the stream response with CORS headers
