@@ -56,8 +56,8 @@ program
       const scanArgs = ['run', 'src/commands/transcribe.ts', 'scan', '-d', options.output];
       await execCommand('bun', scanArgs);
       
-      // Then process (with -y flag to skip confirmation)
-      const processArgs = ['run', 'src/commands/transcribe.ts', 'process', '-d', options.output, '-y'];
+      // Then process (interactive)
+      const processArgs = ['run', 'src/commands/transcribe.ts', 'process', '-d', options.output];
       await execCommand('bun', processArgs);
       
       // Step 3: Ingest

@@ -28,7 +28,7 @@ async function main() {
         type: 'input',
         name: 'directory',
         message: 'Enter the directory path containing the content:',
-        default: './content',
+        default: './lectures',
         validate: async (input) => {
           try {
             await fs.access(input);

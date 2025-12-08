@@ -154,17 +154,161 @@ pnpm dev:dattatreya   # Port 3002
 # Build everything
 pnpm build
 
-# CLI commands
-pnpm cli:setup        # Setup database
-pnpm cli:ingest      # Ingest lecture data
-pnpm cli:query       # Test queries
-pnpm cli:chat        # Test chat
-pnpm cli:transcribe  # Transcribe audio
-
 # Lint and typecheck
 pnpm lint
 pnpm typecheck
 ```
+
+## CLI Tools
+
+All CLI commands run with Bun and include interactive prompts, spinners, and colored output.
+
+### Core Data Pipeline
+
+```bash
+# Database initialization and setup
+pnpm cli:setup
+
+# Ingest lecture content into RAG database with embeddings
+# Defaults to ./lectures directory
+pnpm cli:ingest
+
+# Test RAG queries against the corpus
+pnpm cli:query
+
+# Interactive CLI chat interface
+pnpm cli:chat
+```
+
+### YouTube → RAG Pipeline
+
+```bash
+# Download YouTube videos as audio
+pnpm cli:youtube "URL" ["URL2"] ["URL3"]...
+# Options: -o <dir>, --format <format>
+# Note: Quotes required for URLs with ? or & characters
+
+# Transcribe audio files (scan directory, then process)
+pnpm cli:transcribe
+# Commands: scan -d <dir>, process -d <dir> -y
+
+# 🔥 COMPLETE PIPELINE: Download → Transcribe → Ingest in one command
+# Interactive - will prompt for content type (directory defaults to ./lectures)
+pnpm cli:absorb "URL" ["URL2"] ["URL3"]...
+# Options: -o <dir>, --format <format>
+# Example: pnpm cli:absorb "https://youtube.com/watch?v=abc123"
+# Note: Quotes required for URLs with ? or & characters
+```
+
+### Meditation Generation
+
+```bash
+# Generate complete guided meditations with AI script, narration, and music
+pnpm cli:meditate
+# Interactive prompts for:
+#   - Topic (e.g., "Ganesha", "Heart Chakra")
+#   - Duration (5-30 minutes)
+#   - Audio generation (ElevenLabs narration)
+#   - Music generation (background music mixing)
+# Outputs:
+#   - Saves to public/audio/meditations/
+#   - Creates database entry with shareable URL
+#   - Example: https://dattatreya.vercel.app/meditation/{slug}
+
+# Test meditation text generation only
+pnpm cli:test-text
+
+# Test text-to-speech only
+pnpm cli:test-tts
+```
+
+### Audio Processing
+
+```bash
+# Extract vocals using Spleeter via Replicate API
+pnpm cli:extract-vocals <input-file-or-directory>
+# Options:
+#   -s, --stems <2|4|5>  Number of stems (default: 2)
+#   -o, --output <dir>   Output directory
+#   -c, --concurrent <n> Max concurrent jobs (default: 4)
+# Outputs:
+#   - Vocals (isolated speech)
+#   - Accompaniment (music/background)
+#   - Optional: drums, bass, piano, other (with 4/5 stems)
+# Use case: Perfect for training custom ElevenLabs voice clones
+```
+
+### Database Maintenance
+
+```bash
+# Batched database backup
+pnpm cli:backup
+
+# Run database migrations
+pnpm cli:migrate
+
+# Import Skyler conversation data
+pnpm cli:import-skyler
+```
+
+### Direct Lecture Tools
+
+These run from the root and use the lecture-tools package directly:
+
+```bash
+# Direct transcription script
+pnpm transcribe
+
+# Batch video transcription
+pnpm transcribe-videos
+
+# Video download utility
+pnpm download-videos
+```
+
+### Additional CLI Scripts (Not Exposed in Root)
+
+Available by running directly from `packages/cli/`:
+
+```bash
+cd packages/cli
+
+# Clean up bad ingestion data
+bun run src/commands/clean-bad-ingestion.ts
+
+# Regenerate embeddings for existing content
+bun run src/commands/regenerate-embeddings.ts
+
+# Remove content by author
+bun run src/commands/remove-author.ts
+
+# Restore from backup
+bun run src/commands/restore-backup.ts
+
+# Test ingestion process
+bun run src/commands/test-ingest.ts
+
+# Test long-form text-to-speech
+bun run src/commands/test-long-tts.ts
+```
+
+### CLI Tool Technology Stack
+
+- **Runtime**: Bun (for fast execution)
+- **CLI Framework**: Commander.js for argument parsing
+- **UX Libraries**:
+  - `chalk` - Colored terminal output
+  - `ora` - Elegant spinners
+  - `inquirer` - Interactive prompts
+  - `p-limit` - Concurrency control
+- **AI Services**:
+  - AssemblyAI - Speech transcription
+  - ElevenLabs - Text-to-speech narration
+  - Replicate - Spleeter vocal separation
+  - OpenRouter/OpenAI - Text generation
+- **Audio Processing**:
+  - `fluent-ffmpeg` - Audio manipulation
+  - `yt-dlp-wrap` - YouTube download
 
 ## Terminal Features
 
