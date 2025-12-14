@@ -97,7 +97,7 @@ async function handleQuestion(ctx: Context, question: string) {
 
     // Use streamText with AI SDK Gateway
     const result = streamText({
-      model: gateway("deepseek/deepseek-chat"),
+      model: gateway("deepseek-v3.2"),
       system: systemPrompt,
       messages: [{ role: "user", content: question }],
       temperature: 0.7,
