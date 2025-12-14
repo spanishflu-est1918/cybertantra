@@ -6,7 +6,7 @@ A Matrix-inspired terminal portfolio site built with Next.js 15, featuring a ret
 ## Tech Stack
 - **Framework**: Next.js 15 (App Router)
 - **Styling**: Tailwind CSS v4 with custom CSS
-- **AI Integration**: Vercel AI SDK (ready for OpenRouter)
+- **AI Integration**: Vercel AI SDK with AI Gateway
 - **Language**: TypeScript
 - **Package Manager**: pnpm
 - **Port**: 7770
@@ -100,8 +100,8 @@ Adjust the neon glow effect by changing the CSS variable in `globals.css`:
 
 ## Future Implementations
 
-### OpenRouter AI Integration
-- Natural conversation capabilities
+### AI SDK Gateway Integration (Implemented)
+- Natural conversation capabilities using AI SDK Gateway
 - Context-aware responses
 - Rate limiting with session tokens
 - Geographic restrictions (US/Europe)

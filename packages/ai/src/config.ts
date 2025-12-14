@@ -1,5 +1,5 @@
 export interface AIConfig {
-  openRouterApiKey?: string;
+  aiGatewayApiKey?: string;
   openAIApiKey?: string;
   elevenLabsApiKey?: string;
   googleGenerativeAIApiKey?: string;
@@ -17,7 +17,7 @@ export { AUDIO_CONFIG } from './config/audio';
 // Get config from environment or passed config object
 export function getAIConfig(config?: Partial<AIConfig>): AIConfig {
   return {
-    openRouterApiKey: config?.openRouterApiKey || process.env.OPENROUTER_API_KEY,
+    aiGatewayApiKey: config?.aiGatewayApiKey || process.env.AI_GATEWAY_API_KEY,
     openAIApiKey: config?.openAIApiKey || process.env.OPENAI_API_KEY,
     elevenLabsApiKey: config?.elevenLabsApiKey || process.env.ELEVENLABS_API_KEY,
     googleGenerativeAIApiKey: config?.googleGenerativeAIApiKey || process.env.GOOGLE_GENERATIVE_AI_API_KEY,

@@ -19,7 +19,7 @@ export async function GET() {
       api: 'ok',
       database: 'unknown',
       embeddings: 'unknown',
-      openrouter: 'unknown',
+      aiGateway: 'unknown',
     },
     errors: [] as string[],
   };
@@ -38,11 +38,11 @@ export async function GET() {
 
     // Check API keys
     const config = getAIConfig();
-    if (config.openRouterApiKey) {
-      health.services.openrouter = 'configured';
+    if (config.aiGatewayApiKey) {
+      health.services.aiGateway = 'configured';
     } else {
-      health.services.openrouter = 'missing';
-      health.errors.push('OpenRouter API key not configured');
+      health.services.aiGateway = 'missing';
+      health.errors.push('AI Gateway API key not configured');
     }
 
     if (config.googleGenerativeAIApiKey) {

@@ -93,7 +93,7 @@ pnpm run cli:chat
 
 Required:
 - `POSTGRES_URL` - Vercel Postgres connection
-- `OPENROUTER_API_KEY` - For Kimi K2 model
+- `AI_GATEWAY_API_KEY` - For AI SDK Gateway (Claude, Kimi)
 - `OPENAI_API_KEY` - For embeddings
 - `GOOGLE_GENERATIVE_AI_API_KEY` - For Gemini embeddings during ingestion
 

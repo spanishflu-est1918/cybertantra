@@ -23,6 +23,6 @@
 ## Project Context
 
 Terminal-based portfolio with:
-- AI chat using OpenRouter with Kimi K2 model (NOT OpenAI)
+- AI chat using AI SDK Gateway (Kimi K2)
 - Modular architecture (separate UI from functionality)
 - AI prompts stored in .md files

@@ -24,7 +24,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Features
 
 - Terminal-based UI with CRT effects and themes
-- AI chat integration with Kimi K2 model via OpenRouter
+- AI chat integration with Claude/Kimi via AI SDK Gateway
 - RAG-powered search through lecture database (PostgreSQL + pgvector)
 - Custom commands for searching and querying
 - Shared terminal components with other projects via `terminal-core`
@@ -53,7 +53,7 @@ This project uses a modular architecture:
 ## Environment Variables
 
 See `.env.example` for required environment variables:
-- `OPENROUTER_API_KEY` - For AI chat
+- `AI_GATEWAY_API_KEY` - For AI chat via Vercel AI SDK Gateway
 - `OPENAI_API_KEY` - For embeddings
 - `POSTGRES_*` - Database connection
 - `ELEVENLABS_API_KEY` - Optional: for text-to-speech

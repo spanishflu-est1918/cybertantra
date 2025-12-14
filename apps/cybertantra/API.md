@@ -188,7 +188,7 @@ Add to your Claude Desktop config (`~/.claude/claude_desktop_config.json`):
 
 Required in Vercel:
 - `DATABASE_URL`: PostgreSQL connection string
-- `OPENROUTER_API_KEY`: For AI model access
+- `AI_GATEWAY_API_KEY`: For AI model access via Vercel AI SDK Gateway
 - `GOOGLE_GENERATIVE_AI_API_KEY`: For embeddings
 - `CYBERTANTRA_API_KEY`: Your secret API key
 - `ALLOWED_ORIGINS`: Comma-separated list of allowed domains (optional)

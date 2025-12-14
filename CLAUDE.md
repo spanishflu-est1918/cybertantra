@@ -114,7 +114,7 @@ cybertantra/
 ## Key Technologies
 
 - **Frontend**: Next.js 15.4 with Turbopack, React 19, TypeScript
-- **AI/LLM**: OpenRouter (Kimi K2), OpenAI, Groq, AssemblyAI
+- **AI/LLM**: AI SDK Gateway (Claude, Gemini, Kimi), OpenAI, Groq, AssemblyAI
 - **Database**: PostgreSQL with pgvector extension
 - **RAG**: Mastra framework with custom agents
 - **Voice**: Web Speech API, ElevenLabs, VAPI
@@ -125,7 +125,7 @@ cybertantra/
 ## Environment Variables
 
 Required environment variables across apps:
-- `OPENROUTER_API_KEY` - For LLM access via OpenRouter
+- `AI_GATEWAY_API_KEY` - For LLM access via Vercel AI SDK Gateway
 - `OPENAI_API_KEY` - OpenAI API access
 - `POSTGRES_URL` - Database connection
 - `POSTGRES_URL_NON_POOLING` - Direct database connection
@@ -305,7 +305,7 @@ bun run src/commands/test-long-tts.ts
   - AssemblyAI - Speech transcription
   - ElevenLabs - Text-to-speech narration
   - Replicate - Spleeter vocal separation
-  - OpenRouter/OpenAI - Text generation
+  - AI SDK Gateway - Text generation (Claude, Gemini, Kimi)
 - **Audio Processing**:
   - `fluent-ffmpeg` - Audio manipulation
   - `yt-dlp-wrap` - YouTube download

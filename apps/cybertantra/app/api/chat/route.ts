@@ -1,9 +1,5 @@
 import { streamText } from "ai";
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import {
-  getAIConfig,
-  CYBERTANTRA_SYSTEM_PROMPT,
-} from "@cybertantra/ai";
+import { CYBERTANTRA_SYSTEM_PROMPT } from "@cybertantra/ai";
 import { validateRequest, corsHeaders } from "../middleware";
 
 export async function OPTIONS() {
@@ -22,19 +18,9 @@ export async function POST(req: Request) {
   }
 
   try {
-    const config = getAIConfig();
-
-    if (!config.openRouterApiKey) {
-      throw new Error("OpenRouter API key required");
-    }
-
-    const openrouter = createOpenRouter({
-      apiKey: config.openRouterApiKey,
-    });
-
-    // Use streamText with OpenRouter directly
+    // Use streamText with AI SDK Gateway (model string)
     const result = streamText({
-      model: openrouter("anthropic/claude-opus-4.5"),
+      model: "anthropic/claude-opus-4.5",
       system: CYBERTANTRA_SYSTEM_PROMPT,
       messages,
       temperature: 0.85,

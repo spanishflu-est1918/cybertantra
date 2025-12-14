@@ -23,7 +23,7 @@ The app will be available at http://localhost:3002
 
 Uses the same environment variables as the main Cybertantra app for:
 - Database connection (PostgreSQL with pgvector)
-- OpenRouter API configuration
+- AI SDK Gateway configuration
 
 ## Tech Stack
 

@@ -23,7 +23,7 @@ export async function searchLectures(
     // Generate embedding for the query
     const { embeddings } = await embedMany({
       values: [query],
-      model: google.textEmbeddingModel(EMBEDDING_MODEL),
+      model: google.embeddingModel(EMBEDDING_MODEL),
     });
     
     const queryEmbedding = embeddings[0];

@@ -7,19 +7,18 @@
     "dev:https": "next dev --turbopack -p 3002 --experimental-https",
     "build": "next build --turbopack",
     "start": "next start -p 3002",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@ai-sdk/assemblyai": "^1.0.4",
     "@ai-sdk/groq": "^2.0.11",
     "@ai-sdk/openai": "2.0.19",
-    "@ai-sdk/react": "2.0.19",
+    "@ai-sdk/react": "3.0.0-beta.153",
     "@ai-sdk/replicate": "^1.0.4",
     "@cybertantra/ai": "workspace:*",
     "@cybertantra/database": "workspace:*",
     "@cybertantra/ui": "workspace:*",
-    "@openrouter/ai-sdk-provider": "1.0.0-beta.5",
-    "ai": "5.0.22",
+    "ai": "6.0.0-beta.150",
     "assemblyai": "^4.15.0",
     "clsx": "^2.1.1",
     "groq-sdk": "^0.30.0",
@@ -28,7 +27,8 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-speech-recognition": "^4.0.1",
-    "replicate": "^1.0.1"
+    "replicate": "^1.0.1",
+    "zod": "4.1.8"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

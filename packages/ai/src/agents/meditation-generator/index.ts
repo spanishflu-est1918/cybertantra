@@ -1,4 +1,3 @@
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { generateText } from "ai";
 import { getAIConfig, searchLectures } from "../../index";
 import { loadMeditationCorpus, type MeditationCorpusEntry } from "./corpus";
@@ -6,13 +5,8 @@ import type { MusicPromptParameters } from "../../utils/meditation/generate-musi
 import { AUDIO_CONFIG } from "../../config/audio";
 
 export class MeditationGeneratorAgent {
-  private openrouter: any;
-
   constructor() {
-    const config = getAIConfig();
-    this.openrouter = createOpenRouter({
-      apiKey: config.openRouterApiKey || process.env.OPENROUTER_API_KEY!,
-    });
+    // No initialization needed - AI SDK Gateway uses model strings directly
   }
 
   async generate(topic: string, duration: number) {
@@ -177,7 +171,7 @@ ${knowledge}
 ${outputSection}`;
 
     const { text } = await generateText({
-      model: this.openrouter("anthropic/claude-sonnet-4"),
+      model: "anthropic/claude-sonnet-4",
       prompt,
     });
 
@@ -222,7 +216,7 @@ Output ONLY the music prompt text:`;
 
     try {
       const { text: musicPrompt } = await generateText({
-        model: this.openrouter("anthropic/claude-sonnet-4"),
+        model: "anthropic/claude-sonnet-4",
         prompt,
         temperature: 0.7,
       });

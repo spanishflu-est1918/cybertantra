@@ -13,13 +13,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@ai-sdk/google": "3.0.0-beta.72",
     "@ai-sdk/openai": "2.0.19",
     "@cybertantra/database": "workspace:*",
     "@google/generative-ai": "^0.1.1",
-    "@openrouter/ai-sdk-provider": "1.0.0-beta.5",
-    "ai": "5.0.22",
+    "ai": "6.0.0-beta.150",
     "elevenlabs": "^0.16.1",
-    "lru-cache": "^10.0.0"
+    "lru-cache": "^10.0.0",
+    "zod": "4.1.8"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

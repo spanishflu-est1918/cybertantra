@@ -1,7 +1,6 @@
 import { Telegraf, Context } from "telegraf";
 import { message } from "telegraf/filters";
 import { streamText } from "ai";
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import {
   QueryAgent,
   getAIConfig,
@@ -80,16 +79,9 @@ async function handleQuestion(ctx: Context, question: string) {
   try {
     const config = getAIConfig();
 
-    if (!config.openRouterApiKey) {
-      throw new Error("OpenRouter API key required");
-    }
     if (!config.googleGenerativeAIApiKey) {
       throw new Error("Google Generative AI API key required for embeddings");
     }
-
-    const openrouter = createOpenRouter({
-      apiKey: config.openRouterApiKey,
-    });
 
     const queryAgent = new QueryAgent(config);
 
@@ -103,9 +95,9 @@ async function handleQuestion(ctx: Context, question: string) {
     const systemPrompt =
       CYBERTANTRA_SYSTEM_PROMPT + "\n\nRetrieved lecture context:\n" + context;
 
-    // Use streamText with OpenRouter directly
+    // Use streamText with AI SDK Gateway (model string)
     const result = streamText({
-      model: openrouter("qwen/qwen-2.5-72b-instruct"),
+      model: "qwen/qwen-2.5-72b-instruct",
       system: systemPrompt,
       messages: [{ role: "user", content: question }],
       temperature: 0.7,

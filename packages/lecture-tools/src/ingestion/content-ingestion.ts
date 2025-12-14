@@ -159,7 +159,7 @@ export class ContentIngestion {
         spinner.start(`   Generating embeddings... batch ${batchNum}/${totalBatches} (${batch.length} chunks)`);
         
         const { embeddings } = await embedMany({
-          model: this.google.textEmbeddingModel(EMBEDDING_MODEL),
+          model: this.google.embeddingModel(EMBEDDING_MODEL),
           values: batch,
           maxParallelCalls: MAX_PARALLEL_CALLS, // AI SDK v5 optimization
         });

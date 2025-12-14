@@ -6,7 +6,6 @@ import {
   createUIMessageStream,
   createUIMessageStreamResponse,
 } from "ai";
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { z as zodbert } from "zod/v4";
 import {
   QueryAgent,
@@ -47,24 +46,18 @@ export async function POST(req: Request) {
     bench.start("config-and-setup");
     const config = getAIConfig();
 
-    if (!config.openRouterApiKey) {
-      throw new Error("OpenRouter API key required");
-    }
     if (!config.googleGenerativeAIApiKey) {
       throw new Error("Google Generative AI API key required for embeddings");
     }
-
-    const openrouter = createOpenRouter({
-      apiKey: config.openRouterApiKey,
-    });
 
     const queryAgent = new QueryAgent(config);
     bench.end("config-and-setup");
 
     bench.start("ai-stream-generation");
 
+    // AI SDK Gateway uses model strings directly
     const result = streamText({
-      model: openrouter("anthropic/claude-sonnet-4"),
+      model: "anthropic/claude-sonnet-4",
       system: DATTATREYA_SYSTEM_PROMPT,
       messages: convertToModelMessages(convertedMessages),
       temperature: 0.7,

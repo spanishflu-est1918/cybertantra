@@ -1,0 +1,4 @@
+
+# Symlinked .env files
+apps/*/.env
+packages/*/.env

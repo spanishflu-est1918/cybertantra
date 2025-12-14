@@ -28,7 +28,7 @@ This is the Cybertantra terminal app with:
 
 ## Key Features
 - Terminal-based UI with CRT effects
-- AI chat using OpenRouter with Kimi K2 model
+- AI chat using AI SDK Gateway (Claude, Kimi)
 - Vector search through lecture database using pgvector
 - API endpoints:
   - `/api/query` - RAG-powered Q&A

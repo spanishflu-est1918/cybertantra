@@ -1,6 +1,5 @@
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import { createGateway, embedMany, generateText, streamText } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { embedMany, generateText, streamText } from "ai";
 import { sql } from "@cybertantra/database";
 import { EMBEDDING_MODEL, type AIConfig } from "../config";
 
@@ -22,22 +21,23 @@ export interface QueryResult {
 }
 
 export class QueryAgent {
-  private openrouter: any;
   private config: AIConfig;
+  private gateway: ReturnType<typeof createGateway>;
+  private google: ReturnType<typeof createGoogleGenerativeAI>;
 
   constructor(config: AIConfig) {
+    if (!config.aiGatewayApiKey) {
+      throw new Error("AI Gateway API key required");
+    }
     if (!config.googleGenerativeAIApiKey) {
       throw new Error("Google Generative AI API key required for embeddings");
     }
 
     this.config = config;
-
-    // Only initialize OpenRouter if API key is provided
-    if (config.openRouterApiKey) {
-      this.openrouter = createOpenRouter({
-        apiKey: config.openRouterApiKey,
-      });
-    }
+    this.gateway = createGateway();
+    this.google = createGoogleGenerativeAI({
+      apiKey: config.googleGenerativeAIApiKey,
+    });
   }
 
   async retrieve(
@@ -47,13 +47,9 @@ export class QueryAgent {
     const { topK = 5, categories = [], tags = [] } = options;
 
     try {
-      const google = createGoogleGenerativeAI({
-        apiKey: this.config.googleGenerativeAIApiKey,
-      });
-
       const { embeddings } = await embedMany({
         values: [query],
-        model: google.textEmbeddingModel(EMBEDDING_MODEL),
+        model: this.google.embeddingModel(EMBEDDING_MODEL),
       });
 
       const queryEmbedding = embeddings[0];
@@ -150,10 +146,6 @@ export class QueryAgent {
   }
 
   async query(question: string, options: QueryOptions = {}): Promise<string> {
-    if (!this.openrouter) {
-      throw new Error("OpenRouter API key required for query synthesis");
-    }
-
     // Retrieve relevant chunks with filters
     const chunks = await this.retrieve(question, options);
 
@@ -184,9 +176,9 @@ export class QueryAgent {
       "\n\nRetrieved lecture context:\n" +
       context;
 
-    // Generate response using OpenRouter
+    // Generate response using AI SDK Gateway
     const { text } = await generateText({
-      model: this.openrouter("anthropic/claude-opus-4.5"),
+      model: this.gateway.languageModel("anthropic/claude-opus-4.5"),
       system: systemPrompt,
       messages: [
         {
@@ -202,10 +194,6 @@ export class QueryAgent {
   }
 
   async stream(question: string, options: QueryOptions = {}) {
-    if (!this.openrouter) {
-      throw new Error("OpenRouter API key required for streaming");
-    }
-
     // Retrieve relevant chunks with filters
     const chunks = await this.retrieve(question, options);
 
@@ -232,9 +220,9 @@ export class QueryAgent {
 
     const systemPrompt = this.getSystemPrompt(options.categories);
 
-    // Stream response
+    // Stream response using AI SDK Gateway
     return streamText({
-      model: this.openrouter("anthropic/claude-opus-4.5"),
+      model: this.gateway.languageModel("anthropic/claude-opus-4.5"),
       messages: [
         {
           role: "system",

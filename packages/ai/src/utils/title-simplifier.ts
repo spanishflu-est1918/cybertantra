@@ -1,4 +1,3 @@
-import { openrouter } from '@openrouter/ai-sdk-provider';
 import { generateText } from 'ai';
 
 /**
@@ -7,7 +6,7 @@ import { generateText } from 'ai';
 export async function simplifyMeditationTitle(originalTopic: string): Promise<string> {
   try {
     const result = await generateText({
-      model: openrouter('google/gemini-2.5-flash'),
+      model: 'google/gemini-2.5-flash',
       messages: [
         {
           role: 'system',

@@ -67,7 +67,7 @@ Each app can be developed independently while sharing common components through 
 ## Environment Variables
 
 Copy `.env.example` to `.env` in the root directory and configure:
-- `OPENROUTER_API_KEY` - For AI chat
+- `AI_GATEWAY_API_KEY` - For AI chat via Vercel AI SDK Gateway
 - `OPENAI_API_KEY` - For embeddings
 - `POSTGRES_*` - Database connection
 - `ELEVENLABS_API_KEY` - Optional: for text-to-speech

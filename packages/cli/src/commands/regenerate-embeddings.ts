@@ -49,7 +49,7 @@ async function regenerateEmbeddings() {
       // Generate embeddings for this batch
       const texts = batch.map(chunk => chunk.content);
       const { embeddings } = await embedMany({
-        model: google.textEmbeddingModel(EMBEDDING_MODEL),
+        model: google.embeddingModel(EMBEDDING_MODEL),
         values: texts,
         maxParallelCalls: MAX_PARALLEL_CALLS,
       });
