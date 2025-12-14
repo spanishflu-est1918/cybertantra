@@ -1,6 +1,6 @@
 import { Telegraf, Context } from "telegraf";
 import { message } from "telegraf/filters";
-import { streamText } from "ai";
+import { streamText, gateway } from "ai";
 import {
   QueryAgent,
   getAIConfig,
@@ -95,9 +95,9 @@ async function handleQuestion(ctx: Context, question: string) {
     const systemPrompt =
       CYBERTANTRA_SYSTEM_PROMPT + "\n\nRetrieved lecture context:\n" + context;
 
-    // Use streamText with AI SDK Gateway (model string)
+    // Use streamText with AI SDK Gateway
     const result = streamText({
-      model: "qwen/qwen-2.5-72b-instruct",
+      model: gateway("qwen/qwen-2.5-72b-instruct"),
       system: systemPrompt,
       messages: [{ role: "user", content: question }],
       temperature: 0.7,

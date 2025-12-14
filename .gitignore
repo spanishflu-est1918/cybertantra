@@ -54,3 +54,4 @@ apps/*/public/audio/temp/
 *.opus
 *.mp3
 !apps/*/public/audio/meditations/*.mp3
+.env*.local
