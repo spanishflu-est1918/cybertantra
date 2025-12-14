@@ -97,7 +97,7 @@ async function handleQuestion(ctx: Context, question: string) {
 
     // Use streamText with AI SDK Gateway
     const result = streamText({
-      model: gateway("qwen/qwen-2.5-72b-instruct"),
+      model: gateway("deepseek/deepseek-v3.2-thinking"),
       system: systemPrompt,
       messages: [{ role: "user", content: question }],
       temperature: 0.7,
