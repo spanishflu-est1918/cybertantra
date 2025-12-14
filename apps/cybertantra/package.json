@@ -21,7 +21,7 @@
     "clsx": "^2.1.1",
     "focus-trap-react": "^10.3.0",
     "mcp-handler": "^1.0.3",
-    "next": "16.0.7",
+    "next": "16.0.10",
     "orate": "^2.0.6",
     "pgvector": "^0.2.0",
     "react": "19.1.0",
