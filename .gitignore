@@ -59,3 +59,17 @@ book/Cybertantra 🐅/.obsidian/plugins/copilot/data.json
 
 # Prose orchestration files (may contain API keys)
 *.prose
+
+# Artifact directories (user-generated, not tracked)
+/downloads/
+/backups/
+/temp/
+/conversations/
+
+# Data files (local working files)
+/data/
+
+# Book editor configs
+book/**/.obsidian/
+book/**/.cursorrules
+book/**/.windsurfrules
