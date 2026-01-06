@@ -1,0 +1,20 @@
+# Introduction to the Inner Fire
+
+The Inner Fire is the pure energy of Shakti within the Self. It is the spiritedness that drives one forward on the path of action. In order to cultivate the Inner Fire, one must embrace the radiant power that is Shakti.
+
+The traditional connection between the Inner Fire and the divine feminine is found in a variety of cultural manifestations. In the Tibetan tradition, the Inner Fire is expanded through the practice of tummo. Tummo refers to the Tibetan Buddhist goddess of heat and passion. The term also refers to a specific form of tantric meditation practice that is directed towards the accessing of the Inner Fire. The goddess Tummo is a manifestation of Shakti, and the Tibetan tantric practices that are associated with Tummo are very similar to those found in the Indian tantric tradition. These practices are rooted in a shared Aryan tradition that has given birth to many similar traditions throughout Europe and Asia.
+
+In the Greek tradition, the Inner Fire is represented by the concept of **thumos**. Thumos (θυμός) is a Greek word that means spiritedness. It is a concept that is directly related to the breath and the blood, two elements that are central to the practice of tummo and the physical manifestation of Shakti. In tummo, breathing exercises are employed to harness the power of the Inner Fire. These practices fall under the tantric category of pranayama. The Greeks believed in an explicit connection between the breath and the spirit, a connection that is rooted in the Aryan concept of pranayama and the flow of prana through the body.
+
+The blood, a symbol of passion, is central to the shared traditions of tummo, thumos, and pranayama. The blood is the seat of passion, and the association between blood and Shakti is clearly represented in the tantric tradition, especially in the manifestation of Kali. The symbolic connection between blood and the Inner Fire emphasizes the daemonic nature of this force, and the material orientation of Shakti as energy.
+
+The Inner Fire as daemonic power is emphasized in the Platonic concept of the soul. In *The Republic*, Plato presents a tripartite soul that is similar to the tri-part Self of tantra. The Platonic tripartite soul consists of:
+- **Nous (intellect)**: Higher chakras
+- **Thumos (passion)**: Middle chakras
+- **Epithumia (appetite)**: Lower chakras
+
+Thumos and epithumia are of a daemonic nature because they are rooted in lust and passion. According to Plato, thumos and epithumia may be brought under the power of the will in the form of nous in order to maximize power. This is the Greek method of cultivating the Inner Fire. By gaining control of the daemons, the yogi is able to achieve unification and the expansion of power to the highest potential.
+
+In the Norse tradition, Odin assumes the role of the yogic figure to be emulated by those seeking liberation. It is no surprise then that Odin is associated with the breath. Odin’s association with the breath is in keeping with the theme of Odinistic Yoga, the Norse practices which parallel the tantric traditions found in the Indian and Tibetan traditions.
+
+Inner Fire cultivation is firmly rooted in the natural experience of the Norse. The harsh cold of Scandinavia required the development of an inner resolve that allowed for survival. By cultivating the Inner Flame, the Norse were able to more effectively adapt to their environment. There is a close physical connection between Northern Europeans and the cultivation of Inner Fire. From a physical standpoint, cold exposure plays an important role in the harnessing of Shakti power, and such techniques tend to come naturally to those of Northern European descent. It may be considered that through the process of natural selection, the Northern Europeans possess the greatest potential for integrating the Inner Flame into the social body. This is a potential explanation for the prevalence of the Path of Action in Northern European tradition, with Valhalla providing an excellent example of cosmic immanence and the Left-Hand Path.

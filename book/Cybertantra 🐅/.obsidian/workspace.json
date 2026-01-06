@@ -1,0 +1,219 @@
+{
+  "main": {
+    "id": "ff68188d4f02bdf5",
+    "type": "split",
+    "children": [
+      {
+        "id": "947fb31bae1567e2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "769c191aa77d5c97",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "@x work/thread-02-ai-polytheism-vs-monotheism.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "thread-02-ai-polytheism-vs-monotheism"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ff0cccf08f22f6dd",
+    "type": "split",
+    "children": [
+      {
+        "id": "1242c4fb858f9066",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f57ae67277f85ee1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "3846fb2068208325",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "\"intellectual elements\"",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "f2bc5052642eca9c",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 387.5
+  },
+  "right": {
+    "id": "fe821e8dcd198727",
+    "type": "split",
+    "children": [
+      {
+        "id": "7644f20337e4f5d4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "be42730c4be8128e",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "The Death of The Gods.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for The Death of The Gods"
+            }
+          },
+          {
+            "id": "0b55ba63845885ad",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Cybertantra.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Cybertantra"
+            }
+          },
+          {
+            "id": "be9c5d9a18d00fba",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "064d725db2a95054",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Cybertantra.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Cybertantra"
+            }
+          },
+          {
+            "id": "45680d394fb69a16",
+            "type": "leaf",
+            "state": {
+              "type": "copilot-chat-view",
+              "state": {},
+              "icon": "message-square",
+              "title": "Copilot"
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "publish:Publish changes...": false,
+      "copilot:Open Copilot Chat": false,
+      "system3-relay:Relay": false,
+      "local-backup:Run local backup": false
+    }
+  },
+  "active": "769c191aa77d5c97",
+  "lastOpenFiles": [
+    "@x work/thread-02-ai-polytheism-vs-monotheism.md",
+    "🐅 Cybertantra 🐅.md",
+    "Cybertantra/The Age of the Mind.md",
+    "Cybertantra/The Prison of Modernity - The Present Age.md",
+    "Cybertantra/Cybertantra and the New Frontier - A Manifesto.md",
+    "@master",
+    "@cybertantra",
+    "Cybertantra/Intro (provisional).md",
+    "The Present Age.md",
+    "The Lecture - 4 Jan 2025.md",
+    "note.md",
+    "2025-01-07.md",
+    "Cybertantra/The Natural Order - The Dharma of Caste.md",
+    "Cybertantra/The Coming Age of Ajna.md",
+    "Cybertantra/Book I - Cybertantra.md",
+    "Cybertantra/The Death of The Gods.md",
+    "leftovers/The Present Age.md",
+    "Cybertantra/Book II - Foundations of Power.md",
+    "RTT/Cybertantra/Book II - Definitions.md",
+    "RTT/Cybertantra/Tantra and the New Frontier.md",
+    "RTT/Cybertantra/The War for Digital Space - Aghore, Techno-Optimism, e-acc.md",
+    "RTT/Cybertantra/The New Gods.md",
+    "@corpus/rtt lecture - Yantra Theory and Practice.md",
+    "@x work/thread-01-cybertantra-and-the-new-gods.md",
+    "@X/thread-01-comparison.md",
+    "@X/thread-01-nature-of-tantra.md",
+    "@x work/x-threads.md",
+    "@x work",
+    "RTT/Cybertantra/twitter-threads.md",
+    "@leftovers",
+    "RTT/Cybertantra/The Dharma of Kali",
+    "@definitions",
+    "Cybertantra",
+    "RTT",
+    "@vault",
+    "Cybertantra"
+  ]
+}

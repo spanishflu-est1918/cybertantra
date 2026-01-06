@@ -55,3 +55,4 @@ apps/*/public/audio/temp/
 *.mp3
 !apps/*/public/audio/meditations/*.mp3
 .env*.local
+book/Cybertantra 🐅/.obsidian/plugins/copilot/data.json
