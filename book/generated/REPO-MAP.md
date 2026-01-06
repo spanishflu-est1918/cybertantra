@@ -65,7 +65,7 @@ Format: `01-chapter-title.md`, `02-chapter-title.md`, etc.
 ```bash
 curl -s -X POST https://cybertantra-omega.vercel.app/api/query \
   -H "Content-Type: application/json" \
-  -H "x-api-key: 7d5dbd3f1fea707b91e3120a68b6bc006d1dabe29af34a9c877df1d4d488ebb3" \
+  -H "x-api-key: $CYBERTANTRA_API_KEY" \
   -d '{"question": "YOUR_QUESTION", "topK": 5}'
 ```
 
@@ -93,7 +93,7 @@ These are known relevant lectures. START here, but also query the bot for more.
    ```bash
    curl -s -X POST https://cybertantra-omega.vercel.app/api/query \
      -H "Content-Type: application/json" \
-     -H "x-api-key: 7d5dbd3f1fea707b91e3120a68b6bc006d1dabe29af34a9c877df1d4d488ebb3" \
+     -H "x-api-key: $CYBERTANTRA_API_KEY" \
      -d '{"question": "Which lectures discuss [YOUR TOPIC]?", "topK": 5}'
    ```
 3. **Read any new lectures** the bot surfaces that weren't in your starting set

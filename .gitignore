@@ -56,3 +56,6 @@ apps/*/public/audio/temp/
 !apps/*/public/audio/meditations/*.mp3
 .env*.local
 book/Cybertantra 🐅/.obsidian/plugins/copilot/data.json
+
+# Prose orchestration files (may contain API keys)
+*.prose
