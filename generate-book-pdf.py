@@ -7,17 +7,30 @@ from pathlib import Path
 from reportlab.lib.pagesizes import A5, A6
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch, mm
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, KeepTogether
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, KeepTogether, Image
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.colors import HexColor
+from pathlib import Path
 
 # Page sizes
 FORMATS = {
     'tablet': A5,  # reMarkable, iPad
     'mobile': (3.5*inch, 6*inch),  # Phone-friendly (iPhone-ish proportions)
 }
+
+# Register custom fonts
+FONTS_DIR = Path(__file__).parent / 'fonts'
+CORMORANT_DIR = FONTS_DIR / 'Cormorant Garamond Font'
+pdfmetrics.registerFont(TTFont('Cormorant', CORMORANT_DIR / 'CormorantGaramond-Regular.ttf'))
+pdfmetrics.registerFont(TTFont('Cormorant-Bold', CORMORANT_DIR / 'CormorantGaramond-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('Cormorant-Italic', CORMORANT_DIR / 'CormorantGaramond-Italic.ttf'))
+pdfmetrics.registerFont(TTFont('Cinzel', FONTS_DIR / 'Cinzel-Regular.ttf'))
+pdfmetrics.registerFont(TTFont('Cinzel-Bold', FONTS_DIR / 'Cinzel-Bold.ttf'))
+
+# Cover image
+COVER_IMAGE = FONTS_DIR / 'cover.jpeg'
 
 # Color schemes
 THEMES = {
@@ -88,9 +101,9 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
     PAGE_WIDTH, PAGE_HEIGHT = FORMATS.get(format, FORMATS['tablet'])
     is_mobile = format == 'mobile'
 
-    # Adjust margins for format
+    # Adjust margins for format (mobile gets tighter margins for more text area)
     if is_mobile:
-        margins = {'left': 8*mm, 'right': 8*mm, 'top': 10*mm, 'bottom': 10*mm}
+        margins = {'left': 5*mm, 'right': 5*mm, 'top': 6*mm, 'bottom': 6*mm}
     else:
         margins = {'left': 15*mm, 'right': 15*mm, 'top': 20*mm, 'bottom': 20*mm}
 
@@ -107,13 +120,16 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
     # Create styles
     styles = getSampleStyleSheet()
 
-    # Font sizes - scale down for mobile
+    # Font sizes - mobile gets larger text for readability
     if is_mobile:
-        sizes = {'title': 20, 'h1': 14, 'h2': 10, 'body': 9, 'toc': 9}
-        spacing = {'title_after': 15, 'h1_after': 12, 'h2_after': 8, 'body_after': 6}
+        sizes = {'title': 24, 'h1': 16, 'h2': 12, 'body': 11, 'toc': 11}
+        spacing = {'title_after': 12, 'h1_after': 10, 'h2_after': 8, 'body_after': 6}
     else:
-        sizes = {'title': 28, 'h1': 18, 'h2': 12, 'body': 10, 'toc': 11}
+        sizes = {'title': 28, 'h1': 18, 'h2': 12, 'body': 11, 'toc': 11}
         spacing = {'title_after': 30, 'h1_after': 20, 'h2_after': 12, 'body_after': 8}
+
+    # Track if we've drawn the cover
+    cover_drawn = [False]  # Use list to allow modification in nested function
 
     # Background drawing function
     def draw_background(canvas, doc):
@@ -122,7 +138,16 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         canvas.rect(0, 0, PAGE_WIDTH, PAGE_HEIGHT, fill=1, stroke=0)
         canvas.restoreState()
 
-    # Book title style
+    # First page with cover (tablet only - mobile skips cover)
+    def draw_first_page(canvas, doc):
+        if COVER_IMAGE.exists() and not cover_drawn[0] and not is_mobile:
+            # Draw cover image full-bleed (tablet only)
+            canvas.drawImage(str(COVER_IMAGE), 0, 0, width=PAGE_WIDTH, height=PAGE_HEIGHT, preserveAspectRatio=False)
+            cover_drawn[0] = True
+        else:
+            draw_background(canvas, doc)
+
+    # Book title style - Cinzel for that carved-in-stone feel
     title_style = ParagraphStyle(
         'BookTitle',
         parent=styles['Title'],
@@ -130,11 +155,11 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         leading=sizes['title'] + 6,
         alignment=TA_CENTER,
         spaceAfter=spacing['title_after'],
-        fontName='Times-Bold',
+        fontName='Cinzel-Bold',
         textColor=TEXT_COLOR,
     )
 
-    # Chapter title style
+    # Chapter title style - Cinzel
     h1_style = ParagraphStyle(
         'ChapterTitle',
         parent=styles['Heading1'],
@@ -143,11 +168,11 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         alignment=TA_CENTER,
         spaceAfter=spacing['h1_after'],
         spaceBefore=0,
-        fontName='Times-Bold',
+        fontName='Cinzel-Bold',
         textColor=TEXT_COLOR,
     )
 
-    # Section heading style
+    # Section heading style - Cinzel
     h2_style = ParagraphStyle(
         'SectionTitle',
         parent=styles['Heading2'],
@@ -156,11 +181,11 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         alignment=TA_CENTER,
         spaceAfter=spacing['h2_after'],
         spaceBefore=12 if not is_mobile else 8,
-        fontName='Times-Bold',
+        fontName='Cinzel',
         textColor=TEXT_COLOR,
     )
 
-    # Body text style - justified for clean reading
+    # Body text style - Cormorant Garamond for elegant reading
     body_style = ParagraphStyle(
         'BodyText',
         parent=styles['Normal'],
@@ -168,7 +193,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         leading=sizes['body'] + 4,
         alignment=TA_JUSTIFY,
         spaceAfter=spacing['body_after'],
-        fontName='Times-Roman',
+        fontName='Cormorant',
         firstLineIndent=12 if is_mobile else 15,
         textColor=TEXT_COLOR,
     )
@@ -185,7 +210,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
     italic_style = ParagraphStyle(
         'ItalicText',
         parent=body_style,
-        fontName='Times-Italic',
+        fontName='Cormorant-Italic',
         alignment=TA_CENTER,
         spaceBefore=8 if is_mobile else 12,
         spaceAfter=8 if is_mobile else 12,
@@ -195,16 +220,20 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
     # Build story
     story = []
 
+    # Cover page - just a page break, the image is drawn by draw_first_page (tablet only)
+    if COVER_IMAGE.exists() and not is_mobile:
+        story.append(PageBreak())
+
     # Title page
     story.append(Spacer(1, 40 if is_mobile else 80))
-    story.append(Paragraph("CYBER TANTRA", title_style))
+    story.append(Paragraph("CYBERTANTRA", title_style))
     story.append(Spacer(1, 10 if is_mobile else 20))
     story.append(Paragraph("The New Frontier", ParagraphStyle(
         'Subtitle',
         parent=styles['Normal'],
         fontSize=11 if is_mobile else 14,
         alignment=TA_CENTER,
-        fontName='Times-Italic',
+        fontName='Cormorant-Italic',
         textColor=TEXT_COLOR,
     )))
     story.append(Spacer(1, 30 if is_mobile else 60))
@@ -213,7 +242,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         parent=styles['Normal'],
         fontSize=9 if is_mobile else 11,
         alignment=TA_CENTER,
-        fontName='Times-Roman',
+        fontName='Cormorant',
         textColor=TEXT_COLOR,
     )))
     story.append(PageBreak())
@@ -224,7 +253,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
     story.append(Spacer(1, 10 if is_mobile else 20))
 
     toc_entries = [
-        "1. Cyber Tantra",
+        "1. Cybertantra",
         "2. The Death of the Gods",
         "3. The Prison of Modernity",
         "4. The Coming Age of Ajna",
@@ -242,7 +271,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         fontSize=sizes['toc'],
         leading=14 if is_mobile else 20,
         alignment=TA_CENTER,
-        fontName='Times-Roman',
+        fontName='Cormorant',
         textColor=TEXT_COLOR,
     )
 
@@ -293,7 +322,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
                     parent=styles['Normal'],
                     fontSize=sizes['body'],
                     alignment=TA_CENTER,
-                    fontName='Times-Roman',
+                    fontName='Cormorant',
                     textColor=TEXT_COLOR,
                 )))
                 story.append(Spacer(1, hr_space))
@@ -302,8 +331,8 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         # Page break after chapter
         story.append(PageBreak())
 
-    # Build PDF with dark background
-    doc.build(story, onFirstPage=draw_background, onLaterPages=draw_background)
+    # Build PDF with cover on first page, dark background on others
+    doc.build(story, onFirstPage=draw_first_page, onLaterPages=draw_background)
     print(f"PDF created: {output_path}")
 
 if __name__ == '__main__':
