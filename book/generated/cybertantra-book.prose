@@ -155,31 +155,20 @@ let chapters = [
 # REUSABLE BLOCKS
 # =============================================================================
 
-block research-chapter(chapter):
-  session: researcher
-    prompt: """
-    Research material for Chapter {chapter.num}: {chapter.title}
-
-    Topics to cover: {chapter.topics}
-
-    Query the Cybertantra bot and read relevant lecture files.
-    Return organized source material with direct quotes and lecture references.
-    """
-
-block write-chapter(chapter, material):
+block write-chapter(chapter):
   session: writer
     prompt: """
     Write Chapter {chapter.num}: {chapter.title}
 
     Topics: {chapter.topics}
 
-    SOURCE MATERIAL:
-    {material}
+    FIRST: Read ~/www/cybertantra/book/generated/REPO-MAP.md for file locations and starting lectures.
 
-    Write 1500-2500 words. Draw only from the source material.
-    End on a strong image, not a summary.
+    You must do your own research. Read full lectures from the corpus. Query the bot for guidance.
+    Consume the raw material directly. Do not wait for someone to pre-digest it for you.
+
+    Write 2500-4000 words. End on a strong image, not a summary.
     """
-    context: material
 
 block review-chapter(chapter, draft):
   session: reviewer
@@ -224,11 +213,8 @@ block save-chapter(chapter, content):
 for chapter in chapters:
   if **chapter.status is not "done"**:
 
-    # Research
-    let material = do research-chapter(chapter)
-
-    # Write initial draft
-    let draft = do write-chapter(chapter, material)
+    # Write - writer does own research, consumes raw material directly
+    let draft = do write-chapter(chapter)
 
     # Review loop (max 3 iterations)
     loop until **review says PASS** (max: 3) as attempt:
@@ -236,12 +222,6 @@ for chapter in chapters:
 
       if **review says REVISE**:
         draft = do revise-chapter(chapter, draft, review)
-
-      if **review says ENRICH**:
-        let extra_material = session: researcher
-          prompt: "Get additional material for: {review.enrich_topics}"
-          context: review
-        draft = do write-chapter(chapter, [material, extra_material])
 
     # Save completed chapter
     do save-chapter(chapter, draft)
