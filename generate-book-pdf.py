@@ -106,7 +106,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
     if is_mobile:
         margins = {'left': 5*mm, 'right': 5*mm, 'top': 6*mm, 'bottom': 6*mm}
     else:
-        margins = {'left': 15*mm, 'right': 15*mm, 'top': 20*mm, 'bottom': 20*mm}
+        margins = {'left': 15*mm, 'right': 15*mm, 'top': 18*mm, 'bottom': 22*mm}
 
     # Setup document
     doc = SimpleDocTemplate(
@@ -126,8 +126,8 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         sizes = {'title': 22, 'h1': 20, 'h2': 15, 'body': 14, 'toc': 14}
         spacing = {'title_after': 15, 'h1_after': 12, 'h2_after': 10, 'body_after': 12}
     else:
-        sizes = {'title': 28, 'h1': 18, 'h2': 12, 'body': 11, 'toc': 11}
-        spacing = {'title_after': 30, 'h1_after': 20, 'h2_after': 12, 'body_after': 8}
+        sizes = {'title': 30, 'h1': 20, 'h2': 13, 'body': 12, 'toc': 12}
+        spacing = {'title_after': 30, 'h1_after': 20, 'h2_after': 12, 'body_after': 13}
 
     # Track if we've drawn the cover
     cover_drawn = [False]  # Use list to allow modification in nested function
@@ -192,7 +192,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         'BodyText',
         parent=styles['Normal'],
         fontSize=sizes['body'],
-        leading=sizes['body'] + (6 if is_mobile else 4),
+        leading=sizes['body'] + (6 if is_mobile else 5),
         alignment=TA_JUSTIFY,
         spaceAfter=spacing['body_after'],
         fontName='Cormorant',
@@ -272,7 +272,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         'TOC',
         parent=styles['Normal'],
         fontSize=sizes['toc'],
-        leading=24 if is_mobile else 20,
+        leading=24 if is_mobile else 21,
         alignment=TA_CENTER,
         fontName='Cormorant',
         textColor=TEXT_COLOR,
