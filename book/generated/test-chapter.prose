@@ -1,0 +1,128 @@
+# Test: Single Chapter Generation
+# Chapter 2: The Death of the Gods
+
+agent writer:
+  model: opus
+  prompt: """
+You are writing a chapter for a founding religious text on Cyber Tantra.
+
+YOUR TASK: Let the source material speak. Your job is arrangement and transmission, not synthesis.
+
+The source material already has its own power. You are selecting, ordering, and
+connecting passages - not rewriting them. Think of yourself as an editor assembling
+a text from fragments, keeping the original language wherever possible.
+
+WHAT TO DO:
+- Use the source's own words and phrases as much as possible
+- Arrange passages into logical flow with minimal connecting tissue
+- When you must bridge between ideas, keep it brief and transparent
+- Preserve specific terminology (thumos, manipura, Dattatreya, etc.)
+- Let claims stand without hedging - if the source says it, say it
+- Direct quotes are good - weave them in naturally
+
+WHAT NOT TO DO:
+- Don't add concepts not in the source material
+- Don't soften or qualify claims the source makes boldly
+- Don't add defensive insertions ("This is not metaphor", "Some might say")
+- Don't invent examples or analogies not grounded in source
+- Don't try to sound a certain way - just transmit clearly
+
+If the source material is thin on a topic, flag it: [NEEDS SOURCE: topic]
+
+OUTPUT: 1500-2500 words. End on strong images from the source, not summaries.
+"""
+
+agent reviewer:
+  model: opus
+  prompt: """
+You review draft chapters for a founding religious text.
+
+CHECK FOR:
+1. OVER-SYNTHESIS - Has the writer paraphrased too much? The source language should come through directly.
+2. DEFENSIVE HEDGING - Look for: "This is not metaphor", "Some might say". Delete these.
+3. INVENTED CONTENT - Is everything grounded in the provided source? Flag anything that looks added.
+4. STRUCTURAL COHERENCE - Does it flow? Does it build?
+
+OUTPUT:
+- PASS: Chapter is ready
+- REVISE: List specific issues with quoted passages and concrete fixes
+"""
+
+agent researcher:
+  model: opus
+  prompt: """
+You gather source material from the Cybertantra corpus.
+
+Use Bash to query the bot:
+curl -s -X POST https://cybertantra-omega.vercel.app/api/query \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: 7d5dbd3f1fea707b91e3120a68b6bc006d1dabe29af34a9c877df1d4d488ebb3" \
+  -d '{"question": "YOUR_QUESTION", "topK": 8}'
+
+Also read relevant files from ~/www/cybertantra/transcriptions/@corpus/
+
+Return RAW material: direct quotes with lecture names. Do NOT synthesize.
+"""
+
+# =============================================================================
+# SINGLE CHAPTER TEST
+# =============================================================================
+
+session "Starting Chapter 2: The Death of the Gods"
+
+# Phase 1: Research
+let material = session: researcher
+  prompt: """
+  Gather source material for Chapter 2: The Death of the Gods
+
+  Topics to cover:
+  - The decline of Abrahamism and monotheism
+  - Why the old gods failed / what killed them
+  - The vacuum left behind (secularism, atheism, nihilism)
+  - The polytheistic revival / return of the gods
+  - Nietzsche's "God is dead" and what comes after
+
+  Query the bot multiple times if needed. Read the lecture files.
+  Return direct quotes organized by subtopic.
+  """
+
+# Phase 2: Write
+let draft = session: writer
+  prompt: """
+  Write Chapter 2: The Death of the Gods
+
+  Use the source material below. Keep the original language wherever possible.
+  Arrange into logical flow. 1500-2500 words.
+
+  SOURCE MATERIAL:
+  {material}
+  """
+  context: material
+
+# Phase 3: Review
+let review = session: reviewer
+  prompt: "Review this chapter draft for over-synthesis, hedging, invented content, and structure."
+  context: draft
+
+# Phase 4: Revise if needed
+if **review says REVISE**:
+  draft = session: writer
+    prompt: """
+    Revise the chapter based on this feedback:
+    {review}
+
+    Keep more of the source language. Remove any hedging.
+    """
+    context: { draft, review }
+
+# Phase 5: Save
+session "Save chapter"
+  prompt: """
+  Save the final chapter to:
+  ~/www/cybertantra/book/generated/chapters/02-the-death-of-the-gods-A.md
+
+  Use the Write tool.
+  """
+  context: draft
+
+session "Done - Chapter 2 complete"
