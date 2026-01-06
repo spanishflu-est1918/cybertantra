@@ -11,9 +11,22 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, 
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.colors import HexColor
 
 # Page size optimized for reMarkable (A5-ish, good for e-ink)
 PAGE_WIDTH, PAGE_HEIGHT = A5
+
+# Color schemes
+THEMES = {
+    'dark': {
+        'bg': HexColor('#1a1a1a'),
+        'text': HexColor('#f5f5dc'),
+    },
+    'light': {
+        'bg': HexColor('#fffef9'),
+        'text': HexColor('#1a1a1a'),
+    },
+}
 
 def parse_markdown(content: str) -> list:
     """Parse markdown content into structured elements."""
@@ -60,8 +73,13 @@ def parse_markdown(content: str) -> list:
 
     return elements
 
-def create_pdf(chapters_dir: str, output_path: str):
+def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
     """Create PDF from chapter markdown files."""
+
+    # Get colors for theme
+    colors = THEMES.get(theme, THEMES['dark'])
+    BG_COLOR = colors['bg']
+    TEXT_COLOR = colors['text']
 
     # Setup document
     doc = SimpleDocTemplate(
@@ -76,6 +94,13 @@ def create_pdf(chapters_dir: str, output_path: str):
     # Create styles
     styles = getSampleStyleSheet()
 
+    # Background drawing function
+    def draw_background(canvas, doc):
+        canvas.saveState()
+        canvas.setFillColor(BG_COLOR)
+        canvas.rect(0, 0, PAGE_WIDTH, PAGE_HEIGHT, fill=1, stroke=0)
+        canvas.restoreState()
+
     # Book title style
     title_style = ParagraphStyle(
         'BookTitle',
@@ -85,6 +110,7 @@ def create_pdf(chapters_dir: str, output_path: str):
         alignment=TA_CENTER,
         spaceAfter=30,
         fontName='Times-Bold',
+        textColor=TEXT_COLOR,
     )
 
     # Chapter title style
@@ -97,6 +123,7 @@ def create_pdf(chapters_dir: str, output_path: str):
         spaceAfter=20,
         spaceBefore=0,
         fontName='Times-Bold',
+        textColor=TEXT_COLOR,
     )
 
     # Section heading style
@@ -109,6 +136,7 @@ def create_pdf(chapters_dir: str, output_path: str):
         spaceAfter=12,
         spaceBefore=18,
         fontName='Times-Bold',
+        textColor=TEXT_COLOR,
     )
 
     # Body text style - justified for clean reading
@@ -121,6 +149,7 @@ def create_pdf(chapters_dir: str, output_path: str):
         spaceAfter=8,
         fontName='Times-Roman',
         firstLineIndent=15,
+        textColor=TEXT_COLOR,
     )
 
     # First paragraph (no indent)
@@ -128,6 +157,7 @@ def create_pdf(chapters_dir: str, output_path: str):
         'FirstPara',
         parent=body_style,
         firstLineIndent=0,
+        textColor=TEXT_COLOR,
     )
 
     # Italic/quote style
@@ -138,6 +168,7 @@ def create_pdf(chapters_dir: str, output_path: str):
         alignment=TA_CENTER,
         spaceBefore=12,
         spaceAfter=12,
+        textColor=TEXT_COLOR,
     )
 
     # Build story
@@ -153,6 +184,7 @@ def create_pdf(chapters_dir: str, output_path: str):
         fontSize=14,
         alignment=TA_CENTER,
         fontName='Times-Italic',
+        textColor=TEXT_COLOR,
     )))
     story.append(Spacer(1, 60))
     story.append(Paragraph("Ride the Tiger Yoga", ParagraphStyle(
@@ -161,6 +193,7 @@ def create_pdf(chapters_dir: str, output_path: str):
         fontSize=11,
         alignment=TA_CENTER,
         fontName='Times-Roman',
+        textColor=TEXT_COLOR,
     )))
     story.append(PageBreak())
 
@@ -189,6 +222,7 @@ def create_pdf(chapters_dir: str, output_path: str):
         leading=20,
         alignment=TA_CENTER,
         fontName='Times-Roman',
+        textColor=TEXT_COLOR,
     )
 
     for entry in toc_entries:
@@ -238,6 +272,7 @@ def create_pdf(chapters_dir: str, output_path: str):
                     fontSize=10,
                     alignment=TA_CENTER,
                     fontName='Times-Roman',
+                    textColor=TEXT_COLOR,
                 )))
                 story.append(Spacer(1, 15))
                 is_first_para = True
@@ -245,11 +280,25 @@ def create_pdf(chapters_dir: str, output_path: str):
         # Page break after chapter
         story.append(PageBreak())
 
-    # Build PDF
-    doc.build(story)
+    # Build PDF with dark background
+    doc.build(story, onFirstPage=draw_background, onLaterPages=draw_background)
     print(f"PDF created: {output_path}")
 
 if __name__ == '__main__':
-    chapters_dir = '/Users/gorkolas/Documents/www/cybertantra/book/generated/chapters'
-    output_path = '/Users/gorkolas/Documents/www/cybertantra/cybertantra-book.pdf'
-    create_pdf(chapters_dir, output_path)
+    import sys
+
+    chapters_dir = '/home/gorkolas/www/cybertantra/book/generated/chapters'
+    base_path = '/home/gorkolas/www/cybertantra'
+
+    # Check for specific theme argument
+    if len(sys.argv) > 1 and sys.argv[1] in ['dark', 'light', 'both']:
+        mode = sys.argv[1]
+    else:
+        mode = 'both'
+
+    if mode == 'both':
+        create_pdf(chapters_dir, f'{base_path}/cybertantra-book-dark.pdf', 'dark')
+        create_pdf(chapters_dir, f'{base_path}/cybertantra-book-light.pdf', 'light')
+    else:
+        suffix = f'-{mode}' if mode != 'light' else ''
+        create_pdf(chapters_dir, f'{base_path}/cybertantra-book{suffix}.pdf', mode)
