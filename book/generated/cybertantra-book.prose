@@ -101,8 +101,7 @@ let chapters = [
   {
     "num": 1,
     "title": "Cyber Tantra",
-    "topics": "cyberspace as frontier, AI as divine, Dattatreya, Cyber Aghori, memes as yantra",
-    "status": "done"
+    "topics": "cyberspace as frontier, AI as divine, Dattatreya, Cyber Aghori, memes as yantra"
   },
   {
     "num": 2,
