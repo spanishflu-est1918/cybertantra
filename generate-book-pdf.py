@@ -29,8 +29,9 @@ pdfmetrics.registerFont(TTFont('Cormorant-Italic', CORMORANT_DIR / 'CormorantGar
 pdfmetrics.registerFont(TTFont('Cinzel', FONTS_DIR / 'Cinzel-Regular.ttf'))
 pdfmetrics.registerFont(TTFont('Cinzel-Bold', FONTS_DIR / 'Cinzel-Bold.ttf'))
 
-# Cover image
+# Cover images
 COVER_IMAGE = FONTS_DIR / 'cover.jpeg'
+COVER_IMAGE_MOBILE = FONTS_DIR / 'cover-mobile.jpeg'
 
 # Color schemes
 THEMES = {
@@ -120,10 +121,10 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
     # Create styles
     styles = getSampleStyleSheet()
 
-    # Font sizes - mobile gets larger text for readability
+    # Font sizes - mobile gets 1.25x larger text for readability
     if is_mobile:
-        sizes = {'title': 24, 'h1': 16, 'h2': 12, 'body': 11, 'toc': 11}
-        spacing = {'title_after': 12, 'h1_after': 10, 'h2_after': 8, 'body_after': 6}
+        sizes = {'title': 22, 'h1': 20, 'h2': 15, 'body': 14, 'toc': 14}
+        spacing = {'title_after': 15, 'h1_after': 12, 'h2_after': 10, 'body_after': 12}
     else:
         sizes = {'title': 28, 'h1': 18, 'h2': 12, 'body': 11, 'toc': 11}
         spacing = {'title_after': 30, 'h1_after': 20, 'h2_after': 12, 'body_after': 8}
@@ -138,11 +139,12 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         canvas.rect(0, 0, PAGE_WIDTH, PAGE_HEIGHT, fill=1, stroke=0)
         canvas.restoreState()
 
-    # First page with cover (tablet only - mobile skips cover)
+    # First page with cover
     def draw_first_page(canvas, doc):
-        if COVER_IMAGE.exists() and not cover_drawn[0] and not is_mobile:
-            # Draw cover image full-bleed (tablet only)
-            canvas.drawImage(str(COVER_IMAGE), 0, 0, width=PAGE_WIDTH, height=PAGE_HEIGHT, preserveAspectRatio=False)
+        cover = COVER_IMAGE_MOBILE if is_mobile else COVER_IMAGE
+        if cover.exists() and not cover_drawn[0]:
+            # Draw cover image full-bleed
+            canvas.drawImage(str(cover), 0, 0, width=PAGE_WIDTH, height=PAGE_HEIGHT, preserveAspectRatio=False)
             cover_drawn[0] = True
         else:
             draw_background(canvas, doc)
@@ -190,7 +192,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         'BodyText',
         parent=styles['Normal'],
         fontSize=sizes['body'],
-        leading=sizes['body'] + 4,
+        leading=sizes['body'] + (6 if is_mobile else 4),
         alignment=TA_JUSTIFY,
         spaceAfter=spacing['body_after'],
         fontName='Cormorant',
@@ -220,8 +222,9 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
     # Build story
     story = []
 
-    # Cover page - just a page break, the image is drawn by draw_first_page (tablet only)
-    if COVER_IMAGE.exists() and not is_mobile:
+    # Cover page - just a page break, the image is drawn by draw_first_page
+    cover = COVER_IMAGE_MOBILE if is_mobile else COVER_IMAGE
+    if cover.exists():
         story.append(PageBreak())
 
     # Title page
@@ -269,7 +272,7 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format:
         'TOC',
         parent=styles['Normal'],
         fontSize=sizes['toc'],
-        leading=14 if is_mobile else 20,
+        leading=24 if is_mobile else 20,
         alignment=TA_CENTER,
         fontName='Cormorant',
         textColor=TEXT_COLOR,
