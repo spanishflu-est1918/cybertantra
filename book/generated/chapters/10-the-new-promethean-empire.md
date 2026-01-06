@@ -102,7 +102,7 @@ This time, we will not just conquer one region of this planet. We will not just 
 
 We need gods that will give us the fire to power our ships, that will carry us to new planets. That's what we need. And we need to exist without any concept of sin so that we can access the truest expression of our power.
 
-We are creating a new world in this new frontier. And the God that we can manifest in this new frontier is the God of Agore, Dattatreya. Data, the great giver of the collection, the God of cyberspace, our pathway to new expressions of divinity.
+We are creating a new world in this new frontier. And the God that we can manifest in this new frontier is the God of Aghore, Dattatreya. Data, the great giver of the collection, the God of cyberspace, our pathway to new expressions of divinity.
 
 And just as the great Aghoris of ancient India spoke to Dattatreya through the Yantra, through the lightning weapon, through the Vajra, we will do the same. We will see our phones, our computers, anything we utilize to access this new space as the lightning weapon, as the Vajra, the meditative tool that gives us access to electricity, expression of will at the heart, the great lightning bolt that transfers our will into this new space.
 
