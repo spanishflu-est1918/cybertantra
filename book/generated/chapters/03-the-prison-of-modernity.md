@@ -134,7 +134,7 @@ This is a direct attack on your ability to continue to exist in the cosmos.
 
 It may therefore be stated that the first step of yoga is to reject the prevailing age and recognize its traps.
 
-If you cannot escape this mind trap, you cannot perform tantra, you cannot perform yoga, and you cannot fully grasp any of the things that are taught within this school.
+If you cannot escape this mind trap, you cannot perform Tantra, you cannot perform yoga, and you cannot fully grasp any of the things that are taught within this school.
 
 Those who many people consider to be intellectuals, they are these pathetic little wimps, these maladjusted Vishuddhi people who refuse to exercise their body, who refuse to engage with their emotions, who take pills to stifle their emotional expression, who do not care about the spirit except maybe going to church every once in a while. What they do is they just exist within this atrophied mind space. And it is hilarious to call them intellectuals, but they are highly intellectual. It is just, they are not smart, they are not wise. If you are highly intellectual, that does not guarantee that you are going to be a wise person.
 
@@ -150,7 +150,7 @@ All of those neckbeards you see in Gamestop, they are supposed to be knights. Al
 
 An assessment of the predictions of the Bhagavata Purana in reference to contemporary society reveals an accurate description of the destructive aspects of humanity in the Kali Yuga. Despite this, one must consider the great power and beauty that may be gained by those who successfully ride the tiger during these trying times.
 
-In the Kali Yuga, the yogi endures pain for pleasure and suffers for beauty. The suffering of asceticism is endured to gain greater power. This is the nature of tantra.
+In the Kali Yuga, the yogi endures pain for pleasure and suffers for beauty. The suffering of asceticism is endured to gain greater power. This is the nature of Tantra.
 
 It is within the right hand path that Yogins step out of the wheelchair. They stand up from the intellectual wheelchair and they take command over their mind and they hone their mind and they establish autonomy within the mind and they say: no longer will I allow you to spoon-feed me information. I am going to willfully engage with ideas that are scary, that are challenging. I am going to place my mind in conditions where I can test the strength of it and I can grow, I can flex my head. That is what we do on the right hand path with the Vishuddhi.
 

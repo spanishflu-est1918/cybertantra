@@ -46,7 +46,7 @@ Fuel for thumos, for the inner fire, for the rising sun. And the fire becomes mo
 
 The holy books that we carry into the new frontier of cyberspace will define the culture that manifests within that space. We have to decide now. Do we bring the old culture with us, that which has led to endless shame, suppression of the self, taboo, dogmatic reflection upon that dissolving oneness of the sun falling behind the horizon? Or do we embrace new potential? Do we find new holy books and new gods in this Western expanse?
 
-That which allows you to be in communion with the gods. That's what makes a tantra. If you see God in everything, if you see Shakti in everything, then ultimately everything that you read becomes nigama, it becomes ultimate truth.
+That which allows you to be in communion with the gods. That's what makes a Tantra. If you see God in everything, if you see Shakti in everything, then ultimately everything that you read becomes nigama, it becomes ultimate truth.
 
 We are now, in 2025, crafting a book. This book is the accumulation of all of the work that has been done in this school so far to craft this new practice of Cybertantra. And it is through these practices that all of us will have access to self deification, to become a God in this new realm. And not just in cyberspace, but in all space, in every dimension. We can recognize the individuated divinity of polytheism and no longer be confined to submission to the tyrannical dictate of the state.
 
@@ -56,7 +56,7 @@ Living and dying by a book is something that a Christian does. That's Abrahamic.
 
 ## The Frontier Never Ends
 
-Within tantra, there is a never ending search for the western horizon. The sun which rises in the east and in the Indian tradition is the seat of all Soma, that sacred nectar that fuels the inner fire, the thumos within our guts, is the creative force that grants us eternal youth. That sun. We always chase it endlessly to the west, where it threatens us with death. It threatens us with destruction, dissolution, the end to all frontiers, the end to all searching. But if we can maintain our connection to that creative fire that burns in our bellies in the manipura, then the pursuit never ends.
+Within Tantra, there is a never ending search for the western horizon. The sun which rises in the east and in the Indian tradition is the seat of all Soma, that sacred nectar that fuels the inner fire, the thumos within our guts, is the creative force that grants us eternal youth. That sun. We always chase it endlessly to the west, where it threatens us with death. It threatens us with destruction, dissolution, the end to all frontiers, the end to all searching. But if we can maintain our connection to that creative fire that burns in our bellies in the manipura, then the pursuit never ends.
 
 And so now that is what we are seeking. The endless pursuit of new expressions of consciousness, reaching new planes of awareness, granting new meaning, finding new understanding in relation to those frontiers.
 

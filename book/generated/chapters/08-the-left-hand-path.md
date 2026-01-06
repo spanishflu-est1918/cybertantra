@@ -48,9 +48,9 @@ From the point of transcendence, you can taste dissolution. You can taste differ
 
 ## The Transformation of Poison
 
-In practicing the Left Hand Path, those things that we once considered to be degenerate, immoral, poisonous, wrong, destructive, we seek means by which we can transform those things into nectar. This is the yoga of nectar that you find in the highest yoga tantra.
+In practicing the Left Hand Path, those things that we once considered to be degenerate, immoral, poisonous, wrong, destructive, we seek means by which we can transform those things into nectar. This is the yoga of nectar that you find in the highest yoga Tantra.
 
-The perspective of tantra is that everything we experience must be purified. It must be transformed into nectar or medicine. And this is the process of transforming poison into medicine.
+The perspective of Tantra is that everything we experience must be purified. It must be transformed into nectar or medicine. And this is the process of transforming poison into medicine.
 
 All of these things that caused us suffering when we interacted with them, we now try to re-examine these things from a foundation of emptiness so that we can integrate them. And instead of causing suffering within us, these things now lead to pleasure.
 
@@ -94,7 +94,7 @@ When we examine the word Satan, we find great richness in its magical applicatio
 
 At its core: Satanism is the affirmation of life, of the human condition, and of the will to power. Because at its core, the will to power is all about self-realization. Power, properly understood, is the expression of one's Dharma coming into oneself. This is the ultimate expression of power.
 
-And so yoga leading to Satan means that yogic practices, and by proxy tantra, because tantra ultimately leads to yoga, these practices are essentially satanic. When the Christian preachers rail against yoga, saying that it is of the devil, that it is satanic, and that Christians should not engage in it, they are right. Yoga is satanic. Yoga is a magical system that is explicitly directed towards self-realization.
+And so yoga leading to Satan means that yogic practices, and by proxy Tantra, because Tantra ultimately leads to yoga, these practices are essentially satanic. When the Christian preachers rail against yoga, saying that it is of the devil, that it is satanic, and that Christians should not engage in it, they are right. Yoga is satanic. Yoga is a magical system that is explicitly directed towards self-realization.
 
 When we hail Satan properly, we are hailing the self, we are hailing human potential, and we are hailing beauty. We are not hailing evil. Because the Satanist understands non-duality and recognizes that there is no such thing as good or evil. The Satanist exists beyond that which is good and evil.
 
@@ -180,7 +180,7 @@ That awareness is great power. It is the greatest power. It is the ability to ac
 
 And that is the goal of the Aghori. To become a God.
 
-Satanic consciousness may be attained through the practice of tantra. It is the exploration of the chakras on the ascending and descending paths that allows for the total realization of superconsciousness. Indulgence provides the key for the elevation of differentiated form into an eternal expression.
+Satanic consciousness may be attained through the practice of Tantra. It is the exploration of the chakras on the ascending and descending paths that allows for the total realization of superconsciousness. Indulgence provides the key for the elevation of differentiated form into an eternal expression.
 
 Godhood.
 

@@ -52,9 +52,9 @@ I have said in the past that in the Kali Yuga, God is like a whisper on the wind
 
 Written tradition holds that the Pyramid of the Self is divided into three parts. The Tripart Self has been the dominant model for thousands of years. It is found in Aryan tradition throughout the globe. In assessing this tradition, I have always found something to be lacking.
 
-The Tripart Self within traditional tantra is arranged as a pyramid that includes the elements of body, mind, and spirit. The lower chakras are of the left-hand, while the higher chakras are of the right. This presents a problem. There is clearly an imbalance in the tripart model, with two elements of the Self resting on the right-hand, and only one element of the Self on the left.
+The Tripart Self within traditional Tantra is arranged as a pyramid that includes the elements of body, mind, and spirit. The lower chakras are of the left-hand, while the higher chakras are of the right. This presents a problem. There is clearly an imbalance in the tripart model, with two elements of the Self resting on the right-hand, and only one element of the Self on the left.
 
-Tantra is a highly balanced tradition. The fact that the Tripart Self presents a glaring imbalance has always seemed anti-traditional to me. The Tripart Self is the product of a bias towards transcendence in modern tantra. The dominance of right-hand path schools has allowed this bias to remain unchallenged until now.
+Tantra is a highly balanced tradition. The fact that the Tripart Self presents a glaring imbalance has always seemed anti-traditional to me. The Tripart Self is the product of a bias towards transcendence in modern Tantra. The dominance of right-hand path schools has allowed this bias to remain unchallenged until now.
 
 The time has come to restore balance to the Pyramid of the Self. I have decided to reject the Tripart Self and offer a new model of the Self: The Tetrapart Self. The Tetrapart Self elevates the inner-fire, the thumos, to the status of a major element:
 
@@ -75,7 +75,7 @@ It is through the Tetrapart Self that balance is reintroduced. Both transcendent
 
 Within the Right Hand Path yoga that is presented by most modern yoga schools, there is a bias towards transcendence. The chakras are represented in the Right Hand Path as a hierarchical system with a clear superiority of the Sahasrara, the Crown chakra. Now this implies that the root is inferior, the crown is superior.
 
-Those schools that have a bias towards transcendence are going to apply this really ridiculous, petty morality that has nothing to do with the tradition of tantra. The way they were portraying consciousness was totally wrong.
+Those schools that have a bias towards transcendence are going to apply this really ridiculous, petty morality that has nothing to do with the tradition of Tantra. The way they were portraying consciousness was totally wrong.
 
 Because if you are trying to escape duality and reach transcendence, you have to recognize that each state of consciousness must possess equal value. It is ridiculous to assign this qualitative hierarchy that is absolutely true, universal for all people.
 
@@ -215,7 +215,7 @@ So it is very important, very important that any guru who teaches yoga focuses o
 
 ## The Spine as Pillar
 
-It is said in tantra that the spine is the pillar of the universe. It is the center of the cosmos.
+It is said in Tantra that the spine is the pillar of the universe. It is the center of the cosmos.
 
 Why would we define the spine as the center of the universe or the cosmos or anything? Because the nervous system runs down the spine, spreads out through your body. And it is through the nervous system that in this present age, you are able to explore the cosmos.
 
