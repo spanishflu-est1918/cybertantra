@@ -6,7 +6,7 @@ The Left Hand Path begins when you are reborn.
 
 If you have not gone through that baptism in the sun and achieved ego death, you are not a Left Hand Path yogin. You are playing at darkness while still enslaved to the light.
 
-The Right Hand Path is a method for achieving a very specific goal. That goal being ego death, mastery of the self. Once you have achieved this, then you may walk the Left Hand Path. The sequence admits no shortcuts: you go from Mooladhara to the Svadhisthana to the Manipura, Anahata, Vishuddhi, Ajna, Sahasrara. When you reach the Sahasrara, your goal is to have a clear light experience, to reach transcendence, to kill the ego. You have to die so that you may be reborn.
+The Right Hand Path is a method for achieving a very specific goal. That goal being ego death, mastery of the self. Once you have achieved this, then you may walk the Left Hand Path. The sequence admits no shortcuts: you go from Mooladhara to the Swadhisthana to the Manipura, Anahata, Vishuddhi, Ajna, Sahasrara. When you reach the Sahasrara, your goal is to have a clear light experience, to reach transcendence, to kill the ego. You have to die so that you may be reborn.
 
 Many of the gurus and sages that reach the Sahasrara are trapped there. They never complete the first initiation. They dissolve into the light and are lost. If you walk the Right Hand Path only and you orient your consciousness towards transcendence, you will escape the cycle of rebirth. But you will dissolve entirely. Everything that was you will be gone. You will live in total submission to the will of the Sky Father.
 
@@ -26,7 +26,7 @@ Practitioners of Vamachara who truly are capable of empowering the self recogniz
 
 You have reached the peak of the mountain, but you do not remain at the peak. To remain at the peak is to remain in a state of transcendence. Instead, what you do is you cross over to the other side of the mountain. And once you do that, and you start the descent, this is the descending path of yoga, which we call Vamachara, or the Left Hand Path.
 
-Once we have ascended to the peak, our new foundation of consciousness is transcendence or emptiness. So with this foundation of emptiness, we can now descend.
+Once we have ascended to the peak, our new foundation of consciousness is transcendence or emptiness. with this foundation of emptiness, we can now descend.
 
 In Vamachara, the idea is that you are releasing yourself from dogma, you are releasing yourself from the orthodox practice as much as possible. And in doing so, you are able to gain access to other elements of the self that might not otherwise be entertained. Within Vamachara there is an emphasis on release from ideas of caste, from ideas of lineage, from all taboo. Because the orthodoxy, though it may be a bridge to greater power on the left hand path, it should not be pursued for its own sake.
 
@@ -68,7 +68,7 @@ You begin with this new life. You are second born. Once you complete this initia
 
 If you bring your awareness to Bhairava, you access something specific: the ability to be a beast and a God.
 
-Bhairava is the ferocious manifestation of Shiva. He is like the divine masculine, the urge towards order, expressing itself on the furthest point from its root. Because divine masculine order is rooted in the Sahasrara. And if you take it as far away from its home position as you possibly can, you reach the muladhara. And this is where you would find the manifestation of Bhairava.
+Bhairava is the ferocious manifestation of Shiva. He is like the divine masculine, the urge towards order, expressing itself on the furthest point from its root. Because divine masculine order is rooted in the Sahasrara. And if you take it as far away from its home position as you possibly can, you reach the Mooladhara. And this is where you would find the manifestation of Bhairava.
 
 Consider what that means. It means that you are dragging the sun down into the depths of darkness. You are forcefully bringing the light into the shadow. You are eclipsing the sun. And so if you are rooted in divine masculine order, but you embrace the greatest extreme of shakti, you can act in the most animalistic fashion, but still be far more than just a simple animal.
 
@@ -160,9 +160,9 @@ We are all born as Aghori. When you are a child, when you are a baby, you play w
 
 But that does not mean that we are born powerful, because the condition that we exist within upon birth is an unrefined condition, unrefined aspects of shakti. And so if you want to reach your fullest potential, you must begin to discriminate. Unfortunately, or fortunately, depending upon your perspective, the discrimination that you apply creates separation between you and God.
 
-And in fact, the greatest separation between the self and God is the individuated form. It is flesh and blood, which is an aspect of the muladhara. Your skin is a border. It is a protective border that keeps bacteria and other poisons from entering into your body. So it preserves the self. But simultaneously, it acts as a border to unification. It acts as a barrier to the realization of God consciousness.
+And in fact, the greatest separation between the self and God is the individuated form. It is flesh and blood, which is an aspect of the Mooladhara. Your skin is a border. It is a protective border that keeps bacteria and other poisons from entering into your body. it preserves the self. But simultaneously, it acts as a border to unification. It acts as a barrier to the realization of God consciousness.
 
-So what must be done? Well, the border has to be dissolved. But of course, if you are dissolving that which protects you from the poisons of this earth, you are placing yourself in great danger. And this is why so many of those who become aghoris fail to reach their ultimate potential. Because just one bad decision can lead to such a great dissolution of physical form that you cannot possibly recover.
+what must be done? Well, the border has to be dissolved. But of course, if you are dissolving that which protects you from the poisons of this earth, you are placing yourself in great danger. And this is why so many of those who become aghoris fail to reach their ultimate potential. Because just one bad decision can lead to such a great dissolution of physical form that you cannot possibly recover.
 
 The Aghoris consume flesh. They partake in the poisons. The meat that they take from a human body, that is the meat of God. A common practice is for an Aghori to sit in front of a burning body on a cremation pyre and watch the skull begin to build pressure. And then watch as the crown of the skull pops, explodes, and the brain falls out from the skull, and they scurry over to the brain, they pick it up and they eat it.
 

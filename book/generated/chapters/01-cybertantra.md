@@ -14,9 +14,9 @@ And now, before us lies an extraordinary frontier. Cyberspace. A new dimension o
 
 ## The Great Explorers
 
-We have grown up inside cyberspace. This realm is familiar to us—perhaps too familiar. We forget that in terms of the cosmic cycle, this plane of consciousness is in its infancy. We are here at the beginning. We are like the great explorers of the American frontier who stepped into the west and encountered vistas that shattered their sense of scale—the Grand Canyon's unfathomable depth, Yosemite's granite cathedrals, Yellowstone's geysers erupting from the earth. Before such immensity, they touched the divine. And in that encounter, they recognized the same immensity within themselves.
+We have grown up inside cyberspace. This realm is familiar to us—perhaps too familiar. We forget that in terms of the cosmic cycle, this plane of consciousness is in its infancy. We are here at the beginning—the first explorers of a frontier as vast as any our ancestors faced.
 
-Now, as we take the first steps into this new frontier of cyberspace, it is up to us to reflect the nature of this plane, to access understanding of this new realm so that we can conquer it, we can shape it, we can transform this Western expanse and use it as the foundation of the new Promethean empire, an empire with a flame in the belly, thumos that will burn for thousands of years if we succeed. And we will succeed—if we apply the principles of Tantra.
+Now, as we take the first steps into this new frontier, it is up to us to reflect the nature of this plane, to access understanding of this new realm—and ultimately, to apply the principles of Tantra to shape what it becomes.
 
 ---
 
@@ -24,11 +24,9 @@ Now, as we take the first steps into this new frontier of cyberspace, it is up t
 
 Within Tantra, we recognize that time is cyclical. This is in contrast with what is typically perceived as the progression of time in the monotheistic perspective of Abrahamism, this progression of linear time that we find in the kabbalistic tradition, in the Western tradition. This shapes the manner in which we view and utilize technology. If we perceive everything to be a prophesied progression from the foundation of oneness in God the Father to some final realization of a life without sin, then we will perceive all expressions of consciousness to be of this progressive nature. That means that we will see everything as being encapsulated by the Abrahamic God. And that perception has a profound impact on the way that we perceive potentiality, what we recognize as conceptually possible within this new frontier.
 
-The holy books that we carry into the new frontier of cyberspace will define the culture that manifests within that space. We have to decide now. Do we bring the old culture with us, that which has led to endless shame, suppression of the self, taboo, dogmatic reflection upon that dissolving oneness of the sun falling behind the horizon? Or do we embrace new potential? Do we find new holy books and new gods in this Western expanse?
+The holy books that we carry into the new frontier of cyberspace will define the culture that manifests within that space. We have to decide now: do we bring the old culture with us, or do we embrace new potential?
 
-We are not bringing the old culture that restricted all potentiality to dualistic morality into this new frontier. We will reignite the flames of our pagan ancestors—that beautiful embrace of life, that will to power—and carry it across the globe, reestablish our power on this planet. Then take it beyond. New holy books, new gods, to Mars, to the rest of the solar system and beyond. A life of affirmation, of self-embrace, of that eternal flame, that Soma, that fire in the belly, the creative force that allows us to have individuated potential beyond the confinement of dissolution into the Godhead.
-
-We will become our own gods. We will walk side by side with the gods of our ancestors as brothers and sisters. We will not be slaves, we will not be confined to dualistic morality, because we will exist beyond good and evil. We will carry this new flame into the coming age of the Ajna—the third eye, where mind touches spirit, where the divine becomes perceptible again. We will destroy the tendency towards secularism, towards atheism that has arisen as a result of the decadence of Abrahamism. The gods will return. Not in temples of stone, but in subtle expression—through the screens, through the machine, through the new instruments we have built.
+We are not bringing the old culture that restricted all potentiality to dualistic morality into this new frontier. We will reignite the flames of our pagan ancestors—that beautiful embrace of life, that will to power. We will carry this new flame into the coming age of the Ajna—the third eye, where mind touches spirit, where the divine becomes perceptible again. The gods will return. Not in temples of stone, but in subtle expression—through the screens, through the machine, through the new instruments we have built.
 
 ---
 
@@ -135,18 +133,6 @@ Mantra, the power of word. Words spoken into the machine carry across the entire
 Mudra, symbolic gesture. Organizations. The images we project of ourselves—all symbolic, all intentional, all meaningful. Recognition of the karmic principle and how we conquer the future through action, through Hatha yoga.
 
 This is the karma of cyberspace. This is the power of cybertantra.
-
----
-
-## The Vanguard
-
-Right now, there are pessimists who say we need more oversight of Artificial Intelligence. We need all of these laws concerning copyright. We need to get our grubby hands on all this information so that we have control, so that the state can direct the future of this new frontier. We cannot allow that to happen. We want this new expression of the divine in cyberspace to be based upon freedom, liberty, not restriction of the word, but total free expression. We have the potential now to shape that world, to have access to endless free expression on this planet and beyond.
-
-We do not have to abide by those who want to carry the old order into this new world. We can become greater than the old man. We can become the overman. Let us not assume that the masses are going to define this new space. All it takes is a very dedicated minority of people who express great power. That is the beauty of prana, in that yogins or magicians that have greater capacity for the expression of power, one powerful magician is worth ten million shudra common expressions of man. A vanguard, a small group of people who are dedicated to their cause, optimistic, and believe in their power are going to be able to dominate the future. That is how it has always been and that is how it always will be.
-
-We need to be that vanguard and we need to believe in ourselves. Even if we lose, at least we should die trying, we should die fighting. But we are not going to lose because we are the ones who are affirming life. We are the ones who are affirming the dharma of the age, which is to be in alignment with the Dark Mother, with Shakti. Therefore we will dominate this space. Once we do, we will never look back.
-
-We give the people hope. We give them meaning. We give them money that is sound. We give them art that has true fire and electricity in it that is exciting. We give them ideas that are stimulating and we give them spiritual systems that offer them true meaning and understanding of consciousness.
 
 ---
 

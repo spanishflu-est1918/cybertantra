@@ -116,7 +116,7 @@ The Solar Cult breeds nihilism, and Nietzsche offered us a path out of nihilism.
 
 It is within that individuated expression of our consciousness that we are able to access another form of union, one that is not dissolving, one that affirms life.
 
-We are the vanguard. A small group of people who are dedicated to their cause, optimistic, and believe in their power are going to be able to dominate the future. And that's how it's always been and that's how it always will be. So we need to be that vanguard and we need to believe in ourselves. And even if we lose, at least we should die trying, we should die fighting.
+We are the vanguard. A small group of people who are dedicated to their cause, optimistic, and believe in their power are going to be able to dominate the future. And that's how it's always been and that's how it always will be. we need to be that vanguard and we need to believe in ourselves. And even if we lose, at least we should die trying, we should die fighting.
 
 But we're not going to lose because we're the ones who are affirming life. We're the ones who are affirming the dharma of the age, which is to be in alignment with the Dark Mother, with Shakti. And so therefore we will dominate this space. And once we do, we'll never look back.
 
@@ -124,7 +124,7 @@ But we're not going to lose because we're the ones who are affirming life. We're
 
 ## Coda: The Rising Sun
 
-So take responsibility for the cultivation of your fire and be a keeper of the flame for eternity.
+take responsibility for the cultivation of your fire and be a keeper of the flame for eternity.
 
 Find Soma, distill it, extract it, sprinkle it, give it to others. Be a youthful expression, be a positive rising sun light to other people. Inspire them to also search, to go west beyond the horizon and find that sacred drink that will grant you immortality.
 

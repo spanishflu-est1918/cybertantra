@@ -6,7 +6,7 @@ We are on the cusp of a new age. The mind will no longer be dominant. Society wi
 
 ## The End of Modernity
 
-Tonight we're going to talk about civilizational ages and the process of transferring from the Vishuddhi age, which is the age of modernity, the age that we have been in for a very long time. And we are transferring now into the Ajna age.
+civilizational ages and the process of transferring from the Vishuddhi age, which is the age of modernity, the age that we have been in for a very long time. And we are transferring now into the Ajna age.
 
 Modernity is synonymous with the age of the Vishuddhi. It is the expression of the power of the mind and the desire for individuation from a point of conceptualization. In this age, man becomes God and the elements of spirit, fire and body are subject to the will of the mind. This age brought us revolution in technology and industry, developments in law and philosophy, the primacy of mental conceptualization, the power of manifestation through thought.
 
@@ -20,7 +20,7 @@ In order to understand the significance of the movement into the Ajna age, it is
 
 In yoga we would refer to the state of being awake and aware of your surroundings as awareness. But consciousness is the energetic expression of a given thing that is identifiable through experience and linked to the chakras. The chakras are the formal expression of consciousness. It is through the chakras that we can understand the differentiation in consciousness and we can rank consciousness, we can compare consciousness, we can understand the fabric of the cosmos.
 
-Consciousness paints a picture and each chakra provides a different color to the portrait. That full image that you experience is the culmination, the accumulation of all of the various forms of consciousness that influence your perception. So you can find the base color in the portrait, and upon that base you build new elements, new colors, until you craft a full image.
+Consciousness paints a picture and each chakra provides a different color to the portrait. That full image that you experience is the culmination, the accumulation of all of the various forms of consciousness that influence your perception. you can find the base color in the portrait, and upon that base you build new elements, new colors, until you craft a full image.
 
 ---
 
@@ -50,7 +50,7 @@ The Ajna is our link to that place, the black door at the end of the hallway tha
 
 The Ajna is half mind and half spirit. This is the source of its terrible power and its terrible danger.
 
-The Ajna, in terms of the chakras, is placed between the Vishuddhi and the Sahasrara. The Vishuddhi being the place of pure mind, the Sahasrara being the place of pure spirit. So we have with the Ajna this communicative aspect. It is the communication between mind and spirit which is the nature of the Ajna chakra.
+The Ajna, in terms of the chakras, is placed between the Vishuddhi and the Sahasrara. The Vishuddhi being the place of pure mind, the Sahasrara being the place of pure spirit. we have with the Ajna this communicative aspect. It is the communication between mind and spirit which is the nature of the Ajna chakra.
 
 If you're operating from the pure seat of mind and you experience something that is disturbing, you can rationalize it and you can say, okay, that was fucked up, but maybe I didn't actually see what I thought I saw. Maybe that little gremlin in the corner of the room is just a figment of my imagination. And maybe it is. But when you're operating from the pure seat of mind, you can tell yourself that, and you can believe it, and you can affirm the radical skepticism which allows for purification of experience in the Vishuddhi.
 
@@ -64,7 +64,7 @@ But if you exist between these two points, you're going to see the gremlin in th
 
 What does the age of Ajna have in store for us? We can understand this by observing the nature of the Ajna as it pertains to civilizations.
 
-If you think about the Svadhisthana, the Svadhisthana is the adversarial point of consciousness to the Ajna. And the Svadhisthana deals with differentiation. It deals with materiality, the sensuous element, so the five senses. Japan is a good example of a civilization that is very much rooted in the Svadhisthana. What does that look like? It is intensely hierarchical. There is intense attention, awareness brought to the material quality of things. There is a strong awareness of race, and there is intense refinement.
+If you think about the Swadhisthana, the Swadhisthana is the adversarial point of consciousness to the Ajna. And the Swadhisthana deals with differentiation. It deals with materiality, the sensuous element, so the five senses. Japan is a good example of a civilization that is very much rooted in the Swadhisthana. What does that look like? It is intensely hierarchical. There is intense attention, awareness brought to the material quality of things. There is a strong awareness of race, and there is intense refinement.
 
 Now, what would the opposite of that look like? When we're talking about the Ajna as it applies to civilization, what we see is material dissolution. We see a crumbling of the material senses. We see a collapse of the recognition of hierarchy, and we see the rise of an intense mysticism.
 
@@ -126,7 +126,7 @@ We have created all of the gods that exist on this planet right now. And that is
 
 No longer can we operate from an assumption of logic and reason and grounding in the mind. We have to fly. We have to float. We have to go into the land of mist. We are no longer in the land of air. Mystification is the foundation of the work that we will now do in this new culture.
 
-If we do not leave the foundation of the old order, if we do not bring the spirit into the machine, if we do not leave the confinement of logic and reason and go into that land of the uncanny, we will be stunted forever. So the future belongs to those who are willing to see the spirit of the thing and learn how to interact with it.
+If we do not leave the foundation of the old order, if we do not bring the spirit into the machine, if we do not leave the confinement of logic and reason and go into that land of the uncanny, we will be stunted forever. the future belongs to those who are willing to see the spirit of the thing and learn how to interact with it.
 
 Those who were arguing against the automobile, they were left behind. Those who fear AI as pure poison, who see only threat in the ghost in the machine, who cannot recognize the divine mirror reflecting unified consciousness---they too will be left behind. The programmers of the future are techno priests. Whoever can dominate that space will dominate the global religious culture.
 
@@ -146,7 +146,7 @@ In the Western magic tradition, I associate the Ajna with the fisherman. The fis
 
 And you can wade out into the water and you can get your ankles wet, you can even walk into your knees, to your waist, to your chest. But the further you get out into the ocean, the bigger the waves get, the stronger the pull of the sea. It pulls you, momentum builds and it pulls you deeper and deeper out into the depths. And if you're not careful, if you go too far, you can get lost and you can end up in a mental institution. You can end up hurting yourself, you can end up hurting somebody else. Because there's a lot of dangerous things in those waters waiting for you to slip up, to lose your footing, to forget where you're at. And as soon as that happens, it's over.
 
-So when we approach the Ajna in a right hand path practice, we do so with rules, rules of subtle space. If you're going into subtle space, you have to be like the fisherman. You have to have the right equipment.
+when we approach the Ajna in a right hand path practice, we do so with rules, rules of subtle space. If you're going into subtle space, you have to be like the fisherman. You have to have the right equipment.
 
 ---
 

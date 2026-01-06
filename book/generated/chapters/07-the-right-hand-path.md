@@ -68,19 +68,19 @@ The Mooladhara is directly related to security. It is related to all of your pri
 
 Ultimately, every maladjustment, every single one that manifests within the Mooladhara, can be traced back to that one essential poison of greed. If you possess this awareness that the maladjustments in anger, consumptive behavior, sadness, confusion---whatever maladjustment may occur---all of these things are related somehow to greed. If you know this, you can begin to work through all of these maladjustments.
 
-Once you have achieved that, once you have overcome these maladjustments and you can exist peacefully, you can exist in a state of meditation within the Mooladhara. That is when you know that you have gained body awareness and you are ready to move on. Advance up the mountain and enter into the Svadhisthana.
+Once you have achieved that, once you have overcome these maladjustments and you can exist peacefully, you can exist in a state of meditation within the Mooladhara. That is when you know that you have gained body awareness and you are ready to move on. Advance up the mountain and enter into the Swadhisthana.
 
 ---
 
-## The Svadhisthana: Envy
+## The Swadhisthana: Envy
 
-The Svadhisthana is refinement. It is the root of differentiation within consciousness. When we begin to recognize the difference between black and white, the difference between hot and cold, bland and spicy. It is still a Tamas state of consciousness. There is an earthiness about it. But there is also this element of fire. The Svadhisthana rests between the Mooladhara and the Manipura. The element of fire that is mixed with the earth creates magma. Magma is the elemental designation of the Svadhisthana.
+The Swadhisthana is refinement. It is the root of differentiation within consciousness. When we begin to recognize the difference between black and white, the difference between hot and cold, bland and spicy. It is still a Tamas state of consciousness. There is an earthiness about it. But there is also this element of fire. The Swadhisthana rests between the Mooladhara and the Manipura. The element of fire that is mixed with the earth creates magma. Magma is the elemental designation of the Swadhisthana.
 
-Individuals who are rooted in the Svadhisthana tend to be the most sensuous of people. They navigate the world through the material and the sensations they experience through interaction with the material. They are sensing the material like a snake that slithers on the earth and sticks out its tongue and tastes the environment.
+Individuals who are rooted in the Swadhisthana tend to be the most sensuous of people. They navigate the world through the material and the sensations they experience through interaction with the material. They are sensing the material like a snake that slithers on the earth and sticks out its tongue and tastes the environment.
 
-The Svadhisthana is associated with the sin of envy. Every maladjustment that can be traced back to the sin of envy. Body dysmorphia. Hyper-focus on those elements of the material that are perceived to be negative. Nitpicking the shit out of yourself and your environment. Dead set on identifying everything, every little thing that could be wrong with that form.
+The Swadhisthana is associated with the sin of envy. Every maladjustment that can be traced back to the sin of envy. Body dysmorphia. Hyper-focus on those elements of the material that are perceived to be negative. Nitpicking the shit out of yourself and your environment. Dead set on identifying everything, every little thing that could be wrong with that form.
 
-How do you break from these rigid standards that we apply to ourselves in maladjusted Svadhisthana? First you have to recognize your Dharma. You have to sense whether or not you are pursuing your nature. Attachment is always a barrier to expressing your dharma. If you have an attachment to a specific idea, you have got to destroy it.
+How do you break from these rigid standards that we apply to ourselves in maladjusted Swadhisthana? First you have to recognize your Dharma. You have to sense whether or not you are pursuing your nature. Attachment is always a barrier to expressing your dharma. If you have an attachment to a specific idea, you have got to destroy it.
 
 ---
 

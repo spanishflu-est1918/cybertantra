@@ -53,9 +53,9 @@ Soma is the drink of the gods. The nectar of immortality. Ancient beyond the Ved
 
 From the Rigveda: We have drunk Soma and become immortal. We have attained the light the gods discovered. Now, what may foeman's malice do to harm us? What, O immortal, mortal man's deception?
 
-The drink that brings immortality. The fountain of youth. The Apple of Eden. Consume this nectar and you are sustained forever. Nothing your enemies do can defeat you. You remain powerful for eternity. So long as you have Soma.
+The drink that brings immortality. The fountain of youth. The Apple of Eden. Consume this nectar and you are sustained forever. Nothing your enemies do can defeat you. You remain powerful for eternity. long as you have Soma.
 
-The Rigveda states the moon is the cup from which the gods drink Soma. The moon is the divine feminine, Shakti. In the solar cycle, we associate the moon with the muladhara—the full moon, the physical world, the physical body.
+The Rigveda states the moon is the cup from which the gods drink Soma. The moon is the divine feminine, Shakti. In the solar cycle, we associate the moon with the Mooladhara—the full moon, the physical world, the physical body.
 
 The vessel that holds Soma is the blood. The body. When the gods drink from the cup, they drink from their own body or the body of another. You are the vessel of Soma.
 
