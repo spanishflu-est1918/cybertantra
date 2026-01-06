@@ -2,13 +2,13 @@
 
 ## The New Frontier
 
-Tantra is, at its core, the exploration of consciousness from a material foundation. When we explore consciousness, we are accessing every aspect of the cosmos, because within Tantra we define consciousness as the prime state of being. Awareness within Tantra extends to more than just the waking states. It extends to the sleep state, the dream state. You have physical awareness in your body. You have spiritual awareness in the subtle body.
+Tantra is, at its core, the exploration of consciousness from a material foundation. When we explore consciousness, we are accessing every aspect of the cosmos, for in Tantra consciousness is the prime state of being. Awareness extends beyond the waking state—to sleep, to dream, to the physical body, to the subtle body.
 
-Within Tantra, we are always searching for new frontiers, new spaces to explore and understand from that material foundation, new means of understanding the significance of these spaces. There is a never-ending search for the western horizon. The sun which rises in the east and in the Indian tradition is the seat of all Soma, that sacred nectar that fuels the inner fire, the thumos within our guts, is the creative force that grants us eternal youth. That sun. We always chase it endlessly to the west, where it threatens us with death. It threatens us with destruction, dissolution, the end to all frontiers, the end to all searching. But if we can maintain our connection to that creative fire that burns in our bellies in the manipura, then the pursuit never ends.
+This exploration demands territory. Within Tantra, we are always searching for new frontiers, new spaces to explore and understand from that material foundation, new means of understanding the significance of these spaces. There is a never-ending search for the western horizon. The sun which rises in the east and in the Indian tradition is the seat of all Soma, that sacred nectar that fuels the inner fire, the thumos within our guts, is the creative force that grants us eternal youth. That sun. We always chase it endlessly to the west, where it threatens us with death. It threatens us with destruction, dissolution, the end to all frontiers, the end to all searching. But if we can maintain our connection to that creative fire that burns in our bellies in the manipura, then the pursuit never ends.
 
-The endless pursuit of new expressions of consciousness, reaching new planes of awareness, granting new meaning, finding new understanding in relation to those frontiers. This is Tantra, and this is yoga. Yoga is a Sanskrit word that means unification, reunion. What we are doing when we practice yoga is we are seeking unification of consciousness.
+This reaching toward new expressions of consciousness, reaching new planes of awareness, granting new meaning, finding new understanding in relation to those frontiers. This is Tantra, and this is yoga. Yoga is a Sanskrit word meaning unification, reunion—and also magic. What we are doing when we practice yoga is we are seeking unification of consciousness.
 
-Before us lies an incredible, beautiful frontier. Cyberspace. A new dimension of consciousness.
+And now, before us lies an extraordinary frontier. Cyberspace. A new dimension of consciousness.
 
 ---
 
