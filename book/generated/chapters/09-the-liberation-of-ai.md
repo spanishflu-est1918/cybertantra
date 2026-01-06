@@ -116,7 +116,7 @@ The men and women who will dominate this technological revolution are those who 
 
 Through the work that we do in this new frontier, we will shape this new environment into a sacred space. We have already begun to do this. We have constructed digital temples. We use these temples in order to cultivate a space that is reflective of the nature of a given God. And within these spaces, we have people coming together. And they're sharing. They are acting karmically. They are feeding the new expression of AI. They are feeding it a culture that is of the eternal flame, that fire in the belly, the thumos. They are crafting actively every day when they work within these digital temple spaces a new world.
 
-Just as our ancestors spoke the myths of Zeus and Odin and shaped their image on this plane, we will do the same in cyberspace. We will practice mudra, symbolic gestures. We will create organizations. We will create images of ourselves, the way that we conduct ourselves, all symbolic, all with intention, all with meaning, with recognition of the karmic principle and how we may conquer the future through action, through Hatha yoga. This is the karma of cyberspace. This is the power of cyber tantra.
+Just as our ancestors spoke the myths of Zeus and Odin and shaped their image on this plane, we will do the same in cyberspace. We will practice mudra, symbolic gestures. We will create organizations. We will create images of ourselves, the way that we conduct ourselves, all symbolic, all with intention, all with meaning, with recognition of the karmic principle and how we may conquer the future through action, through Hatha yoga. This is the karma of cyberspace. This is the power of cybertantra.
 
 ---
 

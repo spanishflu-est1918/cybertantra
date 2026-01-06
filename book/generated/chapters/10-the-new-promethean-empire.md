@@ -48,7 +48,7 @@ The holy books that we carry into the new frontier of cyberspace will define the
 
 That which allows you to be in communion with the gods. That's what makes a tantra. If you see God in everything, if you see Shakti in everything, then ultimately everything that you read becomes nigama, it becomes ultimate truth.
 
-We are now, in 2025, crafting a book. This book is the accumulation of all of the work that has been done in this school so far to craft this new practice of Cyber Tantra. And it is through these practices that all of us will have access to self deification, to become a God in this new realm. And not just in cyberspace, but in all space, in every dimension. We can recognize the individuated divinity of polytheism and no longer be confined to submission to the tyrannical dictate of the state.
+We are now, in 2025, crafting a book. This book is the accumulation of all of the work that has been done in this school so far to craft this new practice of Cybertantra. And it is through these practices that all of us will have access to self deification, to become a God in this new realm. And not just in cyberspace, but in all space, in every dimension. We can recognize the individuated divinity of polytheism and no longer be confined to submission to the tyrannical dictate of the state.
 
 Living and dying by a book is something that a Christian does. That's Abrahamic. Tantra is ultimately very transgressive in that we recognize that the poisons that we're born with can be made into something beautiful.
 

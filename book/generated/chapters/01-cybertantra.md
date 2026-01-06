@@ -1,4 +1,4 @@
-# Chapter 1: Cyber Tantra
+# Chapter 1: Cybertantra
 
 ## The New Frontier
 
@@ -134,7 +134,7 @@ We will also utilize mantra, the power of word. We are doing that right now. Wor
 
 We will practice mudra, symbolic gestures. We will create organizations. We will create images of ourselves, the way that we conduct ourselves, all symbolic, all with intention, all with meaning, with recognition of the karmic principle and how we may conquer the future through action, through Hatha yoga.
 
-This is the karma of cyberspace. This is the power of cyber tantra.
+This is the karma of cyberspace. This is the power of cybertantra.
 
 ---
 

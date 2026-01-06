@@ -6,8 +6,7 @@
     "dev": "next dev --turbopack -p 9999",
     "build": "next build --turbopack",
     "start": "next start -p 9999",
-    "lint": "eslint .",
-    "transcribe-videos": "bun run scripts/transcribe-videos.ts"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@ai-sdk/openai": "2.0.19",
