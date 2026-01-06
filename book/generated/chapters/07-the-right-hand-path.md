@@ -26,7 +26,7 @@ Ultimately, the Right Hand Path is all about removing compulsion so that when we
 
 Compulsion means you do not have a choice. They give you a cookie and you fucking eat it. Indulgence means they give you the cookie and you say, hmm, do I want this? Yeah, I do want this. I take it and I eat it and I enjoy it. Because I have a choice. I am not just reacting. I am not just a wild animal. I have regained my humanity. I am able to express my will. That is what we want.
 
-Most people do not possess the ability to express their will in this manner. They exist almost entirely in a state of reactivity. Being born of the earth, there is a tendency to want to consume. This is an aspect of the Muladhara---the consumptive aspect, the mindless consumptive aspect. Without a point of contrast, compulsive activity becomes dull---yet the compulsion continues regardless of satisfaction.
+Most people do not possess the ability to express their will in this manner. They exist almost entirely in a state of reactivity. Being born of the earth, there is a tendency to want to consume. This is an aspect of the Mooladhara---the consumptive aspect, the mindless consumptive aspect. Without a point of contrast, compulsive activity becomes dull---yet the compulsion continues regardless of satisfaction.
 
 If they are not an indulgence, if they are a compulsion, they can undermine my power. You could become addicted to the Internet. You can become internalized in this way. You find the compulsion and you apply the necessary yogic method to address that compulsion.
 
@@ -54,7 +54,7 @@ You cannot deny the self. You cannot reject the self. You cannot kill the ego un
 
 ## Maladjustments
 
-There is potential for each chakra to bring us power or to undermine our power. In order to understand what is present within each state of consciousness, we have to enter into those states. We can enter into the state of consciousness such as the Muladhara and we can see what is in there.
+There is potential for each chakra to bring us power or to undermine our power. In order to understand what is present within each state of consciousness, we have to enter into those states. We can enter into the state of consciousness such as the Mooladhara and we can see what is in there.
 
 What is keeping us grounded? What is keeping us from moving forward? What about this state of consciousness is leading us to compulsion? What is bringing us to a state of attachment? What is keeping us from advancing towards ego death?
 
@@ -62,19 +62,19 @@ It is very important, if you are going to be in an independent practice, to be v
 
 ---
 
-## The Muladhara: Greed
+## The Mooladhara: Greed
 
-The Muladhara is directly related to security. It is related to all of your primitive needs, your primitive desires. Shelter. Food. Sex. Security. All of these things are aspects of the Muladhara in a primitive sense.
+The Mooladhara is directly related to security. It is related to all of your primitive needs, your primitive desires. Shelter. Food. Sex. Security. All of these things are aspects of the Mooladhara in a primitive sense.
 
-Ultimately, every maladjustment, every single one that manifests within the Muladhara, can be traced back to that one essential poison of greed. If you possess this awareness that the maladjustments in anger, consumptive behavior, sadness, confusion---whatever maladjustment may occur---all of these things are related somehow to greed. If you know this, you can begin to work through all of these maladjustments.
+Ultimately, every maladjustment, every single one that manifests within the Mooladhara, can be traced back to that one essential poison of greed. If you possess this awareness that the maladjustments in anger, consumptive behavior, sadness, confusion---whatever maladjustment may occur---all of these things are related somehow to greed. If you know this, you can begin to work through all of these maladjustments.
 
-Once you have achieved that, once you have overcome these maladjustments and you can exist peacefully, you can exist in a state of meditation within the Muladhara. That is when you know that you have gained body awareness and you are ready to move on. Advance up the mountain and enter into the Svadhisthana.
+Once you have achieved that, once you have overcome these maladjustments and you can exist peacefully, you can exist in a state of meditation within the Mooladhara. That is when you know that you have gained body awareness and you are ready to move on. Advance up the mountain and enter into the Svadhisthana.
 
 ---
 
 ## The Svadhisthana: Envy
 
-The Svadhisthana is refinement. It is the root of differentiation within consciousness. When we begin to recognize the difference between black and white, the difference between hot and cold, bland and spicy. It is still a Tamas state of consciousness. There is an earthiness about it. But there is also this element of fire. The Svadhisthana rests between the Muladhara and the Manipura. The element of fire that is mixed with the earth creates magma. Magma is the elemental designation of the Svadhisthana.
+The Svadhisthana is refinement. It is the root of differentiation within consciousness. When we begin to recognize the difference between black and white, the difference between hot and cold, bland and spicy. It is still a Tamas state of consciousness. There is an earthiness about it. But there is also this element of fire. The Svadhisthana rests between the Mooladhara and the Manipura. The element of fire that is mixed with the earth creates magma. Magma is the elemental designation of the Svadhisthana.
 
 Individuals who are rooted in the Svadhisthana tend to be the most sensuous of people. They navigate the world through the material and the sensations they experience through interaction with the material. They are sensing the material like a snake that slithers on the earth and sticks out its tongue and tastes the environment.
 

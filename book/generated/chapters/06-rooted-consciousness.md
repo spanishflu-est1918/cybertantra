@@ -12,7 +12,7 @@ This discovery came through years of practice and absorbing the dogma from Right
 
 I started to realize also that the idea of unlocking chakras, unblocking them, is utter bullshit. Because I realized that these chakras relate to elements within the self. This is something I had to discover on my own because the tradition had been lost, obscured for thousands of years.
 
-I realized that, okay, I possess a mind. I possessed a mind before I began the kundalini process. So I don't need to unblock the Vishuddhi in order to have a mind. I already have a mind. I don't need to unblock the Muladhara in order to have a blood body, a racial body, a physical body. I already have that.
+I realized that, okay, I possess a mind. I possessed a mind before I began the kundalini process. So I don't need to unblock the Vishuddhi in order to have a mind. I already have a mind. I don't need to unblock the Mooladhara in order to have a blood body, a racial body, a physical body. I already have that.
 
 You don't have to open any chakra to have access to all of these elements of consciousness which exist within you simultaneously.
 
@@ -87,7 +87,7 @@ Rooted consciousness does not rank the chakras in terms of their energetic super
 
 Everyone is born with a type of consciousness, consciousness that corresponds to one of the seven chakras. The consciousness that an individual is born with is referred to as the rooted consciousness or rooted state. This is a home consciousness that is represented by a chakra.
 
-This rooted state colors all experience. If you are born with a rooted consciousness in the Muladhara and then you shift to the Manipura, you are going to be acting predominantly from the Manipura, but it is going to be colored by your rooted state in the Muladhara. The Muladhara expression of the Manipura is distinct from how a Manipura-rooted person experiences their own state.
+This rooted state colors all experience. If you are born with a rooted consciousness in the Mooladhara and then you shift to the Manipura, you are going to be acting predominantly from the Manipura, but it is going to be colored by your rooted state in the Mooladhara. The Mooladhara expression of the Manipura is distinct from how a Manipura-rooted person experiences their own state.
 
 Each rooted state exists on a spectrum with an adversarial state. The Manipura and Vishuddhi exist in opposition. The Ajna and Svadhisthana exist in opposition. Though the adversarial states on the spectrum are in opposition, they do share certain similarities. Through yogic practices it is possible to effectively integrate one's adversarial state.
 
@@ -111,11 +111,11 @@ The Manipura is expressive in nature and it is very materially oriented. Being o
 
 There is a big difference between being introduced to a chakra through the mind, through the intellect, and actually experiencing it in the self, in every aspect of the self, in the body, in the mind and in the spirit. Because when you are able to do this through yoga, through unification, you gain a full insight into the aspects of that consciousness in other people as well as yourself.
 
-For most people, if you examine, for example, a text on the Muladhara or the Manipura or the Svadhisthana, you are going to read about certain traits that are associated with that specific state of consciousness. And while it is helpful to examine these specific traits, there is a deeper meaning to be accessed in actually experiencing the energetic expression.
+For most people, if you examine, for example, a text on the Mooladhara or the Manipura or the Svadhisthana, you are going to read about certain traits that are associated with that specific state of consciousness. And while it is helpful to examine these specific traits, there is a deeper meaning to be accessed in actually experiencing the energetic expression.
 
 For example, with the Vishuddhi, you can read about how the Vishuddhi is a state of the mind, of the intellect. And within the expression of the intellect, there are certain behavioral traits that are associated with the mind. And those might include someone who reads a lot or someone who is very introspective, is not a very social person. And so if somebody possesses those individual personality traits, you might assume that they are rooted in the Vishuddhi or they are representing Vishuddhi consciousness. But this is not necessarily so, because these personality traits that manifest can also manifest in other states of consciousness. But the way in which they manifest is different. It is altered. It is specific to the energetic expression of that chakra.
 
-When someone in the Muladhara expresses anger, there is a grounding element to the anger. There is an earthiness to the anger. When someone in the Muladhara expresses sexuality, once again, there is a grounded aspect to it. There is a deep connection to the earth, the soil, the mother, the blood in this expression.
+When someone in the Mooladhara expresses anger, there is a grounding element to the anger. There is an earthiness to the anger. When someone in the Mooladhara expresses sexuality, once again, there is a grounded aspect to it. There is a deep connection to the earth, the soil, the mother, the blood in this expression.
 
 Now, someone in the Vishuddhi can also express anger. They can be a very angry person, but their anger comes from a different place. It is airy, it is cool. There is a pointedness to it.
 
@@ -147,9 +147,9 @@ Fixing these maladjustments is not a matter of opening that specific state of co
 
 The most effective method for removing any sort of maladjustment is to go directly to that state of consciousness, whether you are moving to the Vishuddhi or the Manipura or the Sahasrara or any of the other chakras. Going directly to that place and then working through whatever issue is present.
 
-We identify in the Muladhara, what is it, what is keeping us grounded, what is keeping us from moving forward. And then we utilize yogic practices in order to address those problems, in order to address those maladjustments. And once we have done that, once we have completely adjusted that state of consciousness and we have cleared out all the clutter and we know that state of consciousness, then we advance to the next state.
+We identify in the Mooladhara, what is it, what is keeping us grounded, what is keeping us from moving forward. And then we utilize yogic practices in order to address those problems, in order to address those maladjustments. And once we have done that, once we have completely adjusted that state of consciousness and we have cleared out all the clutter and we know that state of consciousness, then we advance to the next state.
 
-Once you have overcome these maladjustments and you can exist peacefully, you can exist in a state of meditation within the Muladhara. That is when you know that you have gained body awareness and you are ready to move on.
+Once you have overcome these maladjustments and you can exist peacefully, you can exist in a state of meditation within the Mooladhara. That is when you know that you have gained body awareness and you are ready to move on.
 
 ---
 
@@ -229,7 +229,7 @@ Next time you practice your asanas, think of that. Think of the fact that your b
 
 ## What Has Always Been Yours
 
-The conclusion is simple: you have never lacked these states of consciousness. You have possessed a mind, a body, inner fire, and spirit since the moment of your birth. The Muladhara did not need unlocking for you to have a blood body. The Vishuddhi did not need opening for you to possess a mind.
+The conclusion is simple: you have never lacked these states of consciousness. You have possessed a mind, a body, inner fire, and spirit since the moment of your birth. The Mooladhara did not need unlocking for you to have a blood body. The Vishuddhi did not need opening for you to possess a mind.
 
 What was lacking was awareness. What was lacking was the ability to shift between these states with intention. What was lacking was a framework that did not impose a false hierarchy upon your very nature.
 

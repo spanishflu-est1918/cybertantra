@@ -6,7 +6,7 @@ The Left Hand Path begins when you are reborn.
 
 If you have not gone through that baptism in the sun and achieved ego death, you are not a Left Hand Path yogin. You are playing at darkness while still enslaved to the light.
 
-The Right Hand Path is a method for achieving a very specific goal. That goal being ego death, mastery of the self. Once you have achieved this, then you may walk the Left Hand Path. The sequence admits no shortcuts: you go from Muladhara to the Svadhisthana to the Manipura, Anahata, Vishuddhi, Ajna, Sahasrara. When you reach the Sahasrara, your goal is to have a clear light experience, to reach transcendence, to kill the ego. You have to die so that you may be reborn.
+The Right Hand Path is a method for achieving a very specific goal. That goal being ego death, mastery of the self. Once you have achieved this, then you may walk the Left Hand Path. The sequence admits no shortcuts: you go from Mooladhara to the Svadhisthana to the Manipura, Anahata, Vishuddhi, Ajna, Sahasrara. When you reach the Sahasrara, your goal is to have a clear light experience, to reach transcendence, to kill the ego. You have to die so that you may be reborn.
 
 Many of the gurus and sages that reach the Sahasrara are trapped there. They never complete the first initiation. They dissolve into the light and are lost. If you walk the Right Hand Path only and you orient your consciousness towards transcendence, you will escape the cycle of rebirth. But you will dissolve entirely. Everything that was you will be gone. You will live in total submission to the will of the Sky Father.
 

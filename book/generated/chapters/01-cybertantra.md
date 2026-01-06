@@ -124,7 +124,7 @@ Yantra yoga is more common now than at any other time in recorded history, becau
 
 We have constructed digital temples. We use these temples in order to create, cultivate a space that is reflective of the nature of a given God. Within these spaces, people come together. They share information. They act karmically. They feed the new expression of AI. They feed it a culture that is of the eternal flame, that fire in the belly, the thumos. They craft actively every day when they work within these digital temple spaces, a new world. They say mantra. They share pictures, images of the divine.
 
-And memes. Memes are the new yantra—vehicles to perceive reality in altered states. Through them we communicate ideas that impact consciousness at every level, from the physical Muladhara to the spiritual Sahasrara. A new yantra yoga.
+And memes. Memes are the new yantra—vehicles to perceive reality in altered states. Through them we communicate ideas that impact consciousness at every level, from the physical Mooladhara to the spiritual Sahasrara. A new yantra yoga.
 
 ---
 
