@@ -62,6 +62,25 @@ The vessel that holds Soma is the blood. The body. When the gods drink from the 
 The ingredients for Soma grow on the mountain. The mountain of consciousness. The spine. Mount Meru. Mount Olympus. Yggdrasil. This mountain is not purely physical. It exists just beyond the realm of matter.
 
 
+## The Eagle and the Guardians
+
+Soma is said to reside in the heavens. And it is said in the Aryan mythology that Soma is brought down by an eagle, brought to the people, brought to the gods by an eagle. An eagle who risks his life to bring that beautiful drink to us.
+
+This is Prometheus bringing the spark of life down to man, to give him access to godhood. And it is dangerous. It is a dangerous endeavor for the eagle.
+
+The mountain where Soma resides is not merely geographical. It represents states of consciousness beyond ordinary perception. The mountain lies beyond the horizon. And what does the horizon represent? It represents the limits of our perception. Breaking through perceptual limitations allows one to find that holy mountain and climb it. As we climb the mountain, we stumble across that tall green stalk, that proud strong base that holds up this beautiful yellow fire. And we grasp that fire and we grind that stalk and we create that nectar and drink it.
+
+But the mountain is guarded.
+
+The Gandharvas cherish Soma. The Gandharvas are the defenders of Soma. They are like the wrathful deities that prevent you from being able to access that sacred drink. In tantric iconography, wrathful guardians stand at the threshold of every sacred space. They test worthiness. They destroy those who approach without preparation.
+
+And yet the Gandharvas are also the holy musicians in the court of Indra. The guardians who prevent access are themselves intimately connected to the divine court. This presents a paradox: the obstacle is the path. One must understand and perhaps become like the Gandharvas to pass them.
+
+If you can overcome them, you can gain Soma and you can keep it. Because once you understand how to create Soma, once you know the formula, once you grind that beautiful plant within, you have a never-ending supply.
+
+Note the phrase: grind that beautiful plant within. The esoteric Soma is an internal process, not merely an external substance. The eagle's descent mirrors the practitioner's descent into embodiment—bringing divine fire into mortal form. The danger is real. Not everyone who seeks Soma survives the encounter with the Gandharvas. But for those who do, the supply becomes inexhaustible.
+
+
 ## The Recipe of Fire
 
 In the Vedas, Soma grows only in the mountains. A tall green plant with bright yellow hair. Take the yellow hair and the green stalk. Pound it against a rock until you generate heat. That heat generates excitement. This is how you create Soma.
