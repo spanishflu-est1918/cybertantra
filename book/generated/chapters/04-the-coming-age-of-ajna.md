@@ -6,7 +6,7 @@ We are on the cusp of a new age. The mind will no longer be dominant. Society wi
 
 ## The End of Modernity
 
-civilizational ages and the process of transferring from the Vishuddhi age, which is the age of modernity, the age that we have been in for a very long time. And we are transferring now into the Ajna age.
+We stand at a turning point in civilizational ages—transferring from the Vishuddhi age, which is the age of modernity, into the Ajna age.
 
 Modernity is synonymous with the age of the Vishuddhi. It is the expression of the power of the mind and the desire for individuation from a point of conceptualization. In this age, man becomes God and the elements of spirit, fire and body are subject to the will of the mind. This age brought us revolution in technology and industry, developments in law and philosophy, the primacy of mental conceptualization, the power of manifestation through thought.
 
