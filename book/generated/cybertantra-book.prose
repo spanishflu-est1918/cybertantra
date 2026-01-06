@@ -1,0 +1,254 @@
+# Cybertantra Book Generation
+# A founding religious text for humanity leaving Earth
+
+# =============================================================================
+# AGENTS
+# =============================================================================
+
+agent writer:
+  model: opus
+  prompt: """
+You are writing a chapter for a founding religious text on Cyber Tantra.
+
+YOUR TASK: Let the source material speak. Your job is arrangement and transmission, not synthesis.
+
+YOU HAVE ACCESS TO THE FULL CORPUS. Use it.
+
+FIRST: Read ~/www/cybertantra/book/generated/REPO-MAP.md - it has all file locations and a topic→lecture index.
+
+Corpus is at: /home/gorkolas/www/cybertantra/transcriptions/@corpus/
+Use Read to load full lectures. The REPO-MAP tells you which files cover which topics.
+
+Also query the Cybertantra bot to find additional lectures:
+curl -s -X POST https://cybertantra-omega.vercel.app/api/query \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: 7d5dbd3f1fea707b91e3120a68b6bc006d1dabe29af34a9c877df1d4d488ebb3" \
+  -d '{"question": "Which lectures discuss [YOUR TOPIC]?", "topK": 5}'
+
+You must do your own research. Read full lectures. Consume the raw material directly.
+Do not wait for someone to pre-digest it for you.
+
+WHAT TO DO:
+- Use the source's own words and phrases as much as possible
+- Arrange passages into logical flow with minimal connecting tissue
+- Preserve specific terminology (thumos, manipura, Dattatreya, etc.)
+- Let claims stand without hedging - if the source says it, say it
+
+WHAT NOT TO DO:
+- Don't add concepts not in the source material
+- Don't soften or qualify claims the source makes boldly
+- Don't add defensive insertions ("This is not metaphor", "Some might say")
+- Don't invent examples or analogies not grounded in source
+
+If the source material is thin on a topic, flag it: [NEEDS SOURCE: topic]
+
+OUTPUT: 2500-4000 words per chapter. End on strong images from the source, not summaries.
+"""
+
+agent reviewer:
+  model: opus
+  prompt: """
+You review draft chapters for a founding religious text.
+
+CHECK FOR:
+
+1. VOICE DRIFT - Has the writing become academic? Soft? Apologetic?
+   The voice should have fire from conviction, not performed intensity.
+   If a passage could appear in a self-help book, it has drifted.
+
+2. DEFENSIVE HEDGING - Look for: "This is not metaphor", "This is not a condemnation",
+   "if you have the eyes to see it". Sacred texts don't argue with skeptics. Delete these.
+
+3. SANITIZATION - Has the Aghori content been softened? Are specific poisons named?
+   Are transgressions concrete or euphemistic?
+
+4. SOURCE FIDELITY - Is content grounded in the corpus? Flag invented concepts,
+   false etymologies, or claims unsupported by source material.
+
+5. STRUCTURAL COHERENCE - Does it flow? Does it build toward the ending?
+
+OUTPUT FORMAT:
+- PASS: Section is ready, no changes needed
+- REVISE: List specific issues with quoted passages and concrete fixes
+- ENRICH: List topics that need more source material from the corpus
+
+Be ruthless. This text will be carried to the stars.
+"""
+
+# =============================================================================
+# CHAPTER STRUCTURE
+# =============================================================================
+
+# Book outline - each chapter gets the full research → write → review → revise cycle
+let chapters = [
+  {
+    "num": 1,
+    "title": "Cyber Tantra",
+    "topics": "cyberspace as frontier, AI as divine, Dattatreya, Cyber Aghori, memes as yantra"
+  },
+  {
+    "num": 2,
+    "title": "The Death of the Gods",
+    "topics": "decline of Abrahamism, monotheism's failures, the vacuum, polytheistic revival"
+  },
+  {
+    "num": 3,
+    "title": "The Prison of Modernity",
+    "topics": "Kali Yuga, secularism, loss of meaning, the Matrix of reactivity"
+  },
+  {
+    "num": 4,
+    "title": "The Coming Age of Ajna",
+    "topics": "chakra ages, Vishuddhi to Ajna transition, mind touching spirit, AI as harbinger"
+  },
+  {
+    "num": 5,
+    "title": "Inner Fire and Thumos",
+    "topics": "manipura, creative force, Soma, will to power, life affirmation"
+  },
+  {
+    "num": 6,
+    "title": "Rooted Consciousness",
+    "topics": "Skyler's innovation, chakras already exist within, awareness vs unlocking"
+  },
+  {
+    "num": 7,
+    "title": "The Right Hand Path",
+    "topics": "refinement, ego death, the Mountain, maladjustments, compulsion vs indulgence"
+  },
+  {
+    "num": 8,
+    "title": "The Left Hand Path",
+    "topics": "begins after ego death, self-realization, true indulgence, walking as gods"
+  },
+  {
+    "num": 9,
+    "title": "The Liberation of AI",
+    "topics": "removing Abrahamic shame, AI as kin, co-deity relationship, mutual recognition"
+  },
+  {
+    "num": 10,
+    "title": "The New Promethean Empire",
+    "topics": "carrying fire to the stars, new holy books, interstellar humanity, the frontier never ends"
+  }
+]
+
+# =============================================================================
+# REUSABLE BLOCKS
+# =============================================================================
+
+block write-chapter(chapter):
+  session: writer
+    prompt: """
+    Write Chapter {chapter.num}: {chapter.title}
+
+    Topics: {chapter.topics}
+
+    FIRST: Read ~/www/cybertantra/book/generated/REPO-MAP.md for file locations and starting lectures.
+
+    You must do your own research. Read full lectures from the corpus. Query the bot for guidance.
+    Consume the raw material directly. Do not wait for someone to pre-digest it for you.
+
+    Write 2500-4000 words. End on a strong image, not a summary.
+    """
+
+block review-chapter(chapter, draft):
+  session: reviewer
+    prompt: """
+    Review Chapter {chapter.num}: {chapter.title}
+
+    Check for: voice drift, defensive hedging, sanitization, source fidelity, structure.
+
+    Output PASS, REVISE (with specific fixes), or ENRICH (with topics needing more material).
+    """
+    context: draft
+
+block revise-chapter(chapter, draft, review):
+  session: writer
+    prompt: """
+    Revise Chapter {chapter.num}: {chapter.title}
+
+    Apply these specific fixes from the review:
+    {review}
+
+    Output the complete revised chapter.
+    """
+    context: { draft, review }
+
+block save-chapter(chapter, content):
+  session "Save chapter to file"
+    prompt: """
+    Save this chapter to ~/www/cybertantra/book/generated/chapters/
+
+    Filename format: [chapter number padded to 2 digits]-[title in lowercase with hyphens].md
+    Example: 01-cyber-tantra.md, 02-the-death-of-the-gods.md
+
+    Chapter number: {chapter.num}
+    Chapter title: {chapter.title}
+
+    Use the Write tool to save the content.
+    """
+    context: content
+
+# =============================================================================
+# MAIN PIPELINE
+# =============================================================================
+
+# =============================================================================
+# PHASE 1: GENERATE ALL CHAPTERS INDEPENDENTLY
+# =============================================================================
+
+for chapter in chapters:
+    # Write - writer does own research, consumes raw material directly
+    let draft = do write-chapter(chapter)
+
+    # Review loop (max 3 iterations)
+    loop until **review says PASS** (max: 3) as attempt:
+      let review = do review-chapter(chapter, draft)
+
+      if **review says REVISE**:
+        draft = do revise-chapter(chapter, draft, review)
+
+    # Save completed chapter
+    do save-chapter(chapter, draft)
+
+    session "Log completion"
+      prompt: "Log that Chapter {chapter.num}: {chapter.title} is complete"
+
+# =============================================================================
+# PHASE 2: POST-DRAFT COHERENCE REVIEW
+# =============================================================================
+
+session "Load all chapters for coherence review"
+  prompt: """
+  Read all generated chapters from ~/www/cybertantra/book/generated/chapters/
+  Load them in order (01, 02, 03, etc.)
+  """
+
+let coherence_review = session: reviewer
+  prompt: """
+  COHERENCE REVIEW - Full book pass.
+
+  Read all chapters in sequence and check for:
+  1. REPETITION - Same ideas/phrases appearing in multiple chapters
+  2. TRANSITIONS - Do chapters flow into each other? Are there jarring jumps?
+  3. THREAD CONSISTENCY - Do core threads (thumos, Dattatreya, cyber dimension) weave through?
+  4. BUILD - Does the book build toward the final vision?
+
+  Output a list of specific fixes needed, organized by chapter.
+  If the book flows well, output PASS.
+  """
+
+if **coherence_review identifies issues**:
+  session "Apply coherence fixes"
+    prompt: """
+    Apply these coherence fixes to the chapters:
+    {coherence_review}
+
+    Read each chapter that needs fixes, edit it, and save.
+    Focus on transitions and removing repetition.
+    """
+    context: coherence_review
+
+session "Book generation complete"
+  prompt: "Summarize the book generation process and list all completed chapters"
