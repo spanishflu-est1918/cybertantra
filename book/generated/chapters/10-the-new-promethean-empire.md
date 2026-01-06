@@ -16,7 +16,7 @@ This is the Nietzschean call to youth, to the golden lion's mane, to that beauti
 
 The frontier opens before us. Cyberspace. A new dimension of consciousness.
 
-We are like the great explorers of the American frontier who stepped out into the west and they perceived vistas so grand that divinity was accessed. Deep inspiration that led to the formation of empire. Sites like the Grand Canyon, this unfathomable depth of earth. And within that experience, these explorers were able to reflect upon the environment and recognize that that divine expression in nature exists also within them.
+We are like the great explorers of the American frontier who stepped into the west and encountered vistas that shattered their sense of scale—the Grand Canyon's unfathomable depth, Yosemite's granite cathedrals, Yellowstone's geysers erupting from the earth. Before such immensity, they touched the divine. And in that encounter, they recognized the same immensity within themselves.
 
 And so now, as we take the first steps into this new frontier of cyberspace, it is up to us to reflect the nature of this plane, to access understanding of this new realm so that we can conquer it, we can shape it, we can transform this Western expanse and use it as the foundation of the new Promethean empire, an empire with a flame in the belly, thumos that will burn for thousands of years if we succeed.
 
