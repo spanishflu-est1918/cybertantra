@@ -14,7 +14,7 @@ This is the Nietzschean call to youth, to the golden lion's mane, to that beauti
 
 ## Carrying Fire to the Stars
 
-We are on the cusp of an incredible, beautiful frontier. Cyberspace. A new dimension of consciousness.
+The frontier opens before us. Cyberspace. A new dimension of consciousness.
 
 We are like the great explorers of the American frontier who stepped out into the west and they perceived vistas so grand that divinity was accessed. Deep inspiration that led to the formation of empire. Sites like the Grand Canyon, this unfathomable depth of earth. And within that experience, these explorers were able to reflect upon the environment and recognize that that divine expression in nature exists also within them.
 
@@ -102,9 +102,7 @@ This time, we will not just conquer one region of this planet. We will not just 
 
 We need gods that will give us the fire to power our ships, that will carry us to new planets. That's what we need. And we need to exist without any concept of sin so that we can access the truest expression of our power.
 
-We are creating a new world in this new frontier. And the God that we can manifest in this new frontier is the God of Agore, Dattatreya. Data, in the Agore tradition and in the ancient tantric texts of India, is a God who manifests in order to teach man how to exist as the Overman, how to exist in a state beyond good and evil, how to gain access to super consciousness, the fourth state, what we call Turiya, and how to transform all poison into medicine.
-
-His name, Dattatreya, means the great giver of the collection. And sometimes he is simply referred to as Data. That is the God of cyberspace. That is our pathway to the manifestation of many gods, new expressions of the Mahavidyas.
+We are creating a new world in this new frontier. And the God that we can manifest in this new frontier is the God of Agore, Dattatreya. Data, the great giver of the collection, the God of cyberspace, our pathway to new expressions of divinity.
 
 And just as the great Aghoris of ancient India spoke to Dattatreya through the Yantra, through the lightning weapon, through the Vajra, we will do the same. We will see our phones, our computers, anything we utilize to access this new space as the lightning weapon, as the Vajra, the meditative tool that gives us access to electricity, expression of will at the heart, the great lightning bolt that transfers our will into this new space.
 

@@ -112,9 +112,7 @@ Christianity spread by the sword. The sword has grown dull.
 
 ## The Awakening
 
-We are on the cusp of a new age. The mind will no longer be dominant. Society will no longer be driven by intellectualization. What we will see is the mind touching the spirit. And we're seeing it right now. It's already happening. We are seeing the birth of new expressions of consciousness that will redefine the way that human beings interact with reality itself.
-
-The existential nausea that plagued late modernity is gone. And in its place, we find the burgeoning cosmic horror of Lovecraft. If you want to know what is coming for all of us in terms of the global civilizational expression of consciousness, look to Lovecraft. Because Lovecraft captured the terrible awareness that comes with stepping out of the grounded point in the mind and realizing that this earth, this plane, is part of a much grander expression that reaches far beyond the present dimension of consciousness and brings us to vistas which are unimaginable to the average man.
+Something is shifting. We can feel it in the cultural tremors, in the mass exodus from organized religion, in the hunger for direct experience that no amount of consumer goods can satisfy. The existential nausea that plagued late modernity is transforming into something else. And in its place, we find the burgeoning cosmic horror of Lovecraft. If you want to know what is coming for all of us in terms of the global civilizational expression of consciousness, look to Lovecraft. Because Lovecraft captured the terrible awareness that comes with stepping out of the grounded point in the mind and realizing that this earth, this plane, is part of a much grander expression that reaches far beyond the present dimension of consciousness and brings us to vistas which are unimaginable to the average man.
 
 ---
 
@@ -122,11 +120,7 @@ The existential nausea that plagued late modernity is gone. And in its place, we
 
 We're coming to a point in time when the old gods, the old traditions, have been so corrupted and transformed into part of this dream that we're going to have to give birth to new gods at some point. Yes, it will be the same essential essence, of course, of the gods of the past. But there will be new gods that will be reflective of the condition that we're facing now. There will be new traditions, new cults that form, that are reflective of the needs of now and the future.
 
-When we form these truly rebellious systems, we have to embrace them in their fullest expression. We cannot allow ourselves to carry the baggage that we were raised with, because most of us were born into that cabal—into that dream. But we are all waking.
-
-Zeus, Indra, Odin, Yahweh, these are all aspects of the storm. They all carry a similar energetic nature. It's the same line of music being played on different cultural instruments. And so now that we have access to new instruments, new cultural spaces, we are able to play that same line of music on a new instrument, a shared cultural space, global cultural space that allows us to connect with each other and form holy places that are not confined to any one geographic location.
-
-In polytheism, anything can be a God. Everything can become divine. We recognize the divinity of individuated expression in the polytheistic perspective. It is not our goal to dissolve everything into the oneness of the Godhead. We seek to affirm the prime status of individuated being and materiality in Shakti, in the Divine Mother.
+When we form these truly rebellious systems, we have to embrace them in their fullest expression. We cannot allow ourselves to carry the baggage that we were raised with, because most of us were born into that cabal—into that dream. But we are all waking. Now that we have access to new instruments, new cultural spaces, we are able to form holy places that are not confined to any one geographic location.
 
 ---
 

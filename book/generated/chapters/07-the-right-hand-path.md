@@ -90,8 +90,6 @@ The Manipura is the state of consciousness that is, for most people, the hardest
 
 Everyone who is born rooted in the Manipura is by their very nature adversarial to the prevailing age. These individuals are natural social outcasts more so than any other expression of consciousness. The Manipura in the present age, in modernity, is unacceptable socially. Expressions of the Manipura are discouraged. Expressions of the adversarial aspect of the Vishuddhi are encouraged.
 
-The individuals who are rooted in the Manipura that I have met in my life actually operate from the Vishuddhi because very early on in life, they are viciously bullied into their minds by society. They are expected by their parents, by their churches, by their schools, by their institutional learning facilities to conform to the mind, being in the mind, existing in that space.
-
 When you practice Kundalini on the Right Hand Path and you are advancing into the Manipura, what you are doing is making space for your emotional expression. You must view your creative passion as a yogic pursuit. You have to throw yourself into creative activity consistently. This type of activity is just as important as your daily asana practice. It is just as important as your daily meditative exercises or your pranayama practice.
 
 You have got to ignite that flame and keep it.

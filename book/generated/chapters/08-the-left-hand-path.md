@@ -36,11 +36,7 @@ In Vamachara, the idea is that you are releasing yourself from dogma, you are re
 
 When we allow Shakti to dictate the way that we behave, we are in a state of compulsion. And ultimately, the Right Hand Path is all about removing compulsion, so that when we reach the Left Hand Path we can engage with indulgence.
 
-Compulsion means you do not have a choice. They give you a cookie and you fucking eat it.
-
-Indulgence means you choose. They give you the cookie and you say, hmm, do I want this? Yeah, I do want this. I take it and I eat it and I enjoy it. Because I have a choice. I am not just reacting.
-
-You regain your humanity. You are able to express your will and you are free from a state of reactivity.
+This is the distinction we explored earlier: compulsion means no choice, indulgence means you choose. You regain your humanity. You are able to express your will and you are free from a state of reactivity.
 
 Most people do not possess the ability to express their will in this manner. They exist almost entirely in a state of reactivity. There is no pleasure in compulsion. There is just slavery. This applies to all domains: sexuality, consumption, technology, relationships. The drive to connect with shakti leads men to become compulsive in their sexuality. They are slaves to women. They live totally in compulsion to the will of women.
 
