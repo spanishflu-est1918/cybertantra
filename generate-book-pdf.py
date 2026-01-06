@@ -4,7 +4,7 @@
 import os
 import re
 from pathlib import Path
-from reportlab.lib.pagesizes import A5
+from reportlab.lib.pagesizes import A5, A6
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch, mm
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, KeepTogether
@@ -13,8 +13,11 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.colors import HexColor
 
-# Page size optimized for reMarkable (A5-ish, good for e-ink)
-PAGE_WIDTH, PAGE_HEIGHT = A5
+# Page sizes
+FORMATS = {
+    'tablet': A5,  # reMarkable, iPad
+    'mobile': (3.5*inch, 6*inch),  # Phone-friendly (iPhone-ish proportions)
+}
 
 # Color schemes
 THEMES = {
@@ -73,7 +76,7 @@ def parse_markdown(content: str) -> list:
 
     return elements
 
-def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
+def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark', format: str = 'tablet'):
     """Create PDF from chapter markdown files."""
 
     # Get colors for theme
@@ -81,18 +84,36 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
     BG_COLOR = colors['bg']
     TEXT_COLOR = colors['text']
 
+    # Get page size for format
+    PAGE_WIDTH, PAGE_HEIGHT = FORMATS.get(format, FORMATS['tablet'])
+    is_mobile = format == 'mobile'
+
+    # Adjust margins for format
+    if is_mobile:
+        margins = {'left': 8*mm, 'right': 8*mm, 'top': 10*mm, 'bottom': 10*mm}
+    else:
+        margins = {'left': 15*mm, 'right': 15*mm, 'top': 20*mm, 'bottom': 20*mm}
+
     # Setup document
     doc = SimpleDocTemplate(
         output_path,
         pagesize=(PAGE_WIDTH, PAGE_HEIGHT),
-        leftMargin=15*mm,
-        rightMargin=15*mm,
-        topMargin=20*mm,
-        bottomMargin=20*mm,
+        leftMargin=margins['left'],
+        rightMargin=margins['right'],
+        topMargin=margins['top'],
+        bottomMargin=margins['bottom'],
     )
 
     # Create styles
     styles = getSampleStyleSheet()
+
+    # Font sizes - scale down for mobile
+    if is_mobile:
+        sizes = {'title': 20, 'h1': 14, 'h2': 10, 'body': 9, 'toc': 9}
+        spacing = {'title_after': 15, 'h1_after': 12, 'h2_after': 8, 'body_after': 6}
+    else:
+        sizes = {'title': 28, 'h1': 18, 'h2': 12, 'body': 10, 'toc': 11}
+        spacing = {'title_after': 30, 'h1_after': 20, 'h2_after': 12, 'body_after': 8}
 
     # Background drawing function
     def draw_background(canvas, doc):
@@ -105,10 +126,10 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
     title_style = ParagraphStyle(
         'BookTitle',
         parent=styles['Title'],
-        fontSize=28,
-        leading=34,
+        fontSize=sizes['title'],
+        leading=sizes['title'] + 6,
         alignment=TA_CENTER,
-        spaceAfter=30,
+        spaceAfter=spacing['title_after'],
         fontName='Times-Bold',
         textColor=TEXT_COLOR,
     )
@@ -117,10 +138,10 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
     h1_style = ParagraphStyle(
         'ChapterTitle',
         parent=styles['Heading1'],
-        fontSize=18,
-        leading=22,
+        fontSize=sizes['h1'],
+        leading=sizes['h1'] + 4,
         alignment=TA_CENTER,
-        spaceAfter=20,
+        spaceAfter=spacing['h1_after'],
         spaceBefore=0,
         fontName='Times-Bold',
         textColor=TEXT_COLOR,
@@ -130,11 +151,11 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
     h2_style = ParagraphStyle(
         'SectionTitle',
         parent=styles['Heading2'],
-        fontSize=12,
-        leading=15,
+        fontSize=sizes['h2'],
+        leading=sizes['h2'] + 3,
         alignment=TA_CENTER,
-        spaceAfter=12,
-        spaceBefore=18,
+        spaceAfter=spacing['h2_after'],
+        spaceBefore=12 if not is_mobile else 8,
         fontName='Times-Bold',
         textColor=TEXT_COLOR,
     )
@@ -143,12 +164,12 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
     body_style = ParagraphStyle(
         'BodyText',
         parent=styles['Normal'],
-        fontSize=10,
-        leading=14,
+        fontSize=sizes['body'],
+        leading=sizes['body'] + 4,
         alignment=TA_JUSTIFY,
-        spaceAfter=8,
+        spaceAfter=spacing['body_after'],
         fontName='Times-Roman',
-        firstLineIndent=15,
+        firstLineIndent=12 if is_mobile else 15,
         textColor=TEXT_COLOR,
     )
 
@@ -166,8 +187,8 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
         parent=body_style,
         fontName='Times-Italic',
         alignment=TA_CENTER,
-        spaceBefore=12,
-        spaceAfter=12,
+        spaceBefore=8 if is_mobile else 12,
+        spaceAfter=8 if is_mobile else 12,
         textColor=TEXT_COLOR,
     )
 
@@ -175,22 +196,22 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
     story = []
 
     # Title page
-    story.append(Spacer(1, 80))
+    story.append(Spacer(1, 40 if is_mobile else 80))
     story.append(Paragraph("CYBER TANTRA", title_style))
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 10 if is_mobile else 20))
     story.append(Paragraph("The New Frontier", ParagraphStyle(
         'Subtitle',
         parent=styles['Normal'],
-        fontSize=14,
+        fontSize=11 if is_mobile else 14,
         alignment=TA_CENTER,
         fontName='Times-Italic',
         textColor=TEXT_COLOR,
     )))
-    story.append(Spacer(1, 60))
+    story.append(Spacer(1, 30 if is_mobile else 60))
     story.append(Paragraph("Ride the Tiger Yoga", ParagraphStyle(
         'Author',
         parent=styles['Normal'],
-        fontSize=11,
+        fontSize=9 if is_mobile else 11,
         alignment=TA_CENTER,
         fontName='Times-Roman',
         textColor=TEXT_COLOR,
@@ -198,9 +219,9 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
     story.append(PageBreak())
 
     # Table of contents page
-    story.append(Spacer(1, 30))
+    story.append(Spacer(1, 15 if is_mobile else 30))
     story.append(Paragraph("Contents", h1_style))
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 10 if is_mobile else 20))
 
     toc_entries = [
         "1. Cyber Tantra",
@@ -218,8 +239,8 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
     toc_style = ParagraphStyle(
         'TOC',
         parent=styles['Normal'],
-        fontSize=11,
-        leading=20,
+        fontSize=sizes['toc'],
+        leading=14 if is_mobile else 20,
         alignment=TA_CENTER,
         fontName='Times-Roman',
         textColor=TEXT_COLOR,
@@ -244,9 +265,9 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
                 # Chapter starts on new page (except first)
                 if i > 0 or story[-1].__class__.__name__ != 'PageBreak':
                     pass  # Already have page break from TOC or previous chapter
-                story.append(Spacer(1, 40))
+                story.append(Spacer(1, 20 if is_mobile else 40))
                 story.append(Paragraph(text, h1_style))
-                story.append(Spacer(1, 20))
+                story.append(Spacer(1, 10 if is_mobile else 20))
                 is_first_para = True
 
             elif elem_type == 'h2':
@@ -265,16 +286,17 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
                 is_first_para = True
 
             elif elem_type == 'hr':
-                story.append(Spacer(1, 15))
+                hr_space = 8 if is_mobile else 15
+                story.append(Spacer(1, hr_space))
                 story.append(Paragraph("* * *", ParagraphStyle(
                     'HR',
                     parent=styles['Normal'],
-                    fontSize=10,
+                    fontSize=sizes['body'],
                     alignment=TA_CENTER,
                     fontName='Times-Roman',
                     textColor=TEXT_COLOR,
                 )))
-                story.append(Spacer(1, 15))
+                story.append(Spacer(1, hr_space))
                 is_first_para = True
 
         # Page break after chapter
@@ -286,19 +308,31 @@ def create_pdf(chapters_dir: str, output_path: str, theme: str = 'dark'):
 
 if __name__ == '__main__':
     import sys
+    import argparse
 
-    chapters_dir = '/home/gorkolas/www/cybertantra/book/generated/chapters'
-    base_path = '/home/gorkolas/www/cybertantra'
+    parser = argparse.ArgumentParser(description='Generate PDF book from markdown chapters')
+    parser.add_argument('--theme', choices=['dark', 'light', 'both'], default='both',
+                        help='Color theme (default: both)')
+    parser.add_argument('--format', choices=['tablet', 'mobile', 'all'], default='tablet',
+                        help='Page format (default: tablet)')
+    parser.add_argument('--chapters', default='./book/generated/chapters',
+                        help='Path to chapters directory')
+    parser.add_argument('--output', default='.',
+                        help='Output directory')
 
-    # Check for specific theme argument
-    if len(sys.argv) > 1 and sys.argv[1] in ['dark', 'light', 'both']:
-        mode = sys.argv[1]
-    else:
-        mode = 'both'
+    args = parser.parse_args()
 
-    if mode == 'both':
-        create_pdf(chapters_dir, f'{base_path}/cybertantra-book-dark.pdf', 'dark')
-        create_pdf(chapters_dir, f'{base_path}/cybertantra-book-light.pdf', 'light')
-    else:
-        suffix = f'-{mode}' if mode != 'light' else ''
-        create_pdf(chapters_dir, f'{base_path}/cybertantra-book{suffix}.pdf', mode)
+    chapters_dir = args.chapters
+    base_path = args.output
+
+    themes = ['dark', 'light'] if args.theme == 'both' else [args.theme]
+    formats = ['tablet', 'mobile'] if args.format == 'all' else [args.format]
+
+    for fmt in formats:
+        for theme in themes:
+            fmt_suffix = f'-{fmt}' if fmt != 'tablet' else ''
+            theme_suffix = f'-{theme}'
+            output_file = f'{base_path}/cybertantra-book{fmt_suffix}{theme_suffix}.pdf'
+            create_pdf(chapters_dir, output_file, theme, fmt)
+
+    print("Done!")
