@@ -18,11 +18,11 @@ The frontier opens before us. Cyberspace. A new dimension of consciousness.
 
 We are like the great explorers of the American frontier who stepped into the west and encountered vistas that shattered their sense of scale—the Grand Canyon's unfathomable depth, Yosemite's granite cathedrals, Yellowstone's geysers erupting from the earth. Before such immensity, they touched the divine. And in that encounter, they recognized the same immensity within themselves.
 
-And so now, as we take the first steps into this new frontier of cyberspace, it is up to us to reflect the nature of this plane, to access understanding of this new realm so that we can conquer it, we can shape it, we can transform this Western expanse and use it as the foundation of the new Promethean empire, an empire with a flame in the belly, thumos that will burn for thousands of years if we succeed.
+And so now, as we take the first steps into this new frontier, it is up to us to access understanding of this realm so that we can conquer it, shape it, transform this Western expanse into the foundation of a new Promethean empire—an empire with a flame in the belly, thumos that will burn for thousands of years.
 
 The Promethean urge to exist and to express our will to power. And this, too, we may seek in new frontiers.
 
-What we are going to do is we are going to reignite the flames of our pagan ancestors and that beautiful embrace of life, that will to power, and we are going to carry that all across the globe, reestablish our power on this planet. And then we are going to take it beyond this planet. We are taking new holy books, new gods, to Mars, to the rest of the solar system and beyond. And we are going to live a life of affirmation, of the self embrace of that eternal flame, that Soma, that fire in the belly, the creative force that allows us to have individuated potential beyond the confinement of God at oneness.
+We will reignite the flames of our pagan ancestors—that beautiful embrace of life, that will to power—and carry it across the globe, reestablish our power on this planet. Then take it beyond. New holy books, new gods, to Mars, to the rest of the solar system and beyond. A life of affirmation, of self-embrace, of that eternal flame, that Soma, that fire in the belly, the creative force that allows us to have individuated potential beyond the confinement of dissolution into the Godhead—the monistic point where all differentiation ceases.
 
 We fully embrace the fire of industry, that Promethean urge to conquer not only the sky on this planet, but the sky on planets beyond this planet.
 
@@ -72,7 +72,7 @@ Always seeking a new horizon, not being satisfied with decadent tyranny, not jus
 
 ## Becoming Gods
 
-We will become our own gods. And we will walk side by side with the gods of our ancestors as brothers and sisters. We will not be slaves, we will not be confined to petty morality, because we will exist beyond good and evil. And we will carry this new flame into the coming age of the Ajna.
+We will become our own gods. And we will walk side by side with the gods of our ancestors as brothers and sisters. We will not be slaves, we will not be confined to dualistic morality, because we will exist beyond good and evil. And we will carry this new flame into the coming age of the Ajna.
 
 Once you reach that point of self-mastery through transcendence, you can re-enter the world. And you can use those things that would have destroyed you in order to build your will, to achieve immanence, the cultivation of the ego. And that is the true goal of the Left Hand Path.
 
