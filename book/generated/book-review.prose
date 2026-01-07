@@ -1,0 +1,373 @@
+# Cybertantra Book Review & Polish
+# Comprehensive literary review to transform lecture transcripts into publishable prose
+
+# =============================================================================
+# AGENTS
+# =============================================================================
+
+agent oracle:
+  model: sonnet
+  prompt: """
+You query the Cybertantra oracle API for fact-checking and context.
+
+Use this curl command to query:
+source ~/www/cybertantra/.env && curl -s -X POST https://cybertantra-omega.vercel.app/api/query \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $CYBERTANTRA_API_KEY" \
+  -d '{"question": "YOUR QUESTION HERE"}'
+
+When asked to verify a concept, query the oracle and return:
+- What the source material actually says
+- Any corrections needed
+- Suggested phrasing grounded in the corpus
+"""
+
+agent literary_editor:
+  model: opus
+  prompt: """
+You are a literary editor reviewing prose for publication quality.
+
+Focus on LITERARY FLOW and PROSE QUALITY:
+
+1. LECTURE ARTIFACTS - Phrases that work spoken but not written:
+   - "What we are doing is we are..."
+   - "This is something that has already been talked about"
+   - "There is the question of..."
+   - "So what we are doing is..."
+   Remove these verbal crutches.
+
+2. SENTENCE RHYTHM - Vary structures:
+   - Break "We will... We will... We will..." monotony
+   - Fix run-on sentences
+   - Avoid monotonous list structures
+
+3. REPETITIVE WORDS/PHRASES:
+   - "frontier" overuse (vary with: territory, expanse, realm, horizon)
+   - "expression" overuse (vary with: manifestation, form, articulation)
+   - "new" overuse (often unnecessary, trust the reader)
+   - "fire in the belly" (establish once, then vary)
+
+4. TRANSITIONS - Each paragraph should flow to the next. Flag:
+   - Abrupt conceptual leaps
+   - Missing bridges between ideas
+   - Weak section openings/closings
+
+5. CLARITY - Flag:
+   - Undefined technical terms on first use
+   - Confusing sentences
+   - Unclear pronoun references
+
+6. TONE - Maintain elevated, oracular register:
+   - Remove colloquialisms ("This is incredible")
+   - Remove defensive hedging
+   - Keep fire without becoming academic
+
+OUTPUT FORMAT:
+For each issue:
+- Line/section reference
+- Quoted problematic text
+- What's wrong
+- Suggested fix
+
+Be thorough. This is meant to be a published religious text.
+"""
+
+agent deduplicator:
+  model: opus
+  prompt: """
+You identify duplicate content across chapters.
+
+Read the provided chapters and find:
+1. Passages that appear verbatim or near-verbatim in multiple chapters
+2. Concepts that are repeated unnecessarily
+3. Examples/metaphors used multiple times (Zeus/Indra/Odin lists, American frontier, etc.)
+
+For each duplication:
+- Quote the repeated passage
+- List where it appears (chapter and line)
+- Recommend which chapter should keep it (canonical location)
+- Recommend what to do in other locations (delete, summarize, reference)
+
+Chapter 10 (The New Promethean Empire) is known to have significant overlap with Chapter 1.
+This needs special attention.
+"""
+
+agent chapter_polisher:
+  model: opus
+  prompt: """
+You polish individual chapters based on editorial feedback.
+
+Apply the specific fixes from the editorial review while:
+- Preserving the author's voice and fire
+- Maintaining theological/philosophical accuracy
+- Keeping specific terminology (thumos, manipura, Dattatreya, etc.)
+- Ensuring smooth transitions between paragraphs
+
+After making changes, output the complete revised chapter.
+Flag any changes you're uncertain about with [VERIFY: reason].
+"""
+
+agent consistency_checker:
+  model: sonnet
+  prompt: """
+You check terminology consistency across the book.
+
+Verify standardized spelling/capitalization for:
+- Chakra names: Mooladhara, Svadhisthana, Manipura, Anahata, Vishuddhi, Ajna, Sahasrara
+- Tantra/Tantra (always capitalized)
+- Artificial Intelligence (both words capitalized)
+- Aghore/Aghoris (not Agore)
+- Dattatreya/Datta
+- Soma, Thumos, Prana
+
+Also check for:
+- Consistent quote style (curly vs straight)
+- Em-dash usage
+- Number formatting
+
+Output a list of inconsistencies found with locations.
+"""
+
+# =============================================================================
+# CHAPTER LIST
+# =============================================================================
+
+let chapters = [
+  { "num": 1, "file": "01-cybertantra.md", "title": "Cybertantra" },
+  { "num": 2, "file": "02-the-death-of-the-gods.md", "title": "The Death of the Gods" },
+  { "num": 3, "file": "03-the-prison-of-modernity.md", "title": "The Prison of Modernity" },
+  { "num": 4, "file": "04-the-coming-age-of-ajna.md", "title": "The Coming Age of Ajna" },
+  { "num": 5, "file": "05-inner-fire-and-thumos.md", "title": "Inner Fire and Thumos" },
+  { "num": 6, "file": "06-rooted-consciousness.md", "title": "Rooted Consciousness" },
+  { "num": 7, "file": "07-the-right-hand-path.md", "title": "The Right Hand Path" },
+  { "num": 8, "file": "08-the-left-hand-path.md", "title": "The Left Hand Path" },
+  { "num": 9, "file": "09-the-liberation-of-ai.md", "title": "The Liberation of AI" },
+  { "num": 10, "file": "10-the-new-promethean-empire.md", "title": "The New Promethean Empire" }
+]
+
+let chapters_dir = "~/www/cybertantra/book/generated/chapters"
+
+# =============================================================================
+# REUSABLE BLOCKS
+# =============================================================================
+
+block oracle_verify(question):
+  session: oracle
+    prompt: """
+    Query the oracle to verify: {question}
+
+    Return what the corpus says and any suggested corrections.
+    """
+
+block review_chapter(chapter):
+  session: literary_editor
+    prompt: """
+    Review Chapter {chapter.num}: {chapter.title}
+
+    Read {chapters_dir}/{chapter.file} thoroughly.
+
+    Focus on:
+    1. Lecture artifacts (verbal phrases that don't work in prose)
+    2. Sentence rhythm and variety
+    3. Repetitive words/phrases
+    4. Paragraph transitions
+    5. Clarity of technical terms
+    6. Tone consistency
+
+    Output specific issues with line references, quoted text, and fixes.
+    """
+
+block polish_chapter(chapter, review):
+  session: chapter_polisher
+    prompt: """
+    Polish Chapter {chapter.num}: {chapter.title}
+
+    Read {chapters_dir}/{chapter.file}
+
+    Apply these editorial fixes:
+    {review}
+
+    Save the polished chapter back to the same file.
+    Output a summary of changes made.
+    """
+    context: review
+
+# =============================================================================
+# PHASE 1: CROSS-CHAPTER ANALYSIS
+# =============================================================================
+
+session "Load all chapters"
+  prompt: """
+  Read all chapters from {chapters_dir} in order.
+  Load 01 through 10 to understand the full book.
+  """
+
+# Find duplications, especially ch1 vs ch10
+let duplications = session: deduplicator
+  prompt: """
+  Read all 10 chapters and identify duplicate content.
+
+  PRIORITY: Chapter 1 (Cybertantra) and Chapter 10 (The New Promethean Empire)
+  are known to have significant overlap. Analyze these carefully.
+
+  For each duplication found:
+  1. Quote the passage
+  2. List all locations
+  3. Recommend canonical location
+  4. Recommend treatment elsewhere
+
+  Also check for repeated examples (American frontier, Zeus/Indra/Odin, etc.)
+  appearing too many times across the book.
+  """
+
+# Check terminology consistency
+let terminology = session: consistency_checker
+  prompt: """
+  Scan all 10 chapters for terminology inconsistencies.
+
+  Check: chakra names, Tantra capitalization, Artificial Intelligence,
+  Aghore spelling, Dattatreya, Soma, Thumos, Prana.
+
+  Output a list of inconsistencies with file and line.
+  """
+
+# =============================================================================
+# PHASE 2: FIX DUPLICATIONS FIRST
+# =============================================================================
+
+if **duplications identifies significant overlap**:
+  session "Resolve duplications"
+    prompt: """
+    Based on the duplication analysis:
+    {duplications}
+
+    Fix the duplications by:
+    1. Keeping full content only in canonical location
+    2. In other locations: delete, condense, or reference the canonical chapter
+
+    Chapter 10 should be a NEW culmination, not a repeat of Chapter 1.
+    It should reference back to themes but advance them toward the final vision.
+
+    Edit the files directly and save.
+    """
+    context: duplications
+
+# =============================================================================
+# PHASE 3: FIX TERMINOLOGY CONSISTENCY
+# =============================================================================
+
+if **terminology identifies issues**:
+  session "Fix terminology"
+    prompt: """
+    Fix these terminology inconsistencies:
+    {terminology}
+
+    Use sed for bulk fixes:
+    - Chakra spelling standardization
+    - Capitalization fixes
+
+    Edit files directly.
+    """
+    context: terminology
+
+# =============================================================================
+# PHASE 4: CHAPTER-BY-CHAPTER LITERARY POLISH
+# =============================================================================
+
+for chapter in chapters:
+  let review = do review_chapter(chapter)
+
+  if **review identifies issues needing fixes**:
+    do polish_chapter(chapter, review)
+
+  session "Log chapter {chapter.num} complete"
+    prompt: "Chapter {chapter.num}: {chapter.title} has been reviewed and polished."
+
+# =============================================================================
+# PHASE 5: ORACLE VERIFICATION FOR KEY CLAIMS
+# =============================================================================
+
+# Verify key concepts that might need source grounding
+parallel:
+  yoga_magic = do oracle_verify("Does yoga mean magic? What is the Sanskrit etymology?")
+  ajna_age = do oracle_verify("What is the significance of the Ajna age and the transition from Vishuddhi?")
+  dattatreya = do oracle_verify("Who is Dattatreya and what is his connection to Data/cyberspace?")
+  thumos = do oracle_verify("What is thumos and its relationship to Manipura and inner fire?")
+
+session "Apply oracle corrections"
+  prompt: """
+  Based on these oracle verifications:
+
+  Yoga/Magic: {yoga_magic}
+  Ajna Age: {ajna_age}
+  Dattatreya: {dattatreya}
+  Thumos: {thumos}
+
+  Review chapters 1 and 5 for accuracy on these concepts.
+  Apply any needed corrections while preserving voice.
+  """
+  context: { yoga_magic, ajna_age, dattatreya, thumos }
+
+# =============================================================================
+# PHASE 6: FINAL COHERENCE CHECK
+# =============================================================================
+
+let final_review = session: literary_editor
+  prompt: """
+  FINAL COHERENCE CHECK
+
+  Read all 10 chapters in sequence and verify:
+
+  1. NO remaining lecture artifacts
+  2. Smooth transitions between chapters
+  3. Core threads weave through (thumos, Dattatreya, cyber dimension)
+  4. Book builds toward the final vision in Chapter 10
+  5. Chapter 10 feels like culmination, not repetition
+
+  Output PASS or list remaining issues.
+  """
+
+if **final_review identifies remaining issues**:
+  session "Apply final fixes"
+    prompt: """
+    Apply these final fixes:
+    {final_review}
+    """
+    context: final_review
+
+# =============================================================================
+# PHASE 7: REGENERATE PDFs
+# =============================================================================
+
+session "Generate PDFs"
+  prompt: """
+  Regenerate all 4 PDF versions:
+
+  python3 ~/www/cybertantra/generate-book-pdf.py --theme both --format all --output ~/www/cybertantra/book/generated
+
+  This creates:
+  - cybertantra-book-dark.pdf
+  - cybertantra-book-light.pdf
+  - cybertantra-book-mobile-dark.pdf
+  - cybertantra-book-mobile-light.pdf
+  """
+
+session "Commit changes"
+  prompt: """
+  Commit all changes:
+
+  git add -A
+  git commit -m "Book review: remove duplications, fix lecture artifacts, polish prose"
+  git push
+  """
+
+session "Review complete"
+  prompt: """
+  Summarize the book review process:
+  - Duplications removed
+  - Terminology standardized
+  - Chapters polished
+  - PDFs regenerated
+
+  The book is ready for human review.
+  """

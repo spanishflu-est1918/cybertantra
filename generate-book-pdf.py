@@ -367,4 +367,19 @@ if __name__ == '__main__':
             output_file = f'{base_path}/cybertantra-book{fmt_suffix}{theme_suffix}.pdf'
             create_pdf(chapters_dir, output_file, theme, fmt)
 
+    # Generate concatenated markdown file
+    chapter_files = sorted(Path(chapters_dir).glob('*.md'))
+    md_output = f'{base_path}/cybertantra-book.md'
+    with open(md_output, 'w', encoding='utf-8') as outfile:
+        outfile.write('# CYBERTANTRA\n\n')
+        outfile.write('*The New Frontier*\n\n')
+        outfile.write('**Ride the Tiger Yoga**\n\n')
+        outfile.write('---\n\n')
+        for i, chapter_file in enumerate(chapter_files):
+            if i > 0:
+                outfile.write('\n\n---\n\n')
+            content = chapter_file.read_text(encoding='utf-8')
+            outfile.write(content)
+    print(f"Markdown created: {md_output}")
+
     print("Done!")
